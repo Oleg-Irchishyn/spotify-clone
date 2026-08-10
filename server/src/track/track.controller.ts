@@ -113,7 +113,7 @@ export class TrackController {
   @ApiOperation({ summary: 'Search tracks by name, artist or text' })
   @ApiOkResponse({ description: 'List of matching tracks', type: [Track] })
   @Get('/search')
-  search(@Query('query') query: string) {
+  search(@Query('query', new DefaultValuePipe('')) query: string) {
     return this.trackService.search(query);
   }
 

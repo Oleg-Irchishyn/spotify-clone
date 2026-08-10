@@ -43,7 +43,7 @@ export class AlbumController {
   getAll(
     @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
-    @Query('query') query: string,
+    @Query('query', new DefaultValuePipe('')) query: string,
   ) {
     return this.albumService.getAll(query, count, offset);
   }
