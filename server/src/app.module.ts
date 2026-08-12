@@ -14,7 +14,7 @@ import { AlbumModule } from './album/album.module';
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static'),
+      rootPath: path.resolve(process.cwd(), 'static'),
     }),
     MongooseModule.forRoot(`${process.env.MONGO_URI}`),
     TrackModule,
