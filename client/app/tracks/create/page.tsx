@@ -1,11 +1,20 @@
-import { Typography } from '@mui/material';
+'use client';
+
+import StepWrapper from '@/app/components/StepWrapper/StepWrapper';
+import useCreateTrack from '@/app/hooks/useCreateTrack';
+import { Button, Grid } from '@mui/material';
 
 export default function CreateTrackPage() {
+  const { activeStep, handleNextStep, handlePrevStep, renderStepContent } = useCreateTrack();
   return (
     <div>
-      <Typography sx={{ fontWeight: 'bold' }} variant="h3">
-        Track Upload
-      </Typography>
+      <StepWrapper activeStep={activeStep}>{renderStepContent()}</StepWrapper>
+      <Grid container sx={{ justifyContent: 'space-between' }}>
+        <Button disabled={activeStep === 0} onClick={handlePrevStep}>
+          Back
+        </Button>
+        <Button onClick={handleNextStep}>Continue</Button>
+      </Grid>
     </div>
   );
 }

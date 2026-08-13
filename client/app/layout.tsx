@@ -5,6 +5,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Navbar from './components/Navbar/Navbar';
+import Player from './components/Player/Player';
+import StoreProvider from './store/StoreProvider';
 import './globals.css';
 import { Container } from '@mui/material';
 
@@ -27,13 +29,16 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body suppressHydrationWarning>
-        <AppRouterCacheProvider options={{ key: 'mui' }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Navbar />
-            <Container style={{ margin: '90px auto' }}>{children}</Container>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <StoreProvider>
+          <AppRouterCacheProvider options={{ key: 'mui' }}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <Navbar />
+              <Container style={{ margin: '90px auto' }}>{children}</Container>
+              <Player />
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </StoreProvider>
       </body>
     </html>
   );
