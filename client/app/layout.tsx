@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Navbar from './components/Navbar/Navbar';
 import Player from './components/Player/Player';
+import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import StoreProvider from './store/StoreProvider';
 import './globals.css';
 import { Container } from '@mui/material';
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <Navbar />
               <Container style={{ margin: '90px auto' }}>{children}</Container>
               <Player />
+              <GlobalAlert />
             </ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>

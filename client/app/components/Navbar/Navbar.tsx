@@ -43,7 +43,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Navigation Menu
+            Spotify clone music platform
           </Typography>
         </Toolbar>
       </AppBar>

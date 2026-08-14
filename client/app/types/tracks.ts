@@ -15,4 +15,26 @@ interface ITrack {
   comments: IComment[];
 }
 
-export { type ITrack, type IComment };
+interface TrackState {
+  tracks: ITrack[];
+  error: string;
+}
+
+enum TrackActionTypes {
+  FETCH_TRACKS = 'FETCH_TRACKS',
+  FETCH_TRACKS_ERROR = 'FETCH_TRACKS_ERROR',
+}
+
+interface FetchTracksAction {
+  type: TrackActionTypes.FETCH_TRACKS;
+  payload: ITrack[];
+}
+
+interface FetchTracksErrorAction {
+  type: TrackActionTypes.FETCH_TRACKS_ERROR;
+  payload: string;
+}
+
+type TrackAction = FetchTracksAction | FetchTracksErrorAction;
+
+export { type ITrack, type IComment, TrackActionTypes, type TrackState, type TrackAction };

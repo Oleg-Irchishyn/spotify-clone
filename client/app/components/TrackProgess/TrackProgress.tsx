@@ -4,10 +4,14 @@ import { FC } from 'react';
 
 import { TrackProgressProps } from '@/app/types/trackProgress';
 import { Grid, TextField, Typography } from '@mui/material';
+import { formatTime } from '@/app/utils/formatTime';
 
 import styles from '../../styles/Player.module.scss';
 
-const TrackProgress: FC<TrackProgressProps> = ({ left, right, onChange }) => {
+const TrackProgress: FC<TrackProgressProps> = ({ left, right, onChange, formatAsTime = false }) => {
+  const leftLabel = formatAsTime ? formatTime(left) : left;
+  const rightLabel = formatAsTime ? formatTime(right) : right;
+
   return (
     <Grid sx={{ display: 'flex' }}>
       <TextField
@@ -18,7 +22,7 @@ const TrackProgress: FC<TrackProgressProps> = ({ left, right, onChange }) => {
         slotProps={{ htmlInput: { min: 0, max: right } }}
       />
       <Typography className={styles.track_progress_numbers} variant="body2">
-        {left} / {right}
+        {leftLabel} / {rightLabel}
       </Typography>
     </Grid>
   );

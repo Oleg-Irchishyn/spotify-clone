@@ -12,17 +12,33 @@ import trackStyles from '../../styles/TrackItem.module.scss';
 import TrackProgress from '../TrackProgess/TrackProgress';
 
 const Player: FC = () => {
-  const { active, track, progress, handleProgressChange, volume, handleVolumeChange } = usePlayer();
+  const {
+    pause,
+    active,
+    progress,
+    duration,
+    hanlePlay,
+    handleProgressChange,
+    volume,
+    handleVolumeChange,
+  } = usePlayer();
+
+  if (!active) {
+    return null;
+  }
   return (
     <div className={styles.player}>
-      <IconButton onClick={(e) => e.stopPropagation()}>
-        {active ? <Pause /> : <PlayArrow />}
-      </IconButton>
+      <IconButton onClick={hanlePlay}>{pause ? <PlayArrow /> : <Pause />}</IconButton>
       <Grid container className={trackStyles.track_metadata}>
-        <div className={trackStyles.track_name}>{track.name}</div>
-        <div className={trackStyles.track_artist}>{track.artist}</div>
+        <div className={trackStyles.track_name}>{active?.name}</div>
+        <div className={trackStyles.track_artist}>{active?.artist}</div>
       </Grid>
-      <TrackProgress left={progress} right={100} onChange={handleProgressChange} />
+      <TrackProgress
+        left={progress}
+        right={duration}
+        onChange={handleProgressChange}
+        formatAsTime
+      />
       <VolumeUp sx={{ marginLeft: 'auto' }} />
       <TrackProgress left={volume} right={100} onChange={handleVolumeChange} />
     </div>

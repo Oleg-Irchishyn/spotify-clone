@@ -6,7 +6,10 @@ import { ValidationPipe } from './pipes/validation.pipe';
 async function start(): Promise<void> {
   try {
     const app = await NestFactory.create(AppModule);
-    app.enableCors();
+    app.enableCors({
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    });
 
     const config = new DocumentBuilder()
       .setTitle('Spotify Clone Application')
