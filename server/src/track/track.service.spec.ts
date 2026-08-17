@@ -24,6 +24,7 @@ describe('TrackService', () => {
     findById: jest.Mock;
     findByIdAndUpdate: jest.Mock;
     findByIdAndDelete: jest.Mock;
+    countDocuments: jest.Mock;
   };
   let commentModel: { create: jest.Mock };
   let fileService: { createFile: jest.Mock; removeFile: jest.Mock };
@@ -40,6 +41,7 @@ describe('TrackService', () => {
       findById: jest.fn(),
       findByIdAndUpdate: jest.fn(),
       findByIdAndDelete: jest.fn(),
+      countDocuments: jest.fn().mockResolvedValue(0),
     };
     commentModel = { create: jest.fn() };
     fileService = { createFile: jest.fn(), removeFile: jest.fn() };
@@ -180,13 +182,14 @@ describe('TrackService', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('getAll() paginates tracks using skip/limit', async () => {
+  it('getAll() paginates tracks using skip/limit and returns the total count', async () => {
     trackModel.find.mockReturnValue(createQueryMock([{ name: 'A' }]));
+    trackModel.countDocuments.mockResolvedValue(1);
 
     const result = await service.getAll(5, 10);
 
     expect(trackModel.find).toHaveBeenCalled();
-    expect(result).toEqual([{ name: 'A' }]);
+    expect(result).toEqual({ tracks: [{ name: 'A' }], totalCount: 1 });
   });
 
   it('getAll() falls back to the default count and offset when not provided', async () => {

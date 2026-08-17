@@ -72,9 +72,15 @@ export class TrackService {
     return updatedTrack;
   }
 
-  async getAll(count: number = 10, offset: number = 0): Promise<Track[]> {
-    const tracks = await this.trackModel.find().skip(offset).limit(count);
-    return tracks;
+  async getAll(
+    count: number = 10,
+    offset: number = 0,
+  ): Promise<{ tracks: Track[]; totalCount: number }> {
+    const [tracks, totalCount] = await Promise.all([
+      this.trackModel.find().skip(offset).limit(count),
+      this.trackModel.countDocuments(),
+    ]);
+    return { tracks, totalCount };
   }
 
   async getOne(id: string): Promise<Track | null> {

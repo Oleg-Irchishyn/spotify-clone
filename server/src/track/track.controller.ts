@@ -28,6 +28,7 @@ import { ValidationErrorDto } from 'src/exceptions/dto/validation-error.dto';
 
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
+import { PaginatedTracksDto } from './dto/paginated-tracks.dto';
 import { Comment } from './schemas/comment.schema';
 import { Track } from './schemas/track.schema';
 import { TrackService } from './track.service';
@@ -103,7 +104,10 @@ export class TrackController {
   }
 
   @ApiOperation({ summary: 'Get a paginated list of all tracks' })
-  @ApiOkResponse({ description: 'List of tracks', type: [Track] })
+  @ApiOkResponse({
+    description: 'Tracks for the requested page, plus the total count',
+    type: PaginatedTracksDto,
+  })
   @Get()
   getAll(
     @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,

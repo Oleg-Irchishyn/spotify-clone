@@ -17,6 +17,7 @@ interface ITrack {
 
 interface TrackState {
   tracks: ITrack[];
+  totalCount: number;
   error: string;
 }
 
@@ -27,7 +28,7 @@ enum TrackActionTypes {
 
 interface FetchTracksAction {
   type: TrackActionTypes.FETCH_TRACKS;
-  payload: ITrack[];
+  payload: { tracks: ITrack[]; totalCount: number };
 }
 
 interface FetchTracksErrorAction {

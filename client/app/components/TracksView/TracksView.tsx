@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Card, Grid } from '@mui/material';
+import { Box, Button, Card, Grid, Pagination } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import useTracks from '@/app/hooks/useTracks';
@@ -8,7 +8,8 @@ import Search from '@/app/components/Search/Search';
 import TrackList from '@/app/components/TrackList/TrackList';
 
 const TracksView = () => {
-  const { tracks, handleTrackUpload } = useTracks();
+  const { tracks, handleTrackUpload, page, pageCount, handlePageChange } =
+    useTracks();
   return (
     <div>
       <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
@@ -25,6 +26,15 @@ const TracksView = () => {
           </Box>
           <Search />
           <TrackList tracks={tracks} />
+          <Grid
+            sx={{ display: 'flex', justifyContent: 'center', padding: '20px' }}
+          >
+            <Pagination
+              count={pageCount}
+              page={page}
+              onChange={handlePageChange}
+            />
+          </Grid>
         </Card>
       </Grid>
     </div>
