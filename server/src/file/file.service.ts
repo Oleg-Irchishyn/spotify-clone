@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as path from 'node:path';
 import * as fs from 'node:fs';
+import * as path from 'node:path';
 import * as uuid from 'uuid';
+
 import { FileType } from 'src/common/enums/file-type.enum';
 
 @Injectable()

@@ -1,4 +1,8 @@
-import { PlayerAction, PlayerActionTypes, PlayerState } from '@/app/types/player';
+import {
+  PlayerAction,
+  PlayerActionTypes,
+  PlayerState,
+} from '@/app/types/player';
 
 const initialState: PlayerState = {
   currentTime: 0,
@@ -8,7 +12,10 @@ const initialState: PlayerState = {
   pause: false,
 };
 
-export const playerReducer = (state = initialState, action: PlayerAction): PlayerState => {
+export const playerReducer = (
+  state = initialState,
+  action: PlayerAction,
+): PlayerState => {
   switch (action.type) {
     case PlayerActionTypes.PAUSE:
       return { ...state, pause: true };

@@ -13,10 +13,7 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { AlbumService } from './album.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { CreateAlbumDto } from './dto/CreateAlbumDto';
-
 import {
   ApiBadRequestResponse,
   ApiConsumes,
@@ -26,8 +23,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Album } from './schemas/album.schema';
+
 import { ValidationErrorDto } from 'src/exceptions/dto/validation-error.dto';
+
+import { AlbumService } from './album.service';
+import { CreateAlbumDto } from './dto/CreateAlbumDto';
+import { Album } from './schemas/album.schema';
 
 @ApiTags('Albums (User Albums)')
 @Controller('album')

@@ -1,8 +1,10 @@
 import { Dispatch } from 'redux';
-import $api from '@/app/lib/http';
-import { ITrack, TrackAction, TrackActionTypes } from '@/app/types/tracks';
-import { AlertAction } from '@/app/types/alert';
+
 import { resolveAssetUrl } from '@/app/utils/resolveAssetUrl';
+import $api from '@/app/lib/http';
+import { AlertAction } from '@/app/types/alert';
+import { ITrack, TrackAction, TrackActionTypes } from '@/app/types/tracks';
+
 import { showAlert } from './alert';
 
 export const fetchTracks = () => {
@@ -27,7 +29,9 @@ export const fetchTracks = () => {
 export const searchTracks = (query: string) => {
   return async (dispatch: Dispatch<TrackAction | AlertAction>) => {
     try {
-      const response = await $api.get<ITrack[]>(`/tracks/search?query=${query}`);
+      const response = await $api.get<ITrack[]>(
+        `/tracks/search?query=${query}`,
+      );
       const tracks = response.data.map((track) => ({
         ...track,
         picture: resolveAssetUrl(track.picture),

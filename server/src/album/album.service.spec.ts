@@ -1,10 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getModelToken } from '@nestjs/mongoose';
 import { NotFoundException } from '@nestjs/common';
+import { getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { FileType } from 'src/common/enums/file-type.enum';
+import { FileService } from 'src/file/file.service';
+
 import { AlbumService } from './album.service';
 import { Album } from './schemas/album.schema';
-import { FileService } from 'src/file/file.service';
-import { FileType } from 'src/common/enums/file-type.enum';
 
 describe('AlbumService', () => {
   let service: AlbumService;

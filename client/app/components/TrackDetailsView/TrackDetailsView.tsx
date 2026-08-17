@@ -1,16 +1,22 @@
 'use client';
 
-import useTrackDetails from '@/app/hooks/useTrackDetails';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
+
+import useTrackDetails from '@/app/hooks/useTrackDetails';
 
 interface TrackDetailsViewProps {
   id: string;
 }
 
 const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
-  const { track, handleRedirectToTracks, username, commentText, handleAddComment } =
-    useTrackDetails(id);
+  const {
+    track,
+    handleRedirectToTracks,
+    username,
+    commentText,
+    handleAddComment,
+  } = useTrackDetails(id);
 
   if (!track) {
     return null;
@@ -27,14 +33,21 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
         <div style={{ marginLeft: '30px' }}>
           <Typography variant="h6">Track name: {track.name}</Typography>
           <Typography variant="h6">Artist: {track.artist}</Typography>
-          <Typography variant="h6">Number of listens: {track.listens}</Typography>
+          <Typography variant="h6">
+            Number of listens: {track.listens}
+          </Typography>
         </div>
       </Grid>
       <Typography variant="h6">TrackLyrics</Typography>
       <Typography variant="body1">{track.text}</Typography>
       <Typography variant="h6">Comments</Typography>
       <Grid container>
-        <TextField value={username.value} onChange={username.onChange} label="Your name" fullWidth />
+        <TextField
+          value={username.value}
+          onChange={username.onChange}
+          label="Your name"
+          fullWidth
+        />
         <TextField
           value={commentText.value}
           onChange={commentText.onChange}

@@ -22,4 +22,9 @@ interface HideAlertAction {
 
 type AlertAction = ShowAlertAction | HideAlertAction;
 
-export { type AlertState, type AlertSeverity, AlertActionTypes, type AlertAction };
+export {
+  type AlertState,
+  type AlertSeverity,
+  AlertActionTypes,
+  type AlertAction,
+};

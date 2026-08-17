@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, useState } from 'react';
 import { Provider } from 'react-redux';
+
 import { AppStore, makeStore } from './index';
 
 const StoreProvider: FC<Readonly<{ children: ReactNode }>> = ({ children }) => {

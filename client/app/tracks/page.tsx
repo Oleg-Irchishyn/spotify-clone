@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import TracksView from '@/app/components/TracksView/TracksView';
 
 export const metadata: Metadata = {

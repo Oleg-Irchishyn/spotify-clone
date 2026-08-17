@@ -13,6 +13,7 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
   ApiConsumes,
@@ -22,13 +23,14 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { TrackService } from './track.service';
-import { CreateTrackDto } from './dto/create-track.dto';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Track } from './schemas/track.schema';
-import { Comment } from './schemas/comment.schema';
+
 import { ValidationErrorDto } from 'src/exceptions/dto/validation-error.dto';
+
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { Comment } from './schemas/comment.schema';
+import { Track } from './schemas/track.schema';
+import { TrackService } from './track.service';
 
 @ApiTags('Tracks')
 @Controller('tracks')

@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { FileService } from 'src/file/file.service';
-import { Album, AlbumDocument } from './schemas/album.schema';
+
 import { FileType } from 'src/common/enums/file-type.enum';
-import { CreateAlbumDto } from './dto/CreateAlbumDto';
+import { FileService } from 'src/file/file.service';
+
 import { escapeRegExp } from 'src/common/utils/regex.util';
+import { CreateAlbumDto } from './dto/CreateAlbumDto';
+import { Album, AlbumDocument } from './schemas/album.schema';
 
 @Injectable()
 export class AlbumService {

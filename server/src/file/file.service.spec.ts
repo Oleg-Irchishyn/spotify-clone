@@ -1,8 +1,10 @@
 import { HttpException } from '@nestjs/common';
 import * as fs from 'node:fs';
 import * as uuid from 'uuid';
-import { FileService } from './file.service';
+
 import { FileType } from 'src/common/enums/file-type.enum';
+
+import { FileService } from './file.service';
 
 jest.mock('node:fs');
 jest.mock('uuid', () => ({ v4: jest.fn() }));

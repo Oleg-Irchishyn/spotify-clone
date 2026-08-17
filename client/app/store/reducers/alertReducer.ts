@@ -6,7 +6,10 @@ const initialState: AlertState = {
   open: false,
 };
 
-export const alertReducer = (state = initialState, action: AlertAction): AlertState => {
+export const alertReducer = (
+  state = initialState,
+  action: AlertAction,
+): AlertState => {
   switch (action.type) {
     case AlertActionTypes.SHOW_ALERT:
       return { ...action.payload, open: true };

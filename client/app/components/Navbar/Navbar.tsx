@@ -16,13 +16,21 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { drawerWidth, menuItems } from '../../constants/navigation';
-import AppBar from './AppBar';
-import DrawerHeader from './DrawerHeader';
+
 import useNavbar from '@/app/hooks/useNavbar';
 
+import AppBar from './AppBar';
+import DrawerHeader from './DrawerHeader';
+import { drawerWidth, menuItems } from '../../constants/navigation';
+
 export default function Navbar() {
-  const { theme, open, handleSelectMenuItem, handleDrawerOpen, handleDrawerClose } = useNavbar();
+  const {
+    theme,
+    open,
+    handleSelectMenuItem,
+    handleDrawerOpen,
+    handleDrawerClose,
+  } = useNavbar();
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -39,7 +47,8 @@ export default function Navbar() {
                 mr: 2,
               },
               open && { display: 'none' },
-            ]}>
+            ]}
+          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
@@ -58,10 +67,15 @@ export default function Navbar() {
         }}
         variant="persistent"
         anchor="left"
-        open={open}>
+        open={open}
+      >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <List>
@@ -70,8 +84,11 @@ export default function Navbar() {
               <ListItemButton
                 onClick={() => {
                   handleSelectMenuItem(href);
-                }}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                }}
+              >
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>

@@ -1,6 +1,13 @@
-import { AlertAction, AlertActionTypes, AlertSeverity } from '@/app/types/alert';
+import {
+  AlertAction,
+  AlertActionTypes,
+  AlertSeverity,
+} from '@/app/types/alert';
 
-const showAlert = (message: string, severity: AlertSeverity = 'error'): AlertAction => ({
+const showAlert = (
+  message: string,
+  severity: AlertSeverity = 'error',
+): AlertAction => ({
   type: AlertActionTypes.SHOW_ALERT,
   payload: { message, severity },
 });

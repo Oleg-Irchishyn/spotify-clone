@@ -1,7 +1,9 @@
 import { ArgumentMetadata } from '@nestjs/common';
-import { ValidationPipe } from './validation.pipe';
+
 import { ValidationException } from 'src/exceptions/validation.exception';
 import { CreateTrackDto } from 'src/track/dto/create-track.dto';
+
+import { ValidationPipe } from './validation.pipe';
 
 describe('ValidationPipe', () => {
   let pipe: ValidationPipe;

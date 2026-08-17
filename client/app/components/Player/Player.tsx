@@ -1,15 +1,14 @@
 'use client';
 
-import { FC } from 'react';
 import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
 import { Grid, IconButton } from '@mui/material';
+import { FC } from 'react';
 
 import usePlayer from '@/app/hooks/usePlayer';
 
+import TrackProgress from '../TrackProgess/TrackProgress';
 import styles from '../../styles/Player.module.scss';
 import trackStyles from '../../styles/TrackItem.module.scss';
-
-import TrackProgress from '../TrackProgess/TrackProgress';
 
 const Player: FC = () => {
   const {
@@ -28,7 +27,9 @@ const Player: FC = () => {
   }
   return (
     <div className={styles.player}>
-      <IconButton onClick={hanlePlay}>{pause ? <PlayArrow /> : <Pause />}</IconButton>
+      <IconButton onClick={hanlePlay}>
+        {pause ? <PlayArrow /> : <Pause />}
+      </IconButton>
       <Grid container className={trackStyles.track_metadata}>
         <div className={trackStyles.track_name}>{active?.name}</div>
         <div className={trackStyles.track_artist}>{active?.artist}</div>

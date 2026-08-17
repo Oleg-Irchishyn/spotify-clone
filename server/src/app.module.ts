@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import * as path from 'node:path';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { TrackModule } from './track/track.module';
-import { FileModule } from './file/file.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'node:path';
+
 import { AlbumModule } from './album/album.module';
+import { FileModule } from './file/file.module';
+import { TrackModule } from './track/track.module';
 
 @Module({
   imports: [

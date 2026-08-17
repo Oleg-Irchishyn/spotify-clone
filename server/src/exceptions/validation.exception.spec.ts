@@ -1,4 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
+
 import { ValidationException } from './validation.exception';
 
 describe('ValidationException', () => {

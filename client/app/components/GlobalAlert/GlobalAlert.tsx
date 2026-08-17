@@ -1,9 +1,10 @@
 'use client';
 
-import { FC } from 'react';
 import { Alert, Snackbar } from '@mui/material';
-import { useTypedSelector } from '@/app/hooks/useTypedSelector';
+import { FC } from 'react';
+
 import { useActions } from '@/app/hooks/useActions';
+import { useTypedSelector } from '@/app/hooks/useTypedSelector';
 
 const GlobalAlert: FC = () => {
   const { message, severity, open } = useTypedSelector((state) => state.alert);

@@ -37,4 +37,10 @@ interface FetchTracksErrorAction {
 
 type TrackAction = FetchTracksAction | FetchTracksErrorAction;
 
-export { type ITrack, type IComment, TrackActionTypes, type TrackState, type TrackAction };
+export {
+  type ITrack,
+  type IComment,
+  TrackActionTypes,
+  type TrackState,
+  type TrackAction,
+};

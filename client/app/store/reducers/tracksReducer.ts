@@ -5,7 +5,10 @@ const initialState: TrackState = {
   error: '',
 };
 
-export const tracksReducer = (state = initialState, action: TrackAction): TrackState => {
+export const tracksReducer = (
+  state = initialState,
+  action: TrackAction,
+): TrackState => {
   switch (action.type) {
     case TrackActionTypes.FETCH_TRACKS:
       return { error: '', tracks: action.payload };

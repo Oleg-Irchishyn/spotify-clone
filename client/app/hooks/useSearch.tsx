@@ -1,4 +1,5 @@
 import { ChangeEvent, useRef, useState } from 'react';
+
 import { useActions } from './useActions';
 
 const useSearch = () => {

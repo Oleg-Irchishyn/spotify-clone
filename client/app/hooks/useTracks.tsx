@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '../constants/routes';
-import { useTypedSelector } from './useTypedSelector';
+import { useEffect } from 'react';
+
 import { useActions } from './useActions';
+import { useTypedSelector } from './useTypedSelector';
+import { ROUTES } from '../constants/routes';
 
 const useTracks = () => {
   const router = useRouter();

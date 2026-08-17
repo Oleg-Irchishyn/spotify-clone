@@ -1,14 +1,17 @@
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '../constants/routes';
+import { SyntheticEvent } from 'react';
+
 import { useActions } from './useActions';
 import { useTypedSelector } from './useTypedSelector';
+import { ROUTES } from '../constants/routes';
 import { ITrack } from '../types/tracks';
-import { SyntheticEvent } from 'react';
 
 const useTrack = (track: ITrack) => {
   const router = useRouter();
 
-  const { active, pause, currentTime, duration } = useTypedSelector((state) => state.player);
+  const { active, pause, currentTime, duration } = useTypedSelector(
+    (state) => state.player,
+  );
   const { playTrack, pauseTrack, setActiveTrack } = useActions();
 
   const isActive = active?._id === track._id;

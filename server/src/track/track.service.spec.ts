@@ -1,11 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getModelToken } from '@nestjs/mongoose';
 import { NotFoundException } from '@nestjs/common';
-import { TrackService } from './track.service';
-import { Track } from './schemas/track.schema';
-import { Comment } from './schemas/comment.schema';
-import { FileService } from 'src/file/file.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+
 import { FileType } from 'src/common/enums/file-type.enum';
+import { FileService } from 'src/file/file.service';
+
+import { Comment } from './schemas/comment.schema';
+import { Track } from './schemas/track.schema';
+import { TrackService } from './track.service';
 
 const createQueryMock = (resolvedValue: unknown) => ({
   skip: jest.fn().mockReturnThis(),

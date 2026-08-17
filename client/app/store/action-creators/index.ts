@@ -1,6 +1,6 @@
+import * as alertActionCreators from './alert';
 import * as playerActionCreators from './player';
 import * as trackActionCreators from './tracks';
-import * as alertActionCreators from './alert';
 
 const actionCreators = {
   ...playerActionCreators,

@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+
+import { alertReducer } from './alertReducer';
 import { playerReducer } from './playerReducer';
 import { tracksReducer } from './tracksReducer';
-import { alertReducer } from './alertReducer';
 
 const rootReducer = combineReducers({
   player: playerReducer,

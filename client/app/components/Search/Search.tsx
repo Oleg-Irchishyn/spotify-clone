@@ -1,7 +1,8 @@
-import useSearch from '@/app/hooks/useSearch';
-import { Grid, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Grid, InputAdornment, TextField } from '@mui/material';
 import { FC } from 'react';
+
+import useSearch from '@/app/hooks/useSearch';
 
 const Search: FC = () => {
   const { query, handleSearch } = useSearch();

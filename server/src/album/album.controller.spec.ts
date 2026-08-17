@@ -1,5 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+
 import { AlbumController } from './album.controller';
 import { AlbumService } from './album.service';
 

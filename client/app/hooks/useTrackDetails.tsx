@@ -1,12 +1,13 @@
-import { useRouter } from 'next/navigation';
-import { ROUTES } from '../constants/routes';
-import { IComment, ITrack } from '../types/tracks';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import $api from '../lib/http';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import { useActions } from './useActions';
 import useInput from './useInput';
 import { resolveAssetUrl } from '../utils/resolveAssetUrl';
+import $api from '../lib/http';
+import { ROUTES } from '../constants/routes';
+import { IComment, ITrack } from '../types/tracks';
 
 const useTrackDetails = (trackId: string) => {
   const router = useRouter();
@@ -62,7 +63,9 @@ const useTrackDetails = (trackId: string) => {
         trackId: track._id,
       });
 
-      setTrack((prev) => (prev ? { ...prev, comments: [...prev.comments, data] } : prev));
+      setTrack((prev) =>
+        prev ? { ...prev, comments: [...prev.comments, data] } : prev,
+      );
       username.reset();
       commentText.reset();
     } catch (error) {

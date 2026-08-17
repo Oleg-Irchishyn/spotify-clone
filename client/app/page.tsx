@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import Typography from '@mui/material/Typography';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Music Platform',

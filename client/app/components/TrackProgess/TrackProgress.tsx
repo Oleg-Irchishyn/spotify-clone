@@ -1,10 +1,10 @@
 'use client';
 
+import { Grid, TextField, Typography } from '@mui/material';
 import { FC } from 'react';
 
-import { TrackProgressProps } from '@/app/types/trackProgress';
-import { Grid, TextField, Typography } from '@mui/material';
 import { formatTime } from '@/app/utils/formatTime';
+import { TrackProgressProps } from '@/app/types/trackProgress';
 
 import styles from '../../styles/Player.module.scss';
 

@@ -1,13 +1,23 @@
-import { ChangeEvent, SyntheticEvent, useCallback, useEffect, useRef } from 'react';
-import { useTypedSelector } from './useTypedSelector';
+import {
+  ChangeEvent,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
+
 import { useActions } from './useActions';
+import { useTypedSelector } from './useTypedSelector';
 
 const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { pause, volume, active, duration, currentTime } = useTypedSelector((state) => state.player);
+  const { pause, volume, active, duration, currentTime } = useTypedSelector(
+    (state) => state.player,
+  );
 
-  const { pauseTrack, playTrack, setVolume, setCurrentTime, setDuration } = useActions();
+  const { pauseTrack, playTrack, setVolume, setCurrentTime, setDuration } =
+    useActions();
 
   const setAudio = useCallback(
     (src: string) => {

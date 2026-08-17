@@ -1,7 +1,7 @@
+import { Box, Grid } from '@mui/material';
 import { FC } from 'react';
 
 import { TrackListProps } from '@/app/types/tracklist';
-import { Box, Grid } from '@mui/material';
 
 import TrackItem from '../TrackItem/TrackItem';
 

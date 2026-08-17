@@ -1,11 +1,13 @@
 'use client';
 
-import StepWrapper from '@/app/components/StepWrapper/StepWrapper';
-import useCreateTrack from '@/app/hooks/useCreateTrack';
 import { Button, Grid } from '@mui/material';
 
+import useCreateTrack from '@/app/hooks/useCreateTrack';
+import StepWrapper from '@/app/components/StepWrapper/StepWrapper';
+
 const CreateTrackView = () => {
-  const { activeStep, handleNextStep, handlePrevStep, renderStepContent } = useCreateTrack();
+  const { activeStep, handleNextStep, handlePrevStep, renderStepContent } =
+    useCreateTrack();
   return (
     <div>
       <StepWrapper activeStep={activeStep}>{renderStepContent()}</StepWrapper>

@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
-import { ITrack } from '@/app/types/tracks';
-import TrackDetailsView from '@/app/components/TrackDetailsView/TrackDetailsView';
 
-export async function generateMetadata(props: Readonly<PageProps<'/tracks/[id]'>>): Promise<Metadata> {
+import TrackDetailsView from '@/app/components/TrackDetailsView/TrackDetailsView';
+import { ITrack } from '@/app/types/tracks';
+
+export async function generateMetadata(
+  props: Readonly<PageProps<'/tracks/[id]'>>,
+): Promise<Metadata> {
   const { id } = await props.params;
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${id}`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${id}`,
+    );
 
     if (!response.ok) {
       return { title: 'Track not found - Music Platform' };
@@ -23,7 +28,9 @@ export async function generateMetadata(props: Readonly<PageProps<'/tracks/[id]'>
   }
 }
 
-export default async function TrackDetailsPage(props: Readonly<PageProps<'/tracks/[id]'>>) {
+export default async function TrackDetailsPage(
+  props: Readonly<PageProps<'/tracks/[id]'>>,
+) {
   const { id } = await props.params;
 
   return <TrackDetailsView id={id} />;

@@ -1,15 +1,16 @@
+import { Container } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme';
+
+import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import Navbar from './components/Navbar/Navbar';
 import Player from './components/Player/Player';
-import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import StoreProvider from './store/StoreProvider';
+import theme from './theme';
 import './globals.css';
-import { Container } from '@mui/material';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

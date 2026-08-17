@@ -2,9 +2,10 @@
 
 import { Box, Button, Card, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
+
 import useTracks from '@/app/hooks/useTracks';
-import TrackList from '@/app/components/TrackList/TrackList';
 import Search from '@/app/components/Search/Search';
+import TrackList from '@/app/components/TrackList/TrackList';
 
 const TracksView = () => {
   const { tracks, handleTrackUpload } = useTracks();
