@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload/FileUpload';
 import TrackCreationForm from '../components/TrackCreationForm/TrackCreationForm';
-import useTrackCreationForm from './useTrackCreationForm';
+import useInput from './useInput';
 import { useActions } from './useActions';
 import $api from '../lib/http';
 import { ROUTES } from '../constants/routes';
@@ -16,9 +16,9 @@ const useCreateTrack = () => {
   const [picture, setPicture] = useState<File>();
   const [audio, setAudio] = useState<File>();
 
-  const name = useTrackCreationForm('');
-  const artist = useTrackCreationForm('');
-  const text = useTrackCreationForm('');
+  const name = useInput('');
+  const artist = useInput('');
+  const text = useInput('');
 
   const handleCreateTrack = async () => {
     if (!picture || !audio) {

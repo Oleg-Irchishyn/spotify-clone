@@ -3,7 +3,7 @@ import { StepWrapperProps } from '@/app/types/stepWrapper';
 import { Card, Container, Grid, Step, StepLabel, Stepper } from '@mui/material';
 import { steps } from '@/app/constants/stepper';
 
-const StepWrapper: FC<StepWrapperProps> = ({ activeStep, children }) => {
+const StepWrapper: FC<Readonly<StepWrapperProps>> = ({ activeStep, children }) => {
   return (
     <Container>
       <Stepper activeStep={activeStep}>

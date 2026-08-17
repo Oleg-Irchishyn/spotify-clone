@@ -1,31 +1,82 @@
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '../constants/routes';
-import { ITrack } from '../types/tracks';
+import { IComment, ITrack } from '../types/tracks';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import $api from '../lib/http';
+import { useActions } from './useActions';
+import useInput from './useInput';
+import { resolveAssetUrl } from '../utils/resolveAssetUrl';
 
-const useTrackDetails = () => {
+const useTrackDetails = (trackId: string) => {
   const router = useRouter();
+  const { showAlert } = useActions();
 
-  const track: ITrack = {
-    _id: '6a7c6d87b4e286bc5258c3e0',
-    name: 'Track 1',
-    artist: 'Track 1 artist',
-    text: 'Random text',
-    listens: 0,
-    audio: 'http://localhost:5000/audio/3d390ae6-6631-4678-b05e-48677055fa6d.mp3',
-    picture: 'http://localhost:5000/image/ccf6cb76-5aa4-49e2-b60f-fd5276df28d1.jpg',
-    comments: [
-      { _id: '6a7590b7d7df3f35611c8e7a', username: 'John Doe', text: 'Great track!' },
-      { _id: '6a759163831675a9db501ebc', username: 'Jane Smith', text: 'Love this one!' },
-    ],
-  };
+  const [track, setTrack] = useState<ITrack>();
+
+  const username = useInput('');
+  const commentText = useInput('');
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadTrackDetails = async () => {
+      try {
+        const { data } = await $api.get<ITrack>(`/tracks/${trackId}`, {
+          signal: controller.signal,
+        });
+        setTrack({
+          ...data,
+          picture: resolveAssetUrl(data.picture),
+          audio: resolveAssetUrl(data.audio),
+        });
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          return;
+        }
+        const message = error instanceof Error ? error.message : 'Server error';
+        showAlert(message);
+      }
+    };
+
+    loadTrackDetails();
+
+    return () => {
+      controller.abort();
+    };
+  }, [trackId, showAlert]);
 
   const handleRedirectToTracks = () => {
     router.push(ROUTES.TRACKS);
   };
 
+  const handleAddComment = async () => {
+    if (!track) {
+      return;
+    }
+
+    try {
+      const { data } = await $api.post<IComment>('/tracks/comment', {
+        username: username.value,
+        text: commentText.value,
+        trackId: track._id,
+      });
+
+      setTrack((prev) => (prev ? { ...prev, comments: [...prev.comments, data] } : prev));
+      username.reset();
+      commentText.reset();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Server error';
+      showAlert(message);
+    }
+  };
+
   return {
     handleRedirectToTracks,
     track,
+    username,
+    commentText,
+    handleAddComment,
   };
 };
 

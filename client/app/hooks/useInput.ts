@@ -1,12 +1,15 @@
 import { ChangeEvent, useState } from 'react';
 
-const useTrackCreationForm = (initialValue: string) => {
+const useInput = (initialValue: string) => {
   const [value, setValue] = useState(initialValue);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-  return { value, onChange };
+
+  const reset = () => setValue(initialValue);
+
+  return { value, onChange, reset };
 };
 
-export default useTrackCreationForm;
+export default useInput;

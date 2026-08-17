@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import Typography from '@mui/material/Typography';
+
+export const metadata: Metadata = {
+  title: 'Music Platform',
+  description: 'Music Platform. The best tracks are gathered here.',
+};
 
 export default function Home() {
   return (

@@ -1,20 +1,11 @@
-'use client';
+import type { Metadata } from 'next';
+import CreateTrackView from '@/app/components/CreateTrackView/CreateTrackView';
 
-import StepWrapper from '@/app/components/StepWrapper/StepWrapper';
-import useCreateTrack from '@/app/hooks/useCreateTrack';
-import { Button, Grid } from '@mui/material';
+export const metadata: Metadata = {
+  title: 'Upload Track - Music Platform',
+  description: 'Upload a new track to Music Platform.',
+};
 
 export default function CreateTrackPage() {
-  const { activeStep, handleNextStep, handlePrevStep, renderStepContent } = useCreateTrack();
-  return (
-    <div>
-      <StepWrapper activeStep={activeStep}>{renderStepContent()}</StepWrapper>
-      <Grid container sx={{ justifyContent: 'space-between' }}>
-        <Button disabled={activeStep === 0} onClick={handlePrevStep}>
-          Back
-        </Button>
-        <Button onClick={handleNextStep}>Continue</Button>
-      </Grid>
-    </div>
-  );
+  return <CreateTrackView />;
 }

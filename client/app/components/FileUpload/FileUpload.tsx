@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import { FC } from 'react';
 import useFileUpload from '@/app/hooks/useFileUpload';
 
-const FileUpload: FC<FileUploadProps> = ({ setFile, accept, children }) => {
+const FileUpload: FC<Readonly<FileUploadProps>> = ({ setFile, accept, children }) => {
   const { handleChange } = useFileUpload(setFile);
 
   return (

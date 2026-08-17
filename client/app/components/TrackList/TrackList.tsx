@@ -5,7 +5,7 @@ import { Box, Grid } from '@mui/material';
 
 import TrackItem from '../TrackItem/TrackItem';
 
-const TrackList: FC<TrackListProps> = ({ tracks }) => {
+const TrackList: FC<Readonly<TrackListProps>> = ({ tracks }) => {
   return (
     <Grid container sx={{ direction: 'column' }}>
       <Box sx={{ p: 2, width: '100%' }}>

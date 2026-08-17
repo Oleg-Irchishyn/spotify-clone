@@ -8,7 +8,7 @@ import styles from '../../styles/TrackItem.module.scss';
 import useTrack from '@/app/hooks/useTrack';
 import { formatTime } from '@/app/utils/formatTime';
 
-const TrackItem: FC<TrackItemProps> = ({ track }) => {
+const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
   const { handleTrackDetailsRedirect, handlePlay, isActive, isPlaying, currentTime, duration } =
     useTrack(track);
   return (

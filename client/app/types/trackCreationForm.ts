@@ -1,11 +1,9 @@
-import useTrackCreationForm from '@/app/hooks/useTrackCreationForm';
-
-type TrackField = ReturnType<typeof useTrackCreationForm>;
+import { InputField } from './input';
 
 interface TrackCreationFormProps {
-  name: TrackField;
-  artist: TrackField;
-  text: TrackField;
+  name: InputField;
+  artist: InputField;
+  text: InputField;
 }
 
-export { type TrackField, type TrackCreationFormProps };
+export { type TrackCreationFormProps };

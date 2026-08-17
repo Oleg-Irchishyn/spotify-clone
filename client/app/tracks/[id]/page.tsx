@@ -1,45 +1,30 @@
-'use client';
+import type { Metadata } from 'next';
+import { ITrack } from '@/app/types/tracks';
+import TrackDetailsView from '@/app/components/TrackDetailsView/TrackDetailsView';
 
-import { useParams } from 'next/navigation';
-import useTrackDetails from '@/app/hooks/useTrackDetails';
-import { Button, Grid, TextField, Typography } from '@mui/material';
-import Image from 'next/image';
+export async function generateMetadata(props: Readonly<PageProps<'/tracks/[id]'>>): Promise<Metadata> {
+  const { id } = await props.params;
 
-const TrackDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  const { track, handleRedirectToTracks } = useTrackDetails();
-  return (
-    <div>
-      Track {id}
-      <Button size="medium" variant="outlined" onClick={handleRedirectToTracks}>
-        Back to Tracks
-      </Button>
-      <Grid container sx={{ margin: '20px 0' }}>
-        <Image width={200} height={200} src={track.picture} alt={track.name} />
-        <div style={{ marginLeft: '30px' }}>
-          <Typography variant="h6">Track name: {track.name}</Typography>
-          <Typography variant="h6">Artist: {track.artist}</Typography>
-          <Typography variant="h6">Number of listens: {track.listens}</Typography>
-        </div>
-      </Grid>
-      <Typography variant="h6">TrackLyrics</Typography>
-      <Typography variant="body1">{track.text}</Typography>
-      <Typography variant="h6">Comments</Typography>
-      <Grid container>
-        <TextField label="Your name" fullWidth />
-        <TextField label="Your comment" fullWidth multiline rows={4} />
-        <Button>Send</Button>
-      </Grid>
-      <div>
-        {track.comments.map((comment) => (
-          <div key={comment._id}>
-            <div>Author:{comment.username}</div>
-            <div>Comment: {comment.text}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tracks/${id}`);
 
-export default TrackDetails;
+    if (!response.ok) {
+      return { title: 'Track not found - Music Platform' };
+    }
+
+    const track: ITrack = await response.json();
+
+    return {
+      title: `Music Platform - ${track.name} - ${track.artist}`,
+      description: track.text,
+    };
+  } catch {
+    return { title: 'Music Platform' };
+  }
+}
+
+export default async function TrackDetailsPage(props: Readonly<PageProps<'/tracks/[id]'>>) {
+  const { id } = await props.params;
+
+  return <TrackDetailsView id={id} />;
+}

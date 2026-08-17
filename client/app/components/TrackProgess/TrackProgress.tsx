@@ -8,7 +8,12 @@ import { formatTime } from '@/app/utils/formatTime';
 
 import styles from '../../styles/Player.module.scss';
 
-const TrackProgress: FC<TrackProgressProps> = ({ left, right, onChange, formatAsTime = false }) => {
+const TrackProgress: FC<Readonly<TrackProgressProps>> = ({
+  left,
+  right,
+  onChange,
+  formatAsTime = false,
+}) => {
   const leftLabel = formatAsTime ? formatTime(left) : left;
   const rightLabel = formatAsTime ? formatTime(right) : right;
 
