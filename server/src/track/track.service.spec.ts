@@ -240,14 +240,15 @@ describe('TrackService', () => {
     await expect(service.listen('missing-id')).resolves.toBeUndefined();
   });
 
-  it('search() escapes regex special characters and searches name/artist/text', async () => {
+  it('search() escapes regex special characters, searches name/artist/text, and paginates results', async () => {
     let capturedFilter: unknown;
     trackModel.find.mockImplementation((filter: unknown) => {
       capturedFilter = filter;
       return createQueryMock([]);
     });
+    trackModel.countDocuments.mockResolvedValue(0);
 
-    await service.search('a.b*');
+    const result = await service.search('a.b*', 5, 10);
 
     expect(trackModel.find).toHaveBeenCalledWith({
       $or: [
@@ -256,7 +257,9 @@ describe('TrackService', () => {
         { text: expect.any(RegExp) as RegExp },
       ],
     });
+    expect(trackModel.countDocuments).toHaveBeenCalledWith(capturedFilter);
     const { $or } = capturedFilter as { $or: { name: RegExp }[] };
     expect($or[0].name.source).toBe('a\\.b\\*');
+    expect(result).toEqual({ tracks: [], totalCount: 0 });
   });
 });

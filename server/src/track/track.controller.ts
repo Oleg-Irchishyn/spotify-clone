@@ -117,10 +117,18 @@ export class TrackController {
   }
 
   @ApiOperation({ summary: 'Search tracks by name, artist or text' })
-  @ApiOkResponse({ description: 'List of matching tracks', type: [Track] })
+  @ApiOkResponse({
+    description:
+      'Tracks matching the query for the requested page, plus the total count',
+    type: PaginatedTracksDto,
+  })
   @Get('/search')
-  search(@Query('query', new DefaultValuePipe('')) query: string) {
-    return this.trackService.search(query);
+  search(
+    @Query('query', new DefaultValuePipe('')) query: string,
+    @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+  ) {
+    return this.trackService.search(query, count, offset);
   }
 
   @ApiOperation({

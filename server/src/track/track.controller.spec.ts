@@ -83,10 +83,10 @@ describe('TrackController', () => {
     expect(trackService.getAll).toHaveBeenCalledWith(5, 10);
   });
 
-  it('search() delegates to trackService.search with the query', () => {
-    void controller.search('bohemian');
+  it('search() delegates to trackService.search with the query, count, and offset', () => {
+    void controller.search('bohemian', 5, 10);
 
-    expect(trackService.search).toHaveBeenCalledWith('bohemian');
+    expect(trackService.search).toHaveBeenCalledWith('bohemian', 5, 10);
   });
 
   it('getOne() delegates to trackService.getOne with the given id', () => {

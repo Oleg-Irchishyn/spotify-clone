@@ -118,11 +118,19 @@ export class TrackService {
     }
   }
 
-  async search(query: string): Promise<Track[]> {
+  async search(
+    query: string,
+    count: number = 10,
+    offset: number = 0,
+  ): Promise<{ tracks: Track[]; totalCount: number }> {
     const regex = new RegExp(escapeRegExp(query), 'i');
-    const tracks = await this.trackModel.find({
+    const filter = {
       $or: [{ name: regex }, { artist: regex }, { text: regex }],
-    });
-    return tracks;
+    };
+    const [tracks, totalCount] = await Promise.all([
+      this.trackModel.find(filter).skip(offset).limit(count),
+      this.trackModel.countDocuments(filter),
+    ]);
+    return { tracks, totalCount };
   }
 }
