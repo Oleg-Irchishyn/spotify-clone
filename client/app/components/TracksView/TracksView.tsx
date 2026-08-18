@@ -13,6 +13,7 @@ import styles from '../../styles/TracksView.module.scss';
 const TracksView = () => {
   const {
     tracks,
+    loading,
     handleTrackUpload,
     query,
     handleSearch,
@@ -20,6 +21,7 @@ const TracksView = () => {
     pageCount,
     handlePageChange,
   } = useTracks();
+
   return (
     <div>
       <Grid container spacing={2} className={styles.view_container}>
@@ -35,7 +37,7 @@ const TracksView = () => {
             </Grid>
           </Box>
           <Search query={query} onChange={handleSearch} />
-          <TrackList tracks={tracks} />
+          <TrackList tracks={tracks} loading={loading} />
           <TracksPagination
             page={page}
             pageCount={pageCount}

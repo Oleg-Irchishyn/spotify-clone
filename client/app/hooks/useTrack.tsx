@@ -12,8 +12,14 @@ const useTrack = (track: ITrack) => {
   const { active, pause, currentTime, duration, loop } = useTypedSelector(
     (state) => state.player,
   );
-  const { playTrack, pauseTrack, setActiveTrack, toggleLoop, deleteTrack } =
-    useActions();
+  const {
+    playTrack,
+    pauseTrack,
+    setActiveTrack,
+    toggleLoop,
+    deleteTrack,
+    listenTrack,
+  } = useActions();
 
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -31,6 +37,7 @@ const useTrack = (track: ITrack) => {
     if (!isActive) {
       setActiveTrack(track);
       playTrack();
+      listenTrack(track._id);
       return;
     }
 
@@ -43,6 +50,11 @@ const useTrack = (track: ITrack) => {
 
   const handleToggleLoop = (e: SyntheticEvent) => {
     e.stopPropagation();
+
+    if (!isActive) {
+      return;
+    }
+
     toggleLoop();
   };
 

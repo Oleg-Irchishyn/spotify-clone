@@ -33,5 +33,5 @@ export default async function TrackDetailsPage(
 ) {
   const { id } = await props.params;
 
-  return <TrackDetailsView id={id} />;
+  return <TrackDetailsView id={id} key={id} />;
 }

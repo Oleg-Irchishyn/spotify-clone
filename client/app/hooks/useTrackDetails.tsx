@@ -14,6 +14,7 @@ const useTrackDetails = (trackId: string) => {
   const { showAlert } = useActions();
 
   const [track, setTrack] = useState<ITrack>();
+  const [loading, setLoading] = useState(true);
 
   const username = useInput('');
   const commentText = useInput('');
@@ -37,6 +38,10 @@ const useTrackDetails = (trackId: string) => {
         }
         const message = error instanceof Error ? error.message : 'Server error';
         showAlert(message);
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -77,6 +82,7 @@ const useTrackDetails = (trackId: string) => {
   return {
     handleRedirectToTracks,
     track,
+    loading,
     username,
     commentText,
     handleAddComment,

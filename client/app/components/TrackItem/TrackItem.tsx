@@ -48,7 +48,8 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
         <IconButton
           aria-label="repeat"
           onClick={handleToggleLoop}
-          color={loop ? 'primary' : 'default'}
+          color={isActive && loop ? 'primary' : 'default'}
+          disabled={!isActive}
         >
           <Repeat />
         </IconButton>

@@ -18,14 +18,20 @@ interface ITrack {
 interface TrackState {
   tracks: ITrack[];
   totalCount: number;
+  loading: boolean;
   error: string;
 }
 
 enum TrackActionTypes {
+  FETCH_TRACKS_START = 'FETCH_TRACKS_START',
   FETCH_TRACKS = 'FETCH_TRACKS',
   FETCH_TRACKS_ERROR = 'FETCH_TRACKS_ERROR',
   DELETE_TRACK = 'DELETE_TRACK',
   UPDATE_TRACK = 'UPDATE_TRACK',
+}
+
+interface FetchTracksStartAction {
+  type: TrackActionTypes.FETCH_TRACKS_START;
 }
 
 interface FetchTracksAction {
@@ -49,6 +55,7 @@ interface UpdateTrackAction {
 }
 
 type TrackAction =
+  | FetchTracksStartAction
   | FetchTracksAction
   | FetchTracksErrorAction
   | DeleteTrackAction

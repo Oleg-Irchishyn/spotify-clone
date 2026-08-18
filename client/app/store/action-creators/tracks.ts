@@ -14,6 +14,8 @@ const fetchAndDispatchTracks = (
   url: string,
   params: Record<string, string | number>,
 ) => {
+  dispatch({ type: TrackActionTypes.FETCH_TRACKS_START });
+
   return $api
     .get<PaginatedTracksResponse>(url, { params })
     .then((response) => {
@@ -61,6 +63,16 @@ export const deleteTrack = (id: string) => {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Server error';
       dispatch(showAlert(message));
+    }
+  };
+};
+
+export const listenTrack = (id: string) => {
+  return async () => {
+    try {
+      await $api.post(`/tracks/listen/${id}`);
+    } catch {
+      // Listen tracking is non-critical - ignore failures silently.
     }
   };
 };

@@ -4,6 +4,7 @@ import { Button, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 
 import useTrackDetails from '@/app/hooks/useTrackDetails';
+import Loader from '@/app/components/Loader/Loader';
 import { TrackDetailsViewProps } from '@/app/types/trackDetailsView';
 
 import styles from '../../styles/TrackDetailsView.module.scss';
@@ -11,11 +12,16 @@ import styles from '../../styles/TrackDetailsView.module.scss';
 const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
   const {
     track,
+    loading,
     handleRedirectToTracks,
     username,
     commentText,
     handleAddComment,
   } = useTrackDetails(id);
+
+  if (loading) {
+    return <Loader fullScreen />;
+  }
 
   if (!track) {
     return null;

@@ -3,14 +3,14 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { useActions } from './useActions';
 import { useTypedSelector } from './useTypedSelector';
+import { PAGE_SIZE } from '../constants/pagination';
 import { ROUTES } from '../constants/routes';
 
-const PAGE_SIZE = 4;
 const SEARCH_DEBOUNCE_MS = 500;
 
 const useTracks = () => {
   const router = useRouter();
-  const { tracks, totalCount, error } = useTypedSelector(
+  const { tracks, totalCount, loading, error } = useTypedSelector(
     (state) => state.tracks,
   );
   const { fetchTracks, searchTracks } = useActions();
@@ -55,6 +55,7 @@ const useTracks = () => {
 
   return {
     tracks,
+    loading,
     error,
     handleTrackUpload,
     query,
