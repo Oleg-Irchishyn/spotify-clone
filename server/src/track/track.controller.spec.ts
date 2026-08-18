@@ -77,16 +77,21 @@ describe('TrackController', () => {
     expect(trackService.delete).toHaveBeenCalledWith('id1');
   });
 
-  it('getAll() delegates to trackService.getAll with count and offset', () => {
-    void controller.getAll(5, 10);
+  it('getAll() delegates to trackService.getAll with count, offset, and albumId', () => {
+    void controller.getAll(5, 10, 'album1');
 
-    expect(trackService.getAll).toHaveBeenCalledWith(5, 10);
+    expect(trackService.getAll).toHaveBeenCalledWith(5, 10, 'album1');
   });
 
-  it('search() delegates to trackService.search with the query, count, and offset', () => {
-    void controller.search('bohemian', 5, 10);
+  it('search() delegates to trackService.search with the query, count, offset, and albumId', () => {
+    void controller.search('bohemian', 5, 10, 'album1');
 
-    expect(trackService.search).toHaveBeenCalledWith('bohemian', 5, 10);
+    expect(trackService.search).toHaveBeenCalledWith(
+      'bohemian',
+      5,
+      10,
+      'album1',
+    );
   });
 
   it('getOne() delegates to trackService.getOne with the given id', () => {

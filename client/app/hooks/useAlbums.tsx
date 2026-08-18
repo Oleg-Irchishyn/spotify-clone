@@ -8,16 +8,12 @@ import { ROUTES } from '../constants/routes';
 
 const SEARCH_DEBOUNCE_MS = 500;
 
-const useTracks = () => {
+const useAlbums = () => {
   const router = useRouter();
-  const { tracks, totalCount, loading, error } = useTypedSelector(
-    (state) => state.tracks,
-  );
-  const { activeAlbum, activeAlbumResolved } = useTypedSelector(
+  const { albums, totalCount, loading, error } = useTypedSelector(
     (state) => state.albums,
   );
-  const { fetchTracks, searchTracks, resolveActiveAlbum, setActiveAlbum } =
-    useActions();
+  const { fetchAlbums } = useActions();
 
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -25,39 +21,12 @@ const useTracks = () => {
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (!activeAlbumResolved) {
-      resolveActiveAlbum();
-    }
-  }, [activeAlbumResolved, resolveActiveAlbum]);
-
-  useEffect(() => {
-    if (!activeAlbumResolved) {
-      return;
-    }
-
     const offset = (page - 1) * PAGE_SIZE;
-    const albumId = activeAlbum?._id;
-    if (debouncedQuery) {
-      searchTracks(debouncedQuery, PAGE_SIZE, offset, albumId);
-    } else {
-      fetchTracks(PAGE_SIZE, offset, albumId);
-    }
-  }, [
-    fetchTracks,
-    searchTracks,
-    debouncedQuery,
-    page,
-    activeAlbumResolved,
-    activeAlbum,
-  ]);
+    fetchAlbums(debouncedQuery, PAGE_SIZE, offset);
+  }, [fetchAlbums, debouncedQuery, page]);
 
-  const handleClearActiveAlbum = () => {
-    setActiveAlbum(null);
-    setPage(1);
-  };
-
-  const handleTrackUpload = () => {
-    router.push(ROUTES.TRACK_UPLOAD);
+  const handleAlbumUpload = () => {
+    router.push(ROUTES.ALBUM_UPLOAD);
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,18 +50,16 @@ const useTracks = () => {
   const pageCount = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   return {
-    tracks,
+    albums,
     loading,
     error,
-    handleTrackUpload,
+    handleAlbumUpload,
     query,
     handleSearch,
     page,
     pageCount,
     handlePageChange,
-    activeAlbum,
-    handleClearActiveAlbum,
   };
 };
 
-export default useTracks;
+export default useAlbums;

@@ -47,7 +47,10 @@ export class TrackService {
       throw new NotFoundException(`Track with id ${id} not found`);
     }
 
-    const update: Partial<Track> = { ...dto };
+    const update: Partial<Track> = {
+      ...dto,
+      album: dto.album as unknown as Types.ObjectId | undefined,
+    };
     if (picture) {
       update.picture = this.fileService.createFile(FileType.IMAGE, picture);
     }
@@ -75,10 +78,12 @@ export class TrackService {
   async getAll(
     count: number = 10,
     offset: number = 0,
+    albumId?: string,
   ): Promise<{ tracks: Track[]; totalCount: number }> {
+    const filter = albumId ? { album: albumId } : {};
     const [tracks, totalCount] = await Promise.all([
-      this.trackModel.find().skip(offset).limit(count),
-      this.trackModel.countDocuments(),
+      this.trackModel.find(filter).skip(offset).limit(count),
+      this.trackModel.countDocuments(filter),
     ]);
     return { tracks, totalCount };
   }
@@ -122,10 +127,12 @@ export class TrackService {
     query: string,
     count: number = 10,
     offset: number = 0,
+    albumId?: string,
   ): Promise<{ tracks: Track[]; totalCount: number }> {
     const regex = new RegExp(escapeRegExp(query), 'i');
     const filter = {
       $or: [{ name: regex }, { artist: regex }, { text: regex }],
+      ...(albumId ? { album: albumId } : {}),
     };
     const [tracks, totalCount] = await Promise.all([
       this.trackModel.find(filter).skip(offset).limit(count),

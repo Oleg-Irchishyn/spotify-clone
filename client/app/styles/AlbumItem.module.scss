@@ -1,0 +1,44 @@
+.album {
+  &:global(.MuiCard-root) {
+    margin: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16;
+    cursor: pointer;
+  }
+}
+
+.album_metadata {
+  &:global(.MuiGrid-root) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+.album_name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+  text-align: left;
+  width: 100%;
+}
+
+.album_author {
+  font-size: 12px;
+  line-height: 1.2;
+  color: grey;
+  text-align: left;
+  width: 100%;
+}
+
+.album_actions {
+  &:global(.MuiGrid-root) {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+}

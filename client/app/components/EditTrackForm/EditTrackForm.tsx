@@ -1,13 +1,11 @@
 'use client';
 
-import { Button, Grid, TextField } from '@mui/material';
 import { FC } from 'react';
 
 import useEditTrack from '@/app/hooks/useEditTrack';
-import FileUpload from '@/app/components/FileUpload/FileUpload';
+import EditForm from '@/app/components/EditForm/EditForm';
+import { EditFieldConfig } from '@/app/types/editForm';
 import { EditTrackFormProps } from '@/app/types/editTrackForm';
-
-import styles from '../../styles/EditTrackForm.module.scss';
 
 const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
   track,
@@ -21,47 +19,53 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
     setPicture,
     audio,
     setAudio,
+    albumId,
+    handleAlbumChange,
+    albums,
     handleSubmit,
   } = useEditTrack(track, onClose);
 
-  return (
-    <Grid
-      container
-      component="form"
-      onSubmit={handleSubmit}
-      className={styles.form}
-    >
-      <TextField
-        value={name.value}
-        onChange={name.onChange}
-        label="Track Name"
-      />
-      <TextField
-        value={artist.value}
-        onChange={artist.onChange}
-        label="Track Artist"
-      />
-      <TextField
-        value={text.value}
-        onChange={text.onChange}
-        label="Track Lyrics"
-        multiline
-        rows={3}
-      />
-      <FileUpload file={picture} setFile={setPicture} accept="image/*">
-        <Button component="span">Change Image</Button>
-      </FileUpload>
-      <FileUpload file={audio} setFile={setAudio} accept="audio/*">
-        <Button component="span">Change Audio</Button>
-      </FileUpload>
-      <Grid container className={styles.form_actions}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" variant="contained">
-          Save
-        </Button>
-      </Grid>
-    </Grid>
-  );
+  const fields: EditFieldConfig[] = [
+    { type: 'text', name: 'name', label: 'Track Name', ...name },
+    { type: 'text', name: 'artist', label: 'Track Artist', ...artist },
+    {
+      type: 'text',
+      name: 'text',
+      label: 'Track Lyrics',
+      multiline: true,
+      rows: 3,
+      ...text,
+    },
+    {
+      type: 'select',
+      name: 'album',
+      label: 'Album',
+      value: albumId,
+      onChange: handleAlbumChange,
+      options: [
+        { value: '', label: 'None' },
+        ...albums.map((album) => ({ value: album._id, label: album.name })),
+      ],
+    },
+    {
+      type: 'file',
+      name: 'picture',
+      label: 'Change Image',
+      accept: 'image/*',
+      file: picture,
+      setFile: setPicture,
+    },
+    {
+      type: 'file',
+      name: 'audio',
+      label: 'Change Audio',
+      accept: 'audio/*',
+      file: audio,
+      setFile: setAudio,
+    },
+  ];
+
+  return <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />;
 };
 
 export default EditTrackForm;

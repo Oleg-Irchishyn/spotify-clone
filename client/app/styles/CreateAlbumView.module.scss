@@ -1,0 +1,5 @@
+.actions_row {
+  &:global(.MuiGrid-root) {
+    justify-content: space-between;
+  }
+}

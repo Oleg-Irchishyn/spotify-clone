@@ -1,0 +1,12 @@
+.list_container {
+  &:global(.MuiGrid-root) {
+    direction: column;
+  }
+}
+
+.list_box {
+  &:global(.MuiBox-root) {
+    padding: 16px;
+    width: 100%;
+  }
+}

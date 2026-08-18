@@ -54,6 +54,14 @@ export class Track {
   })
   @Prop({ type: [{ type: ObjectId, ref: 'Comment' }] })
   comments: Types.ObjectId[];
+
+  @ApiProperty({
+    required: false,
+    example: '6a7590b7d7df3f35611c8e7a',
+    description: 'Id of the album this track belongs to, if any',
+  })
+  @Prop({ type: ObjectId, ref: 'Album' })
+  album?: Types.ObjectId;
 }
 
 export const TrackSchema = SchemaFactory.createForClass(Track);

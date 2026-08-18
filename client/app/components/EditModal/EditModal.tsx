@@ -3,26 +3,26 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { FC } from 'react';
 
-import EditTrackForm from '@/app/components/EditTrackForm/EditTrackForm';
-import { EditTrackModalProps } from '@/app/types/editTrackModal';
+import { EditModalProps } from '@/app/types/editModal';
 
-import styles from '../../styles/EditTrackModal.module.scss';
+import styles from '../../styles/EditModal.module.scss';
 
-const EditTrackModal: FC<Readonly<EditTrackModalProps>> = ({
-  track,
+const EditModal: FC<Readonly<EditModalProps>> = ({
+  title,
   isOpen,
   onClose,
+  children,
 }) => {
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box onClick={(e) => e.stopPropagation()} className={styles.modal_box}>
         <Typography variant="h6" className={styles.modal_title}>
-          Edit Track
+          {title}
         </Typography>
-        <EditTrackForm track={track} onClose={onClose} />
+        {children}
       </Box>
     </Modal>
   );
 };
 
-export default EditTrackModal;
+export default EditModal;

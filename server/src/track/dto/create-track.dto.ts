@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
+import { IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateTrackDto {
   @ApiProperty({
@@ -22,4 +22,12 @@ export class CreateTrackDto {
   @IsString({ message: 'Should be in string format' })
   @IsNotEmpty({ message: 'Text cannot be empty' })
   readonly text: string;
+
+  @ApiPropertyOptional({
+    example: '6a7590b7d7df3f35611c8e7a',
+    description: 'Id of the album to assign this track to',
+  })
+  @IsMongoId({ message: 'Album must be a valid id' })
+  @IsOptional()
+  readonly album?: string;
 }

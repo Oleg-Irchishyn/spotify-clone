@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useActions } from './useActions';
+import { useTypedSelector } from './useTypedSelector';
 import useInput from './useInput';
 import FileUpload from '../components/FileUpload/FileUpload';
 import TrackCreationForm from '../components/TrackCreationForm/TrackCreationForm';
@@ -11,15 +12,25 @@ import { ROUTES } from '../constants/routes';
 
 const useCreateTrack = () => {
   const router = useRouter();
-  const { showAlert } = useActions();
+  const { showAlert, fetchAlbums } = useActions();
+  const { albums } = useTypedSelector((state) => state.albums);
 
   const [activeStep, setActiveStep] = useState(0);
   const [picture, setPicture] = useState<File>();
   const [audio, setAudio] = useState<File>();
+  const [albumId, setAlbumId] = useState('');
 
   const name = useInput('');
   const artist = useInput('');
   const text = useInput('');
+
+  useEffect(() => {
+    fetchAlbums('', 100, 0);
+  }, [fetchAlbums]);
+
+  const handleAlbumChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAlbumId(e.target.value);
+  };
 
   const handleCreateTrack = async () => {
     if (!picture || !audio) {
@@ -33,6 +44,9 @@ const useCreateTrack = () => {
     formData.append('text', text.value);
     formData.append('picture', picture);
     formData.append('audio', audio);
+    if (albumId) {
+      formData.append('album', albumId);
+    }
 
     try {
       await $api.post('/tracks', formData);
@@ -59,7 +73,16 @@ const useCreateTrack = () => {
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
-        return <TrackCreationForm name={name} artist={artist} text={text} />;
+        return (
+          <TrackCreationForm
+            name={name}
+            artist={artist}
+            text={text}
+            albumId={albumId}
+            onAlbumChange={handleAlbumChange}
+            albums={albums}
+          />
+        );
 
       case 1:
         return (

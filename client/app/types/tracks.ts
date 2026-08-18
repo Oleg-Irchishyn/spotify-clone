@@ -13,6 +13,7 @@ interface ITrack {
   audio: string;
   picture: string;
   comments: IComment[];
+  album?: string;
 }
 
 interface TrackState {

@@ -5,7 +5,8 @@ import { FC } from 'react';
 
 import useTrack from '@/app/hooks/useTrack';
 import ConfirmDialog from '@/app/components/ConfirmDialog/ConfirmDialog';
-import EditTrackModal from '@/app/components/EditTrackModal/EditTrackModal';
+import EditModal from '@/app/components/EditModal/EditModal';
+import EditTrackForm from '@/app/components/EditTrackForm/EditTrackForm';
 import { formatTime } from '@/app/utils/formatTime';
 import { TrackItemProps } from '@/app/types/trackItem';
 
@@ -67,11 +68,9 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-      <EditTrackModal
-        track={track}
-        isOpen={isEditOpen}
-        onClose={handleEditClose}
-      />
+      <EditModal title="Edit Track" isOpen={isEditOpen} onClose={handleEditClose}>
+        <EditTrackForm track={track} onClose={handleEditClose} />
+      </EditModal>
     </Card>
   );
 };

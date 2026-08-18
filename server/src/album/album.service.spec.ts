@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
+import { Track } from 'src/track/schemas/track.schema';
 
 import { AlbumService } from './album.service';
 import { Album } from './schemas/album.schema';
@@ -16,7 +17,9 @@ describe('AlbumService', () => {
     findById: jest.Mock;
     findByIdAndUpdate: jest.Mock;
     findByIdAndDelete: jest.Mock;
+    countDocuments: jest.Mock;
   };
+  let trackModel: { updateMany: jest.Mock };
   let fileService: { createFile: jest.Mock; removeFile: jest.Mock };
 
   const mockPicture = {
@@ -31,13 +34,16 @@ describe('AlbumService', () => {
       findById: jest.fn(),
       findByIdAndUpdate: jest.fn(),
       findByIdAndDelete: jest.fn(),
+      countDocuments: jest.fn().mockResolvedValue(0),
     };
+    trackModel = { updateMany: jest.fn().mockResolvedValue(undefined) };
     fileService = { createFile: jest.fn(), removeFile: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AlbumService,
         { provide: getModelToken(Album.name), useValue: albumModel },
+        { provide: getModelToken(Track.name), useValue: trackModel },
         { provide: FileService, useValue: fileService },
       ],
     }).compile();
@@ -117,6 +123,20 @@ describe('AlbumService', () => {
     expect(result).toBe('id1');
   });
 
+  it('delete() unlinks tracks that referenced the deleted album', async () => {
+    albumModel.findByIdAndDelete.mockResolvedValue({
+      _id: 'id1',
+      picture: '',
+    });
+
+    await service.delete('id1');
+
+    expect(trackModel.updateMany).toHaveBeenCalledWith(
+      { album: 'id1' },
+      { $unset: { album: 1 } },
+    );
+  });
+
   it('update() throws NotFoundException when the album disappears between the existence check and the update', async () => {
     albumModel.findById.mockResolvedValue({ picture: 'image/old.jpg' });
     albumModel.findByIdAndUpdate.mockResolvedValue(null);
@@ -126,15 +146,16 @@ describe('AlbumService', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('getAll() escapes the query and searches name/author with skip/limit', async () => {
+  it('getAll() escapes the query and searches name/author with skip/limit, returning the total count', async () => {
     const queryMock = {
       skip: jest.fn().mockReturnThis(),
       limit: jest.fn().mockReturnThis(),
-      then: (resolve: (value: unknown) => void) => resolve([]),
+      then: (resolve: (value: unknown) => void) => resolve([{ name: 'A' }]),
     };
     albumModel.find.mockReturnValue(queryMock);
+    albumModel.countDocuments.mockResolvedValue(1);
 
-    await service.getAll('a.b', 5, 10);
+    const result = await service.getAll('a.b', 5, 10);
 
     expect(albumModel.find).toHaveBeenCalledWith({
       $or: [
@@ -144,15 +165,15 @@ describe('AlbumService', () => {
     });
     expect(queryMock.skip).toHaveBeenCalledWith(10);
     expect(queryMock.limit).toHaveBeenCalledWith(5);
+    expect(result).toEqual({ albums: [{ name: 'A' }], totalCount: 1 });
   });
 
-  it('getOne() finds the album by id and populates its tracks', async () => {
-    const populate = jest.fn().mockResolvedValue({ name: 'A' });
-    albumModel.findById.mockReturnValue({ populate });
+  it('getOne() finds the album by id', async () => {
+    albumModel.findById.mockResolvedValue({ name: 'A' });
 
     const result = await service.getOne('id1');
 
-    expect(populate).toHaveBeenCalledWith('tracks');
+    expect(albumModel.findById).toHaveBeenCalledWith('id1');
     expect(result).toEqual({ name: 'A' });
   });
 

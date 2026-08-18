@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 
 import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
+import { Track, TrackDocument } from 'src/track/schemas/track.schema';
 
 import { escapeRegExp } from 'src/common/utils/regex.util';
 import { CreateAlbumDto } from './dto/CreateAlbumDto';
@@ -14,6 +15,8 @@ export class AlbumService {
   constructor(
     @InjectModel(Album.name)
     private readonly albumModel: Model<AlbumDocument>,
+    @InjectModel(Track.name)
+    private readonly trackModel: Model<TrackDocument>,
     private readonly fileService: FileService,
   ) {}
 
@@ -62,19 +65,18 @@ export class AlbumService {
     query: string,
     count: number = 10,
     offset: number = 0,
-  ): Promise<Album[]> {
+  ): Promise<{ albums: Album[]; totalCount: number }> {
     const regex = new RegExp(escapeRegExp(query), 'i');
-    const albums = await this.albumModel
-      .find({
-        $or: [{ name: regex }, { author: regex }],
-      })
-      .skip(offset)
-      .limit(count);
-    return albums;
+    const filter = { $or: [{ name: regex }, { author: regex }] };
+    const [albums, totalCount] = await Promise.all([
+      this.albumModel.find(filter).skip(offset).limit(count),
+      this.albumModel.countDocuments(filter),
+    ]);
+    return { albums, totalCount };
   }
 
   async getOne(id: string): Promise<Album | null> {
-    const album = await this.albumModel.findById(id).populate('tracks');
+    const album = await this.albumModel.findById(id);
     return album;
   }
 
@@ -83,6 +85,10 @@ export class AlbumService {
     if (!album) {
       throw new NotFoundException(`Album with id ${id} not found`);
     }
+    await this.trackModel.updateMany(
+      { album: album._id },
+      { $unset: { album: 1 } },
+    );
     if (album.picture) {
       this.fileService.removeFile(album.picture);
     }

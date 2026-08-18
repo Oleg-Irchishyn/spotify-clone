@@ -202,6 +202,18 @@ describe('TrackService', () => {
     expect(queryMock.limit).toHaveBeenCalledWith(10);
   });
 
+  it('getAll() filters by albumId when provided', async () => {
+    trackModel.find.mockReturnValue(createQueryMock([]));
+    trackModel.countDocuments.mockResolvedValue(0);
+
+    await service.getAll(5, 10, 'album1');
+
+    expect(trackModel.find).toHaveBeenCalledWith({ album: 'album1' });
+    expect(trackModel.countDocuments).toHaveBeenCalledWith({
+      album: 'album1',
+    });
+  });
+
   it('getOne() finds the track by id and populates its comments', async () => {
     trackModel.findById.mockReturnValue(createQueryMock({ name: 'A' }));
 
@@ -261,5 +273,20 @@ describe('TrackService', () => {
     const { $or } = capturedFilter as { $or: { name: RegExp }[] };
     expect($or[0].name.source).toBe('a\\.b\\*');
     expect(result).toEqual({ tracks: [], totalCount: 0 });
+  });
+
+  it('search() combines the query filter with albumId when provided', async () => {
+    let capturedFilter: unknown;
+    trackModel.find.mockImplementation((filter: unknown) => {
+      capturedFilter = filter;
+      return createQueryMock([]);
+    });
+    trackModel.countDocuments.mockResolvedValue(0);
+
+    await service.search('a', 5, 10, 'album1');
+
+    expect(capturedFilter).toEqual(
+      expect.objectContaining({ album: 'album1' }),
+    );
   });
 });

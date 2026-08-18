@@ -37,21 +37,31 @@ const fetchAndDispatchTracks = (
     });
 };
 
-export const fetchTracks = (count: number = 10, offset: number = 0) => {
+export const fetchTracks = (
+  count: number = 10,
+  offset: number = 0,
+  albumId?: string,
+) => {
   return (dispatch: Dispatch<TrackAction | AlertAction>) =>
-    fetchAndDispatchTracks(dispatch, '/tracks', { count, offset });
+    fetchAndDispatchTracks(dispatch, '/tracks', {
+      count,
+      offset,
+      ...(albumId ? { albumId } : {}),
+    });
 };
 
 export const searchTracks = (
   query: string,
   count: number = 10,
   offset: number = 0,
+  albumId?: string,
 ) => {
   return (dispatch: Dispatch<TrackAction | AlertAction>) =>
     fetchAndDispatchTracks(dispatch, '/tracks/search', {
       query,
       count,
       offset,
+      ...(albumId ? { albumId } : {}),
     });
 };
 

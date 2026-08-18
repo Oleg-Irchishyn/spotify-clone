@@ -28,6 +28,7 @@ import { ValidationErrorDto } from 'src/exceptions/dto/validation-error.dto';
 
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/CreateAlbumDto';
+import { PaginatedAlbumsDto } from './dto/paginated-albums.dto';
 import { Album } from './schemas/album.schema';
 
 @ApiTags('Albums (User Albums)')
@@ -39,7 +40,10 @@ export class AlbumController {
     summary:
       'Get a paginated list of albums, optionally filtered by search query',
   })
-  @ApiOkResponse({ description: 'List of albums', type: [Album] })
+  @ApiOkResponse({
+    description: 'Albums for the requested page, plus the total count',
+    type: PaginatedAlbumsDto,
+  })
   @Get()
   getAll(
     @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,
@@ -49,7 +53,7 @@ export class AlbumController {
     return this.albumService.getAll(query, count, offset);
   }
 
-  @ApiOperation({ summary: 'Get a single album by id, with populated tracks' })
+  @ApiOperation({ summary: 'Get a single album by id' })
   @ApiOkResponse({ description: 'Album found', type: Album })
   @ApiResponse({
     status: 404,

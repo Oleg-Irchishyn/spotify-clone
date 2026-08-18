@@ -112,8 +112,9 @@ export class TrackController {
   getAll(
     @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query('albumId') albumId?: string,
   ) {
-    return this.trackService.getAll(count, offset);
+    return this.trackService.getAll(count, offset, albumId);
   }
 
   @ApiOperation({ summary: 'Search tracks by name, artist or text' })
@@ -127,8 +128,9 @@ export class TrackController {
     @Query('query', new DefaultValuePipe('')) query: string,
     @Query('count', new DefaultValuePipe(10), ParseIntPipe) count: number,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query('albumId') albumId?: string,
   ) {
-    return this.trackService.search(query, count, offset);
+    return this.trackService.search(query, count, offset, albumId);
   }
 
   @ApiOperation({
