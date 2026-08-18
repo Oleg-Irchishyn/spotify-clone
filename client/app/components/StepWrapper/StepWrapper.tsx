@@ -4,6 +4,8 @@ import { FC } from 'react';
 import { steps } from '@/app/constants/stepper';
 import { StepWrapperProps } from '@/app/types/stepWrapper';
 
+import styles from '../../styles/StepWrapper.module.scss';
+
 const StepWrapper: FC<Readonly<StepWrapperProps>> = ({
   activeStep,
   children,
@@ -19,11 +21,8 @@ const StepWrapper: FC<Readonly<StepWrapperProps>> = ({
           );
         })}
       </Stepper>
-      <Grid
-        container
-        sx={{ justifyContent: 'center', margin: '70px 0', height: 270 }}
-      >
-        <Card sx={{ width: 600 }}>{children}</Card>
+      <Grid container className={styles.content_wrapper}>
+        <Card className={styles.content_card}>{children}</Card>
       </Grid>
     </Container>
   );

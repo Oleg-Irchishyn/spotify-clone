@@ -21,7 +21,8 @@ import useNavbar from '@/app/hooks/useNavbar';
 
 import AppBar from './AppBar';
 import DrawerHeader from './DrawerHeader';
-import { drawerWidth, menuItems } from '../../constants/navigation';
+import { menuItems } from '../../constants/navigation';
+import styles from '../../styles/Navbar.module.scss';
 
 export default function Navbar() {
   const {
@@ -33,7 +34,7 @@ export default function Navbar() {
   } = useNavbar();
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box className={styles.root}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -42,12 +43,7 @@ export default function Navbar() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={[
-              {
-                mr: 2,
-              },
-              open && { display: 'none' },
-            ]}
+            className={`${styles.menu_button} ${open ? styles.menu_button_hidden : ''}`}
           >
             <MenuIcon />
           </IconButton>
@@ -57,14 +53,7 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
       <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
+        className={styles.drawer}
         variant="persistent"
         anchor="left"
         open={open}

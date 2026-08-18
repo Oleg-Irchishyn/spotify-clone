@@ -24,6 +24,8 @@ interface TrackState {
 enum TrackActionTypes {
   FETCH_TRACKS = 'FETCH_TRACKS',
   FETCH_TRACKS_ERROR = 'FETCH_TRACKS_ERROR',
+  DELETE_TRACK = 'DELETE_TRACK',
+  UPDATE_TRACK = 'UPDATE_TRACK',
 }
 
 interface FetchTracksAction {
@@ -36,7 +38,21 @@ interface FetchTracksErrorAction {
   payload: string;
 }
 
-type TrackAction = FetchTracksAction | FetchTracksErrorAction;
+interface DeleteTrackAction {
+  type: TrackActionTypes.DELETE_TRACK;
+  payload: string;
+}
+
+interface UpdateTrackAction {
+  type: TrackActionTypes.UPDATE_TRACK;
+  payload: ITrack;
+}
+
+type TrackAction =
+  | FetchTracksAction
+  | FetchTracksErrorAction
+  | DeleteTrackAction
+  | UpdateTrackAction;
 
 export {
   type ITrack,

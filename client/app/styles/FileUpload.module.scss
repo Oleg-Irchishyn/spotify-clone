@@ -1,0 +1,5 @@
+.hidden_input {
+  &:global(.MuiFormControl-root) {
+    display: none;
+  }
+}

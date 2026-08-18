@@ -1,15 +1,14 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Grid, InputAdornment, TextField } from '@mui/material';
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 
-interface SearchProps {
-  query: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+import { SearchProps } from '@/app/types/search';
+
+import styles from '../../styles/Search.module.scss';
 
 const Search: FC<Readonly<SearchProps>> = ({ query, onChange }) => {
   return (
-    <Grid sx={{ mx: '36px' }}>
+    <Grid className={styles.search_wrapper}>
       <TextField
         fullWidth
         value={query}

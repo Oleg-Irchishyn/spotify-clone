@@ -12,9 +12,8 @@ import { useTypedSelector } from './useTypedSelector';
 const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { pause, volume, active, duration, currentTime } = useTypedSelector(
-    (state) => state.player,
-  );
+  const { pause, volume, active, duration, currentTime, loop } =
+    useTypedSelector((state) => state.player);
 
   const { pauseTrack, playTrack, setVolume, setCurrentTime, setDuration } =
     useActions();
@@ -54,6 +53,12 @@ const usePlayer = () => {
       audioRef.current.volume = volume / 100;
     }
   }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.loop = loop;
+    }
+  }, [loop]);
 
   useEffect(() => {
     if (!audioRef.current || !active) {

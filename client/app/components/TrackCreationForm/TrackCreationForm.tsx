@@ -3,16 +3,15 @@ import { FC } from 'react';
 
 import { TrackCreationFormProps } from '@/app/types/trackCreationForm';
 
+import styles from '../../styles/TrackCreationForm.module.scss';
+
 const TrackCreationForm: FC<Readonly<TrackCreationFormProps>> = ({
   name,
   artist,
   text,
 }) => {
   return (
-    <Grid
-      container
-      sx={{ flexDirection: 'column', padding: '20px', gap: '10px' }}
-    >
+    <Grid container className={styles.form_container}>
       <TextField
         value={name.value}
         onChange={name.onChange}

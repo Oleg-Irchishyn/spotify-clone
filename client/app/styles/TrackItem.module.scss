@@ -42,8 +42,10 @@
   flex: 1;
 }
 
-.track_delete {
-  &:global(.MuiButtonBase-root) {
+.track_actions {
+  &:global(.MuiGrid-root) {
+    display: flex;
+    align-items: center;
     margin-left: auto;
   }
 }

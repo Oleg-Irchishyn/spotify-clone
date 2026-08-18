@@ -10,6 +10,7 @@ const initialState: PlayerState = {
   active: null,
   volume: 100,
   pause: false,
+  loop: false,
 };
 
 export const playerReducer = (
@@ -29,6 +30,8 @@ export const playerReducer = (
       return { ...state, duration: action.payload };
     case PlayerActionTypes.SET_ACTIVE:
       return { ...state, active: action.payload, duration: 0, currentTime: 0 };
+    case PlayerActionTypes.TOGGLE_LOOP:
+      return { ...state, loop: !state.loop };
 
     default:
       return state;

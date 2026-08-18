@@ -1,0 +1,13 @@
+.content_wrapper {
+  &:global(.MuiGrid-root) {
+    justify-content: center;
+    margin: 70px 0;
+    height: 270px;
+  }
+}
+
+.content_card {
+  &:global(.MuiCard-root) {
+    width: 600px;
+  }
+}

@@ -18,7 +18,7 @@ const TrackProgress: FC<Readonly<TrackProgressProps>> = ({
   const rightLabel = formatAsTime ? formatTime(right) : right;
 
   return (
-    <Grid sx={{ display: 'flex' }}>
+    <Grid className={styles.progress_row}>
       <TextField
         type="range"
         className={styles.track_progress_input}

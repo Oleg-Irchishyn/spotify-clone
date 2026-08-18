@@ -1,0 +1,27 @@
+.root {
+  &:global(.MuiBox-root) {
+    display: flex;
+  }
+}
+
+.menu_button {
+  &:global(.MuiIconButton-root) {
+    margin-right: 16px;
+  }
+}
+
+.menu_button_hidden {
+  &:global(.MuiIconButton-root) {
+    display: none;
+  }
+}
+
+.drawer {
+  width: 240px;
+  flex-shrink: 0;
+
+  :global(.MuiDrawer-paper) {
+    width: 240px;
+    box-sizing: border-box;
+  }
+}

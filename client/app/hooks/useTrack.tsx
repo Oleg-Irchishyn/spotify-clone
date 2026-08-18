@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import { useActions } from './useActions';
 import { useTypedSelector } from './useTypedSelector';
@@ -9,10 +9,14 @@ import { ITrack } from '../types/tracks';
 const useTrack = (track: ITrack) => {
   const router = useRouter();
 
-  const { active, pause, currentTime, duration } = useTypedSelector(
+  const { active, pause, currentTime, duration, loop } = useTypedSelector(
     (state) => state.player,
   );
-  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+  const { playTrack, pauseTrack, setActiveTrack, toggleLoop, deleteTrack } =
+    useActions();
+
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const isActive = active?._id === track._id;
   const isPlaying = isActive && !pause;
@@ -37,6 +41,34 @@ const useTrack = (track: ITrack) => {
     }
   };
 
+  const handleToggleLoop = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    toggleLoop();
+  };
+
+  const handleDeleteClick = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteConfirmOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    deleteTrack(track._id);
+    setIsDeleteConfirmOpen(false);
+  };
+
+  const handleEditOpen = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    setIsEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setIsEditOpen(false);
+  };
+
   return {
     handleTrackDetailsRedirect,
     handlePlay,
@@ -44,6 +76,15 @@ const useTrack = (track: ITrack) => {
     isPlaying,
     currentTime,
     duration,
+    loop,
+    handleToggleLoop,
+    isDeleteConfirmOpen,
+    handleDeleteClick,
+    handleDeleteCancel,
+    handleDeleteConfirm,
+    isEditOpen,
+    handleEditOpen,
+    handleEditClose,
   };
 };
 

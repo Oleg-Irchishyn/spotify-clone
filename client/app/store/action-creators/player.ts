@@ -25,6 +25,10 @@ const setActiveTrack = (payload: ITrack): PlayerAction => ({
   payload,
 });
 
+const toggleLoop = (): PlayerAction => ({
+  type: PlayerActionTypes.TOGGLE_LOOP,
+});
+
 export {
   playTrack,
   pauseTrack,
@@ -32,4 +36,5 @@ export {
   setVolume,
   setCurrentTime,
   setActiveTrack,
+  toggleLoop,
 };

@@ -11,7 +11,12 @@ const GlobalAlert: FC = () => {
   const { hideAlert } = useActions();
 
   return (
-    <Snackbar open={open} autoHideDuration={5000} onClose={hideAlert}>
+    <Snackbar
+      open={open}
+      autoHideDuration={5000}
+      onClose={hideAlert}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
       <Alert onClose={hideAlert} severity={severity} variant="filled">
         {message}
       </Alert>

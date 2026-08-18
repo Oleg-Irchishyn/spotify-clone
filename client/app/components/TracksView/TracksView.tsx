@@ -8,6 +8,8 @@ import Search from '@/app/components/Search/Search';
 import TrackList from '@/app/components/TrackList/TrackList';
 import TracksPagination from '@/app/components/TracksPagination/TracksPagination';
 
+import styles from '../../styles/TracksView.module.scss';
+
 const TracksView = () => {
   const {
     tracks,
@@ -20,11 +22,11 @@ const TracksView = () => {
   } = useTracks();
   return (
     <div>
-      <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-        <Card sx={{ width: 900 }}>
-          <Box sx={{ p: 3 }}>
-            <Grid container sx={{ justifyContent: 'space-between' }}>
-              <Typography sx={{ fontWeight: 'bold' }} variant="h3">
+      <Grid container spacing={2} className={styles.view_container}>
+        <Card className={styles.view_card}>
+          <Box className={styles.header_box}>
+            <Grid container className={styles.header_row}>
+              <Typography className={styles.title} variant="h3">
                 Tracklist
               </Typography>
               <Button onClick={handleTrackUpload} variant="contained">

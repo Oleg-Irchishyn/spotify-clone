@@ -1,0 +1,29 @@
+.view_container {
+  &:global(.MuiGrid-root) {
+    justify-content: center;
+  }
+}
+
+.view_card {
+  &:global(.MuiCard-root) {
+    width: 900px;
+  }
+}
+
+.header_box {
+  &:global(.MuiBox-root) {
+    padding: 24px;
+  }
+}
+
+.header_row {
+  &:global(.MuiGrid-root) {
+    justify-content: space-between;
+  }
+}
+
+.title {
+  &:global(.MuiTypography-root) {
+    font-weight: bold;
+  }
+}

@@ -1,13 +1,11 @@
 'use client';
 
 import { Grid, Pagination } from '@mui/material';
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 
-interface TracksPaginationProps {
-  page: number;
-  pageCount: number;
-  onChange: (event: ChangeEvent<unknown>, value: number) => void;
-}
+import { TracksPaginationProps } from '@/app/types/tracksPagination';
+
+import styles from '../../styles/TracksPagination.module.scss';
 
 const TracksPagination: FC<Readonly<TracksPaginationProps>> = ({
   page,
@@ -15,7 +13,7 @@ const TracksPagination: FC<Readonly<TracksPaginationProps>> = ({
   onChange,
 }) => {
   return (
-    <Grid sx={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+    <Grid className={styles.pagination_wrapper}>
       <Pagination count={pageCount} page={page} onChange={onChange} />
     </Grid>
   );

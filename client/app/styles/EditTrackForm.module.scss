@@ -1,0 +1,13 @@
+.form {
+  &:global(.MuiGrid-root) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.form_actions {
+  &:global(.MuiGrid-root) {
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

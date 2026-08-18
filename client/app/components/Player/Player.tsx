@@ -40,7 +40,7 @@ const Player: FC = () => {
         onChange={handleProgressChange}
         formatAsTime
       />
-      <VolumeUp sx={{ marginLeft: 'auto' }} />
+      <VolumeUp className={styles.volume_icon} />
       <TrackProgress left={volume} right={100} onChange={handleVolumeChange} />
     </div>
   );

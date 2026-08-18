@@ -4,10 +4,9 @@ import { Button, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 
 import useTrackDetails from '@/app/hooks/useTrackDetails';
+import { TrackDetailsViewProps } from '@/app/types/trackDetailsView';
 
-interface TrackDetailsViewProps {
-  id: string;
-}
+import styles from '../../styles/TrackDetailsView.module.scss';
 
 const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
   const {
@@ -28,9 +27,9 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
       <Button size="medium" variant="outlined" onClick={handleRedirectToTracks}>
         Back to Tracks
       </Button>
-      <Grid container sx={{ margin: '20px 0' }}>
+      <Grid container className={styles.track_header}>
         <Image width={200} height={200} src={track.picture} alt={track.name} />
-        <div style={{ marginLeft: '30px' }}>
+        <div className={styles.track_info}>
           <Typography variant="h6">Track name: {track.name}</Typography>
           <Typography variant="h6">Artist: {track.artist}</Typography>
           <Typography variant="h6">

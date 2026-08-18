@@ -8,6 +8,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import Navbar from './components/Navbar/Navbar';
 import Player from './components/Player/Player';
+import styles from './styles/Layout.module.scss';
 import StoreProvider from './store/StoreProvider';
 import theme from './theme';
 import './globals.css';
@@ -41,7 +42,9 @@ export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <Navbar />
-              <Container style={{ margin: '90px auto' }}>{children}</Container>
+              <Container className={styles.content_container}>
+                {children}
+              </Container>
               <Player />
               <GlobalAlert />
             </ThemeProvider>
