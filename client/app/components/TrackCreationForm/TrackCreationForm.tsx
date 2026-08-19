@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@mui/material';
+import { Grid, MenuItem, TextField } from '@mui/material';
 import { FC } from 'react';
 
 import { TrackCreationFormProps } from '@/app/types/trackCreationForm';
@@ -9,6 +9,9 @@ const TrackCreationForm: FC<Readonly<TrackCreationFormProps>> = ({
   name,
   artist,
   text,
+  albumId,
+  onAlbumChange,
+  albums,
 }) => {
   return (
     <Grid container className={styles.form_container}>
@@ -29,6 +32,14 @@ const TrackCreationForm: FC<Readonly<TrackCreationFormProps>> = ({
         multiline
         rows={3}
       />
+      <TextField select value={albumId} onChange={onAlbumChange} label="Album">
+        <MenuItem value="">None</MenuItem>
+        {albums.map((album) => (
+          <MenuItem key={album._id} value={album._id}>
+            {album.name}
+          </MenuItem>
+        ))}
+      </TextField>
     </Grid>
   );
 };

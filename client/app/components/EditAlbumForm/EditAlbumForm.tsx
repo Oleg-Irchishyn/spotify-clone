@@ -4,8 +4,8 @@ import { FC } from 'react';
 
 import useEditAlbum from '@/app/hooks/useEditAlbum';
 import EditForm from '@/app/components/EditForm/EditForm';
-import { EditFieldConfig } from '@/app/types/editForm';
 import { EditAlbumFormProps } from '@/app/types/editAlbumForm';
+import { EditFieldConfig } from '@/app/types/editForm';
 
 const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
   album,
@@ -29,7 +29,9 @@ const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
     },
   ];
 
-  return <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />;
+  return (
+    <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />
+  );
 };
 
 export default EditAlbumForm;

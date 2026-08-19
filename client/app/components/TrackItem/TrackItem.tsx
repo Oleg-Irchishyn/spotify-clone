@@ -68,7 +68,11 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-      <EditModal title="Edit Track" isOpen={isEditOpen} onClose={handleEditClose}>
+      <EditModal
+        title="Edit Track"
+        isOpen={isEditOpen}
+        onClose={handleEditClose}
+      >
         <EditTrackForm track={track} onClose={handleEditClose} />
       </EditModal>
     </Card>

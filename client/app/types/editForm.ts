@@ -34,9 +34,7 @@ interface EditSelectFieldConfig {
 }
 
 type EditFieldConfig =
-  | EditTextFieldConfig
-  | EditFileFieldConfig
-  | EditSelectFieldConfig;
+  EditTextFieldConfig | EditFileFieldConfig | EditSelectFieldConfig;
 
 interface EditFormProps {
   fields: EditFieldConfig[];

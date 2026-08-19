@@ -65,7 +65,9 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
     },
   ];
 
-  return <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />;
+  return (
+    <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />
+  );
 };
 
 export default EditTrackForm;

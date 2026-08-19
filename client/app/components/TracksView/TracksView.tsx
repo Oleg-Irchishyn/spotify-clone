@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Card, Grid } from '@mui/material';
+import { Box, Button, Card, Chip, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import useTracks from '@/app/hooks/useTracks';
@@ -20,6 +20,8 @@ const TracksView = () => {
     page,
     pageCount,
     handlePageChange,
+    activeAlbum,
+    handleClearActiveAlbum,
   } = useTracks();
 
   return (
@@ -35,6 +37,13 @@ const TracksView = () => {
                 Upload
               </Button>
             </Grid>
+            {activeAlbum && (
+              <Chip
+                label={`Album: ${activeAlbum.name}`}
+                onDelete={handleClearActiveAlbum}
+                className={styles.active_album_chip}
+              />
+            )}
           </Box>
           <Search query={query} onChange={handleSearch} />
           <TrackList tracks={tracks} loading={loading} />

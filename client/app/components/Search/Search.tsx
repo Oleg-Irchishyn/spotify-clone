@@ -6,14 +6,18 @@ import { SearchProps } from '@/app/types/search';
 
 import styles from '../../styles/Search.module.scss';
 
-const Search: FC<Readonly<SearchProps>> = ({ query, onChange }) => {
+const Search: FC<Readonly<SearchProps>> = ({
+  query,
+  onChange,
+  placeholder = 'Search Tracks...',
+}) => {
   return (
     <Grid className={styles.search_wrapper}>
       <TextField
         fullWidth
         value={query}
         onChange={onChange}
-        placeholder="Search Tracks..."
+        placeholder={placeholder}
         slotProps={{
           input: {
             startAdornment: (

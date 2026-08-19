@@ -60,9 +60,4 @@ type AlbumAction =
   | UpdateAlbumAction
   | SetActiveAlbumAction;
 
-export {
-  type IAlbum,
-  AlbumActionTypes,
-  type AlbumState,
-  type AlbumAction,
-};
+export { type IAlbum, AlbumActionTypes, type AlbumState, type AlbumAction };

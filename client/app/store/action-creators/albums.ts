@@ -2,9 +2,9 @@ import { Dispatch } from 'redux';
 
 import { resolveAssetUrl } from '@/app/utils/resolveAssetUrl';
 import $api from '@/app/lib/http';
-import type { RootState } from '@/app/store';
-import { AlertAction } from '@/app/types/alert';
 import { AlbumAction, AlbumActionTypes, IAlbum } from '@/app/types/albums';
+import { AlertAction } from '@/app/types/alert';
+import type { RootState } from '@/app/store';
 
 import { showAlert } from './alert';
 
@@ -35,9 +35,11 @@ export const fetchAlbums = (
         });
       })
       .catch((error: unknown) => {
-        const message =
-          error instanceof Error ? error.message : 'Server error';
-        dispatch({ type: AlbumActionTypes.FETCH_ALBUMS_ERROR, payload: message });
+        const message = error instanceof Error ? error.message : 'Server error';
+        dispatch({
+          type: AlbumActionTypes.FETCH_ALBUMS_ERROR,
+          payload: message,
+        });
         dispatch(showAlert(message));
       });
   };
@@ -49,10 +51,7 @@ export const setActiveAlbum = (album: IAlbum | null): AlbumAction => ({
 });
 
 export const resolveActiveAlbum = () => {
-  return async (
-    dispatch: Dispatch<AlbumAction>,
-    getState: () => RootState,
-  ) => {
+  return async (dispatch: Dispatch<AlbumAction>, getState: () => RootState) => {
     if (getState().albums.activeAlbumResolved) {
       return;
     }

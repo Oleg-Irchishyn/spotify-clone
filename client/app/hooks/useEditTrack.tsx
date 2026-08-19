@@ -1,8 +1,8 @@
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 
 import { useActions } from './useActions';
-import { useTypedSelector } from './useTypedSelector';
 import useInput from './useInput';
+import { useTypedSelector } from './useTypedSelector';
 import { ITrack } from '../types/tracks';
 
 const useEditTrack = (track: ITrack, onClose: () => void) => {
