@@ -1,3 +1,5 @@
+@use '../styles/breakpoints' as bp;
+
 .root {
   &:global(.MuiBox-root) {
     display: flex;
@@ -17,14 +19,22 @@
 }
 
 .drawer {
-  width: 240px;
+  width: min(240px, 80vw);
   flex-shrink: 0;
 
-  :global(.MuiDrawer-paper) {
+  @include bp.m {
     width: 240px;
+  }
+
+  :global(.MuiDrawer-paper) {
+    width: min(240px, 80vw);
     box-sizing: border-box;
     background-color: var(--mui-palette-background-paper);
     color: var(--mui-palette-text-primary);
+
+    @include bp.m {
+      width: 240px;
+    }
   }
 
   :global(.MuiListItemButton-root:hover) {
@@ -33,6 +43,19 @@
     :global(.MuiListItemIcon-root),
     :global(.MuiListItemText-root) {
       color: var(--mui-palette-primary-main);
+    }
+  }
+
+  :global(.MuiListItemButton-root.Mui-selected) {
+    background-color: var(--mui-palette-action-selected);
+
+    :global(.MuiListItemIcon-root),
+    :global(.MuiListItemText-root) {
+      color: var(--mui-palette-primary-main);
+    }
+
+    &:global(:hover) {
+      background-color: var(--mui-palette-action-selected);
     }
   }
 

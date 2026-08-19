@@ -28,13 +28,27 @@ const usePlayer = () => {
 
       const handleLoadedMetadata = () => setDuration(audio.duration);
       const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+      const handleDurationChange = () => setDuration(audio.duration);
+      const handleEnded = () => {
+        // audio.duration can be re-estimated during playback (common for
+        // streamed MP3s), so re-read it here instead of trusting the
+        // possibly-stale `duration` already in state - otherwise the
+        // slider's max and the forced end value can mismatch and the
+        // thumb visibly stops just short of the end.
+        setDuration(audio.duration);
+        setCurrentTime(audio.duration);
+      };
 
       audio.addEventListener('loadedmetadata', handleLoadedMetadata);
       audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('durationchange', handleDurationChange);
+      audio.addEventListener('ended', handleEnded);
 
       return () => {
         audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('durationchange', handleDurationChange);
+        audio.removeEventListener('ended', handleEnded);
       };
     },
     [setDuration, setCurrentTime],

@@ -8,6 +8,7 @@
 .form_actions {
   &:global(.MuiGrid-root) {
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 10px;
   }
 }

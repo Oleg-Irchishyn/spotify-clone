@@ -1,36 +1,152 @@
+@use '../styles/breakpoints' as bp;
+
 .player {
-  height: 60px;
+  height: 56px;
   width: 100%;
   position: fixed;
   bottom: 0;
   display: flex;
   align-items: center;
-  padding: 0 50px;
+  gap: 8px;
+  padding: 0 8px;
   background-color: var(--mui-palette-background-paper);
   border-top: 1px solid var(--mui-palette-divider);
-  z-index: 10;
+  // Must stay above MUI's default AppBar (1100) and Drawer (1200) z-index
+  // tiers, otherwise the persistent drawer covers the bottom player bar.
+  z-index: 1250;
+
+  @include bp.s {
+    gap: 12px;
+    padding: 0 16px;
+  }
+
+  @include bp.m {
+    height: 60px;
+    padding: 0 24px;
+  }
+
+  @include bp.l {
+    padding: 0 50px;
+  }
+}
+
+.track_info {
+  &:global(.MuiGrid-root) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 1;
+    flex-grow: 0;
+    min-width: 0;
+    max-width: 28%;
+
+    @include bp.s {
+      max-width: 35%;
+    }
+
+    @include bp.m {
+      max-width: 220px;
+    }
+  }
+}
+
+.main_progress {
+  flex: 1;
+  min-width: 0;
+}
+
+.volume_control {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 64px;
+
+  @include bp.s {
+    width: 100px;
+  }
+
+  @include bp.m {
+    width: 140px;
+  }
 }
 
 .progress_row {
   &:global(.MuiGrid-root) {
     display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
   }
 }
 
 .volume_icon {
   &:global(.MuiSvgIcon-root) {
-    margin-left: auto;
+    margin-right: 4px;
+    flex-shrink: 0;
+    font-size: 18px;
+
+    @include bp.s {
+      margin-right: 8px;
+      font-size: 1.25rem;
+    }
   }
 }
 
 .track_progress_input {
   &:global(.MuiFormControl-root) {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    justify-content: center;
+
     fieldset {
       border: none;
     }
 
+    :global(.MuiOutlinedInput-root) {
+      padding: 0;
+    }
+
     :global(.MuiOutlinedInput-input) {
       padding: 0;
+      height: 16px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+
+      &::-webkit-slider-runnable-track {
+        height: 3px;
+        border-radius: 2px;
+        background: var(--mui-palette-divider);
+      }
+
+      &::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 11px;
+        height: 11px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: var(--mui-palette-primary-main);
+        cursor: pointer;
+      }
+
+      &::-moz-range-track {
+        height: 3px;
+        border-radius: 2px;
+        background: var(--mui-palette-divider);
+      }
+
+      &::-moz-range-thumb {
+        width: 11px;
+        height: 11px;
+        border: none;
+        border-radius: 50%;
+        background: var(--mui-palette-primary-main);
+        cursor: pointer;
+      }
     }
   }
 }
@@ -42,5 +158,22 @@
     align-items: center;
     justify-content: center;
     margin-left: 10px;
+    white-space: nowrap;
+    font-size: 11px;
+
+    @include bp.s {
+      font-size: 13px;
+    }
+  }
+}
+
+// Must come after .track_progress_numbers - same selector specificity, so
+// source order decides the winner, and this needs to override it: the
+// volume slider's own number label ("100/100") only fits from `m` up.
+.volume_control :global(.MuiTypography-root) {
+  display: none;
+
+  @include bp.m {
+    display: inline-flex;
   }
 }

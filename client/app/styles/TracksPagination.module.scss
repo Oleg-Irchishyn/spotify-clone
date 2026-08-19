@@ -1,7 +1,13 @@
+@use '../styles/breakpoints' as bp;
+
 .pagination_wrapper {
   &:global(.MuiGrid-root) {
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 12px;
+
+    @include bp.s {
+      padding: 20px;
+    }
   }
 }

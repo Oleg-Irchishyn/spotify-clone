@@ -12,7 +12,7 @@ const StepWrapper: FC<Readonly<StepWrapperProps>> = ({
 }) => {
   return (
     <Container>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} className={styles.stepper}>
         {steps.map((step, index) => {
           return (
             <Step key={`${step}_${index}`} completed={activeStep > index}>

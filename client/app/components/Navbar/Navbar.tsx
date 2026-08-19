@@ -28,6 +28,7 @@ export default function Navbar() {
     theme,
     open,
     drawerRef,
+    isMenuItemActive,
     handleSelectMenuItem,
     handleDrawerOpen,
     handleDrawerClose,
@@ -73,6 +74,7 @@ export default function Navbar() {
           {menuItems.map(({ text, href, icon: Icon }) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
+                selected={isMenuItemActive(href)}
                 onClick={() => {
                   handleSelectMenuItem(href);
                 }}

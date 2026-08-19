@@ -1,9 +1,10 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { Card, Grid, IconButton } from '@mui/material';
+import { Card, Grid, IconButton, Tooltip } from '@mui/material';
 import Image from 'next/image';
 import { FC } from 'react';
 
 import useAlbumItem from '@/app/hooks/useAlbumItem';
+import useTextOverflow from '@/app/hooks/useTextOverflow';
 import ConfirmDialog from '@/app/components/ConfirmDialog/ConfirmDialog';
 import EditAlbumForm from '@/app/components/EditAlbumForm/EditAlbumForm';
 import EditModal from '@/app/components/EditModal/EditModal';
@@ -22,21 +23,38 @@ const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
     handleEditOpen,
     handleEditClose,
   } = useAlbumItem(album);
+  const { ref: nameRef, isOverflowing: isNameOverflowing } =
+    useTextOverflow<HTMLDivElement>(album.name);
+  const { ref: authorRef, isOverflowing: isAuthorOverflowing } =
+    useTextOverflow<HTMLDivElement>(album.author);
 
   return (
     <Card className={styles.album} onClick={handleAlbumOpen}>
-      <Image
-        width={70}
-        height={70}
-        quality={90}
-        src={album.picture}
-        alt={album.name}
-        className={styles.album_image}
-      />
-      <Grid container className={styles.album_metadata}>
-        <div className={styles.album_name}>{album.name}</div>
-        <div className={styles.album_author}>{album.author}</div>
-      </Grid>
+      <div className={styles.album_main}>
+        <Image
+          width={70}
+          height={70}
+          quality={90}
+          src={album.picture}
+          alt={album.name}
+          className={styles.album_image}
+        />
+        <Grid container className={styles.album_metadata}>
+          <Tooltip title={album.name} disableHoverListener={!isNameOverflowing}>
+            <div ref={nameRef} className={styles.album_name}>
+              {album.name}
+            </div>
+          </Tooltip>
+          <Tooltip
+            title={album.author}
+            disableHoverListener={!isAuthorOverflowing}
+          >
+            <div ref={authorRef} className={styles.album_author}>
+              {album.author}
+            </div>
+          </Tooltip>
+        </Grid>
+      </div>
       <Grid className={styles.album_actions}>
         <IconButton aria-label="edit" onClick={handleEditOpen}>
           <Edit />

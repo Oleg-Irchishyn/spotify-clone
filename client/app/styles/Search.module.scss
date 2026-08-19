@@ -1,5 +1,15 @@
+@use '../styles/breakpoints' as bp;
+
 .search_wrapper {
   &:global(.MuiGrid-root) {
-    margin: 0 36px;
+    margin: 0 12px;
+
+    @include bp.s {
+      margin: 0 20px;
+    }
+
+    @include bp.m {
+      margin: 0 36px;
+    }
   }
 }

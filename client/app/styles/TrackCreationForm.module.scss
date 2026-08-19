@@ -1,8 +1,14 @@
+@use '../styles/breakpoints' as bp;
+
 .form_container {
   &:global(.MuiGrid-root) {
     flex-direction: column;
-    padding: 20px;
+    padding: 16px;
     gap: 10px;
     width: 100%;
+
+    @include bp.s {
+      padding: 20px;
+    }
   }
 }

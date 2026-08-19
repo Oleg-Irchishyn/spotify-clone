@@ -1,6 +1,14 @@
+@use '../styles/breakpoints' as bp;
+
 .back_button {
   &:global(.MuiIconButton-root) {
     color: var(--mui-palette-text-primary);
-    margin-bottom: 16px;
+    margin-bottom: 4px;
+    padding: 6px;
+
+    @include bp.s {
+      margin-bottom: 16px;
+      padding: 8px;
+    }
   }
 }

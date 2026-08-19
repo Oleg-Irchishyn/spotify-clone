@@ -1,3 +1,5 @@
+@use '../styles/breakpoints' as bp;
+
 .view_container {
   &:global(.MuiGrid-root) {
     justify-content: center;
@@ -6,25 +8,42 @@
 
 .view_card {
   &:global(.MuiCard-root) {
-    width: 900px;
+    width: 100%;
+    max-width: 900px;
   }
 }
 
 .header_box {
   &:global(.MuiBox-root) {
-    padding: 24px;
+    padding: 12px;
+
+    @include bp.s {
+      padding: 16px;
+    }
+
+    @include bp.m {
+      padding: 24px;
+    }
   }
 }
 
 .header_row {
   &:global(.MuiGrid-root) {
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 
 .title {
   &:global(.MuiTypography-root) {
     font-weight: bold;
+    font-size: 1.7rem;
+
+    @include bp.m {
+      font-size: 3rem;
+    }
   }
 }
 

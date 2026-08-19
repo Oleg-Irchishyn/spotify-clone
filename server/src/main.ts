@@ -13,10 +13,10 @@ async function start(): Promise<void> {
     });
 
     const config = new DocumentBuilder()
-      .setTitle('Spotify Clone Application')
+      .setTitle('Music Platform Application')
       .setDescription('REST API documentation')
       .setVersion('1.0.0')
-      .addTag('Spotify Clone microservice')
+      .addTag('Music Platform microservice')
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

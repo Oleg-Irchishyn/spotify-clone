@@ -1,28 +1,55 @@
 @use '../styles/variables' as vars;
+@use '../styles/breakpoints' as bp;
 
 .page {
   max-width: 900px;
   margin: 0 auto;
-  padding-bottom: 60px;
+  padding: 0 16px 40px;
+
+  @include bp.m {
+    padding: 0 24px 60px;
+  }
 }
 
 .hero {
   display: flex;
-  align-items: flex-end;
-  gap: 24px;
-  margin-bottom: 40px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  @include bp.m {
+    flex-direction: row;
+    align-items: flex-end;
+    text-align: left;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
 }
 
 .cover {
   border-radius: 12px;
   box-shadow: vars.$shadow-elevated;
   object-fit: cover;
+  width: 160px;
+  height: 160px;
+
+  @include bp.m {
+    width: 240px;
+    height: 240px;
+  }
 }
 
 .hero_info {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
+
+  @include bp.m {
+    align-items: flex-start;
+  }
 }
 
 .eyebrow {
@@ -38,6 +65,11 @@
     font-weight: 800;
     color: var(--mui-palette-text-primary);
     line-height: 1.1;
+    font-size: 1.8rem;
+
+    @include bp.m {
+      font-size: 3rem;
+    }
   }
 }
 
@@ -57,7 +89,11 @@
 }
 
 .section {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+
+  @include bp.m {
+    margin-bottom: 40px;
+  }
 }
 
 .section_title {
@@ -81,9 +117,13 @@
     flex-direction: column;
     gap: 12px;
     background-color: var(--mui-palette-background-paper);
-    padding: 20px;
+    padding: 16px;
     border-radius: 8px;
     margin-bottom: 24px;
+
+    @include bp.m {
+      padding: 20px;
+    }
   }
 }
 
