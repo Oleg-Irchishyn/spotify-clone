@@ -155,7 +155,7 @@ describe('TrackService', () => {
         picture: 'image/new.jpg',
         audio: 'audio/new.mp3',
       }),
-      { new: true },
+      { returnDocument: 'after' },
     );
     expect(result).toEqual({ name: 'Updated' });
   });

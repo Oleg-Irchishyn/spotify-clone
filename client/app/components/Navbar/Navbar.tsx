@@ -2,9 +2,7 @@
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
@@ -28,6 +26,7 @@ export default function Navbar() {
   const {
     theme,
     open,
+    drawerRef,
     handleSelectMenuItem,
     handleDrawerOpen,
     handleDrawerClose,
@@ -53,6 +52,7 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
       <Drawer
+        ref={drawerRef}
         className={styles.drawer}
         variant="persistent"
         anchor="left"
@@ -68,7 +68,7 @@ export default function Navbar() {
           </IconButton>
         </DrawerHeader>
         <List>
-          {menuItems.map(({ text, href }, index) => (
+          {menuItems.map(({ text, href, icon: Icon }) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
                 onClick={() => {
@@ -76,7 +76,7 @@ export default function Navbar() {
                 }}
               >
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <Icon />
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>

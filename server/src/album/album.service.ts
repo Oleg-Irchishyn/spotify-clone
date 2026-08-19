@@ -48,7 +48,7 @@ export class AlbumService {
     }
 
     const updatedAlbum = await this.albumModel.findByIdAndUpdate(id, update, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!updatedAlbum) {
       throw new NotFoundException(`Album with id ${id} not found`);

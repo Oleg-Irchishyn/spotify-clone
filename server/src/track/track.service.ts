@@ -59,7 +59,7 @@ export class TrackService {
     }
 
     const updatedTrack = await this.trackModel.findByIdAndUpdate(id, update, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!updatedTrack) {
       throw new NotFoundException(`Track with id ${id} not found`);

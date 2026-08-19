@@ -99,7 +99,7 @@ describe('AlbumService', () => {
     expect(albumModel.findByIdAndUpdate).toHaveBeenCalledWith(
       'id1',
       expect.objectContaining({ picture: 'image/new.jpg' }),
-      { new: true },
+      { returnDocument: 'after' },
     );
   });
 
