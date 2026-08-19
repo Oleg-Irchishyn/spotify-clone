@@ -12,10 +12,10 @@ export default function Home() {
   return (
     <main>
       <div className="center">
-        <Typography className={styles.heading} variant="h1" component="h1">
+        <Typography className={styles.title} variant="h1" component="h1">
           Welcome!
         </Typography>
-        <Typography className={styles.heading} variant="h3" component="h3">
+        <Typography className={styles.subtitle} variant="h5" component="h2">
           Best tracks are gathered here!
         </Typography>
       </div>

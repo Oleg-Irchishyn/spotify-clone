@@ -1,0 +1,14 @@
+// Brand constants that stay the same across light and dark mode.
+// Anything that must differ between modes (backgrounds, text, surfaces)
+// should reference MUI's reactive CSS variables (var(--mui-palette-...))
+// instead, so it updates automatically when the color scheme is toggled -
+// see app/theme.ts for the light/dark palettes.
+$color-primary: #1db954;
+$color-primary-hover: #1ed760;
+
+$shadow-elevated:
+  0 11px 15px -7px rgba(0, 0, 0, 0.4),
+  0 24px 38px 3px rgba(0, 0, 0, 0.3),
+  0 9px 46px 8px rgba(0, 0, 0, 0.24);
+
+$font-family-base: 'Montserrat', sans-serif;

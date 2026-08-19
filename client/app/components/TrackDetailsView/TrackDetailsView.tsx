@@ -1,23 +1,23 @@
 'use client';
 
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Headphones, Send } from '@mui/icons-material';
+import { Avatar, Button, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 
 import useTrackDetails from '@/app/hooks/useTrackDetails';
+import BackButton from '@/app/components/BackButton/BackButton';
 import Loader from '@/app/components/Loader/Loader';
+import {
+  COMMENT_MAX_LENGTH,
+  USERNAME_MAX_LENGTH,
+} from '@/app/constants/validation';
 import { TrackDetailsViewProps } from '@/app/types/trackDetailsView';
 
 import styles from '../../styles/TrackDetailsView.module.scss';
 
 const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
-  const {
-    track,
-    loading,
-    handleRedirectToTracks,
-    username,
-    commentText,
-    handleAddComment,
-  } = useTrackDetails(id);
+  const { track, loading, username, commentText, handleAddComment } =
+    useTrackDetails(id);
 
   if (loading) {
     return <Loader fullScreen />;
@@ -27,50 +27,95 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
     return null;
   }
 
+  const isCommentValid =
+    username.value.trim().length > 0 && commentText.value.trim().length > 0;
+
   return (
-    <div>
-      Track {id}
-      <Button size="medium" variant="outlined" onClick={handleRedirectToTracks}>
-        Back to Tracks
-      </Button>
-      <Grid container className={styles.track_header}>
-        <Image width={200} height={200} src={track.picture} alt={track.name} />
-        <div className={styles.track_info}>
-          <Typography variant="h6">Track name: {track.name}</Typography>
-          <Typography variant="h6">Artist: {track.artist}</Typography>
-          <Typography variant="h6">
-            Number of listens: {track.listens}
+    <div className={styles.page}>
+      <BackButton />
+
+      <div className={styles.hero}>
+        <Image
+          width={240}
+          height={240}
+          quality={90}
+          src={track.picture}
+          alt={track.name}
+          className={styles.cover}
+        />
+        <div className={styles.hero_info}>
+          <span className={styles.eyebrow}>Track</span>
+          <Typography variant="h3" className={styles.track_name}>
+            {track.name}
           </Typography>
-        </div>
-      </Grid>
-      <Typography variant="h6">TrackLyrics</Typography>
-      <Typography variant="body1">{track.text}</Typography>
-      <Typography variant="h6">Comments</Typography>
-      <Grid container>
-        <TextField
-          value={username.value}
-          onChange={username.onChange}
-          label="Your name"
-          fullWidth
-        />
-        <TextField
-          value={commentText.value}
-          onChange={commentText.onChange}
-          label="Your comment"
-          fullWidth
-          multiline
-          rows={4}
-        />
-        <Button onClick={handleAddComment}>Send</Button>
-      </Grid>
-      <div>
-        {track.comments.map((comment) => (
-          <div key={comment._id}>
-            <div>Author:{comment.username}</div>
-            <div>Comment: {comment.text}</div>
+          <Typography variant="h6" className={styles.track_artist}>
+            {track.artist}
+          </Typography>
+          <div className={styles.listens}>
+            <Headphones fontSize="small" />
+            <span>{track.listens} listens</span>
           </div>
-        ))}
+        </div>
       </div>
+
+      <section className={styles.section}>
+        <Typography variant="h6" className={styles.section_title}>
+          Lyrics
+        </Typography>
+        <Typography variant="body1" className={styles.lyrics}>
+          {track.text}
+        </Typography>
+      </section>
+
+      <section className={styles.section}>
+        <Typography variant="h6" className={styles.section_title}>
+          Comments
+        </Typography>
+
+        <Grid container className={styles.comment_form}>
+          <TextField
+            value={username.value}
+            onChange={username.onChange}
+            label="Your name"
+            helperText={`${username.value.length}/${USERNAME_MAX_LENGTH}`}
+            slotProps={{ htmlInput: { maxLength: USERNAME_MAX_LENGTH } }}
+            fullWidth
+          />
+          <TextField
+            value={commentText.value}
+            onChange={commentText.onChange}
+            label="Your comment"
+            helperText={`${commentText.value.length}/${COMMENT_MAX_LENGTH}`}
+            slotProps={{ htmlInput: { maxLength: COMMENT_MAX_LENGTH } }}
+            fullWidth
+            multiline
+            rows={3}
+          />
+          <Button
+            onClick={handleAddComment}
+            variant="contained"
+            endIcon={<Send />}
+            disabled={!isCommentValid}
+            className={styles.send_button}
+          >
+            Send
+          </Button>
+        </Grid>
+
+        <div className={styles.comment_list}>
+          {track.comments.map((comment) => (
+            <div key={comment._id} className={styles.comment}>
+              <Avatar className={styles.comment_avatar}>
+                {comment.username.charAt(0).toUpperCase()}
+              </Avatar>
+              <div>
+                <div className={styles.comment_author}>{comment.username}</div>
+                <div className={styles.comment_text}>{comment.text}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

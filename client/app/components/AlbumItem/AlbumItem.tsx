@@ -25,7 +25,14 @@ const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
 
   return (
     <Card className={styles.album} onClick={handleAlbumOpen}>
-      <Image width={70} height={70} src={album.picture} alt={album.name} />
+      <Image
+        width={70}
+        height={70}
+        quality={90}
+        src={album.picture}
+        alt={album.name}
+        className={styles.album_image}
+      />
       <Grid container className={styles.album_metadata}>
         <div className={styles.album_name}>{album.name}</div>
         <div className={styles.album_author}>{album.author}</div>

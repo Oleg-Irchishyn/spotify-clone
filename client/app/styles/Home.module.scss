@@ -1,5 +1,15 @@
-.heading {
+.title {
   &:global(.MuiTypography-root) {
-    font-weight: bold;
+    font-weight: 800;
+    color: var(--mui-palette-text-primary);
+    letter-spacing: -0.02em;
+  }
+}
+
+.subtitle {
+  &:global(.MuiTypography-root) {
+    font-weight: 500;
+    color: var(--mui-palette-text-secondary);
+    margin-top: 12px;
   }
 }

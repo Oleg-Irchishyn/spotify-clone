@@ -23,5 +23,21 @@
   :global(.MuiDrawer-paper) {
     width: 240px;
     box-sizing: border-box;
+    background-color: var(--mui-palette-background-paper);
+    color: var(--mui-palette-text-primary);
+  }
+
+  :global(.MuiListItemButton-root:hover) {
+    background-color: var(--mui-palette-action-hover);
+
+    :global(.MuiListItemIcon-root),
+    :global(.MuiListItemText-root) {
+      color: var(--mui-palette-primary-main);
+    }
+  }
+
+  :global(.MuiListItemIcon-root) {
+    color: var(--mui-palette-text-secondary);
+    min-width: 40px;
   }
 }

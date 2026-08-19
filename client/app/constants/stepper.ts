@@ -1,3 +1,4 @@
-const steps = ['Track info', 'Track Cover Upload', 'Track upload'];
+const TRACK_STEPS = ['Track info', 'Track Cover Upload', 'Track upload'];
+const ALBUM_STEPS = ['Album info', 'Album Cover Upload'];
 
-export { steps };
+export { TRACK_STEPS, ALBUM_STEPS };

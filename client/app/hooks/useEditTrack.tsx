@@ -24,6 +24,14 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
     setAlbumId(e.target.value);
   };
 
+  const isDirty =
+    name.value !== track.name ||
+    artist.value !== track.artist ||
+    text.value !== track.text ||
+    albumId !== (track.album ?? '') ||
+    picture !== undefined ||
+    audio !== undefined;
+
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -56,6 +64,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
     albumId,
     handleAlbumChange,
     albums,
+    isDirty,
     handleSubmit,
   };
 };

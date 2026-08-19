@@ -1,9 +1,126 @@
-.track_header {
-  &:global(.MuiGrid-root) {
-    margin: 20px 0;
+@use '../styles/variables' as vars;
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.cover {
+  border-radius: 12px;
+  box-shadow: vars.$shadow-elevated;
+  object-fit: cover;
+}
+
+.hero_info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mui-palette-text-secondary);
+}
+
+.track_name {
+  &:global(.MuiTypography-root) {
+    font-weight: 800;
+    color: var(--mui-palette-text-primary);
+    line-height: 1.1;
   }
 }
 
-.track_info {
-  margin-left: 30px;
+.track_artist {
+  &:global(.MuiTypography-root) {
+    font-weight: 500;
+    color: var(--mui-palette-text-secondary);
+  }
+}
+
+.listens {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--mui-palette-text-secondary);
+  font-size: 14px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section_title {
+  &:global(.MuiTypography-root) {
+    font-weight: 700;
+    color: var(--mui-palette-text-primary);
+    margin-bottom: 16px;
+  }
+}
+
+.lyrics {
+  &:global(.MuiTypography-root) {
+    color: var(--mui-palette-text-secondary);
+    white-space: pre-line;
+    line-height: 1.6;
+  }
+}
+
+.comment_form {
+  &:global(.MuiGrid-root) {
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--mui-palette-background-paper);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+}
+
+.send_button {
+  &:global(.MuiButton-root) {
+    align-self: flex-end;
+  }
+}
+
+.comment_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.comment_avatar {
+  &:global(.MuiAvatar-root) {
+    background-color: var(--mui-palette-primary-main);
+    color: var(--mui-palette-primary-contrastText);
+    font-weight: 700;
+  }
+}
+
+.comment_author {
+  font-weight: 600;
+  color: var(--mui-palette-text-primary);
+  font-size: 14px;
+}
+
+.comment_text {
+  color: var(--mui-palette-text-secondary);
+  font-size: 14px;
+  margin-top: 2px;
 }

@@ -1,9 +1,10 @@
 import { Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 
 import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import Navbar from './components/Navbar/Navbar';
@@ -13,14 +14,10 @@ import StoreProvider from './store/StoreProvider';
 import theme from './theme';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const montserrat = Montserrat({
+  variable: '--font-montserrat',
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
@@ -35,12 +32,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={montserrat.variable} suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <InitColorSchemeScript attribute="data" defaultMode="dark" />
         <StoreProvider>
           <AppRouterCacheProvider options={{ key: 'mui' }}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
+            <ThemeProvider theme={theme} defaultMode="dark">
+              <CssBaseline enableColorScheme />
               <Navbar />
               <Container className={styles.content_container}>
                 {children}

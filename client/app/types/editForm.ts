@@ -8,6 +8,7 @@ interface EditTextFieldConfig {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   multiline?: boolean;
   rows?: number;
+  maxLength?: number;
 }
 
 interface EditFileFieldConfig {
@@ -40,6 +41,7 @@ interface EditFormProps {
   fields: EditFieldConfig[];
   onSubmit: FormEventHandler;
   onCancel: () => void;
+  isSaveDisabled?: boolean;
 }
 
 export {

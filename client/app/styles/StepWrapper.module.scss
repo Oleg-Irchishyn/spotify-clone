@@ -9,5 +9,9 @@
 .content_card {
   &:global(.MuiCard-root) {
     width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }

@@ -1,0 +1,6 @@
+.back_button {
+  &:global(.MuiIconButton-root) {
+    color: var(--mui-palette-text-primary);
+    margin-bottom: 16px;
+  }
+}

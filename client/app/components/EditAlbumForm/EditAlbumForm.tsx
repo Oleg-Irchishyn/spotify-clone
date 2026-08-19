@@ -4,6 +4,10 @@ import { FC } from 'react';
 
 import useEditAlbum from '@/app/hooks/useEditAlbum';
 import EditForm from '@/app/components/EditForm/EditForm';
+import {
+  ALBUM_AUTHOR_MAX_LENGTH,
+  ALBUM_NAME_MAX_LENGTH,
+} from '@/app/constants/validation';
 import { EditAlbumFormProps } from '@/app/types/editAlbumForm';
 import { EditFieldConfig } from '@/app/types/editForm';
 
@@ -11,14 +15,24 @@ const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
   album,
   onClose,
 }) => {
-  const { name, author, picture, setPicture, handleSubmit } = useEditAlbum(
-    album,
-    onClose,
-  );
+  const { name, author, picture, setPicture, isDirty, handleSubmit } =
+    useEditAlbum(album, onClose);
 
   const fields: EditFieldConfig[] = [
-    { type: 'text', name: 'name', label: 'Album Name', ...name },
-    { type: 'text', name: 'author', label: 'Album Author', ...author },
+    {
+      type: 'text',
+      name: 'name',
+      label: 'Album Name',
+      maxLength: ALBUM_NAME_MAX_LENGTH,
+      ...name,
+    },
+    {
+      type: 'text',
+      name: 'author',
+      label: 'Album Author',
+      maxLength: ALBUM_AUTHOR_MAX_LENGTH,
+      ...author,
+    },
     {
       type: 'file',
       name: 'picture',
@@ -30,7 +44,12 @@ const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
   ];
 
   return (
-    <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />
+    <EditForm
+      fields={fields}
+      onSubmit={handleSubmit}
+      onCancel={onClose}
+      isSaveDisabled={!isDirty}
+    />
   );
 };
 

@@ -1,0 +1,12 @@
+.empty_state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.message {
+  &:global(.MuiTypography-root) {
+    color: var(--mui-palette-text-secondary);
+  }
+}

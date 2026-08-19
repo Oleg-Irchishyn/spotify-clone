@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import useNavbar from '@/app/hooks/useNavbar';
+import ThemeToggle from '@/app/components/ThemeToggle/ThemeToggle';
 
 import AppBar from './AppBar';
 import DrawerHeader from './DrawerHeader';
@@ -47,8 +48,9 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Spotify clone music platform
+            Music Platform
           </Typography>
+          <ThemeToggle />
         </Toolbar>
       </AppBar>
       <Drawer

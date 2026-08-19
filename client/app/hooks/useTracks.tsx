@@ -5,8 +5,7 @@ import { useActions } from './useActions';
 import { useTypedSelector } from './useTypedSelector';
 import { PAGE_SIZE } from '../constants/pagination';
 import { ROUTES } from '../constants/routes';
-
-const SEARCH_DEBOUNCE_MS = 500;
+import { SEARCH_DEBOUNCE_MS } from '../constants/search';
 
 const useTracks = () => {
   const router = useRouter();

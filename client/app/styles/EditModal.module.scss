@@ -1,3 +1,5 @@
+@use '../styles/variables' as vars;
+
 .modal_box {
   &:global(.MuiBox-root) {
     position: absolute;
@@ -5,12 +7,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    background-color: var(--mui-palette-background-paper, #fff);
+    background-color: var(--mui-palette-background-paper);
     border-radius: 4px;
-    box-shadow:
-      0 11px 15px -7px rgba(0, 0, 0, 0.2),
-      0 24px 38px 3px rgba(0, 0, 0, 0.14),
-      0 9px 46px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: vars.$shadow-elevated;
     padding: 20px;
   }
 }

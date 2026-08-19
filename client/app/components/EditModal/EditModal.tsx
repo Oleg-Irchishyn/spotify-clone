@@ -14,8 +14,8 @@ const EditModal: FC<Readonly<EditModalProps>> = ({
   children,
 }) => {
   return (
-    <Modal open={isOpen} onClose={onClose}>
-      <Box onClick={(e) => e.stopPropagation()} className={styles.modal_box}>
+    <Modal open={isOpen} onClose={onClose} onClick={(e) => e.stopPropagation()}>
+      <Box className={styles.modal_box}>
         <Typography variant="h6" className={styles.modal_title}>
           {title}
         </Typography>

@@ -1,13 +1,13 @@
 import { Card, Container, Grid, Step, StepLabel, Stepper } from '@mui/material';
 import { FC } from 'react';
 
-import { steps } from '@/app/constants/stepper';
 import { StepWrapperProps } from '@/app/types/stepWrapper';
 
 import styles from '../../styles/StepWrapper.module.scss';
 
 const StepWrapper: FC<Readonly<StepWrapperProps>> = ({
   activeStep,
+  steps,
   children,
 }) => {
   return (

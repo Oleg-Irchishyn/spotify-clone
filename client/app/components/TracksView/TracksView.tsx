@@ -4,6 +4,8 @@ import { Box, Button, Card, Chip, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import useTracks from '@/app/hooks/useTracks';
+import BackButton from '@/app/components/BackButton/BackButton';
+import EmptyState from '@/app/components/EmptyState/EmptyState';
 import Search from '@/app/components/Search/Search';
 import TrackList from '@/app/components/TrackList/TrackList';
 import TracksPagination from '@/app/components/TracksPagination/TracksPagination';
@@ -14,6 +16,7 @@ const TracksView = () => {
   const {
     tracks,
     loading,
+    error,
     handleTrackUpload,
     query,
     handleSearch,
@@ -24,8 +27,11 @@ const TracksView = () => {
     handleClearActiveAlbum,
   } = useTracks();
 
+  const showEmptyState = !loading && (tracks.length === 0 || !!error);
+
   return (
     <div>
+      <BackButton />
       <Grid container spacing={2} className={styles.view_container}>
         <Card className={styles.view_card}>
           <Box className={styles.header_box}>
@@ -33,9 +39,11 @@ const TracksView = () => {
               <Typography className={styles.title} variant="h3">
                 Tracklist
               </Typography>
-              <Button onClick={handleTrackUpload} variant="contained">
-                Upload
-              </Button>
+              {!showEmptyState && (
+                <Button onClick={handleTrackUpload} variant="contained">
+                  Upload
+                </Button>
+              )}
             </Grid>
             {activeAlbum && (
               <Chip
@@ -45,13 +53,19 @@ const TracksView = () => {
               />
             )}
           </Box>
-          <Search query={query} onChange={handleSearch} />
-          <TrackList tracks={tracks} loading={loading} />
-          <TracksPagination
-            page={page}
-            pageCount={pageCount}
-            onChange={handlePageChange}
-          />
+          {showEmptyState ? (
+            <EmptyState message="No tracks found." />
+          ) : (
+            <>
+              <Search query={query} onChange={handleSearch} />
+              <TrackList tracks={tracks} loading={loading} />
+              <TracksPagination
+                page={page}
+                pageCount={pageCount}
+                onChange={handlePageChange}
+              />
+            </>
+          )}
         </Card>
       </Grid>
     </div>

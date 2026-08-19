@@ -35,7 +35,14 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
       <IconButton onClick={handlePlay}>
         {isPlaying ? <Pause /> : <PlayArrow />}
       </IconButton>
-      <Image width={70} height={70} src={track.picture} alt={track.name} />
+      <Image
+        width={70}
+        height={70}
+        quality={90}
+        src={track.picture}
+        alt={track.name}
+        className={styles.track_image}
+      />
       <Grid container className={styles.track_metadata}>
         <div className={styles.track_name}>{track.name}</div>
         <div className={styles.track_artist}>{track.artist}</div>

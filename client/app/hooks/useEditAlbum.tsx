@@ -11,6 +11,11 @@ const useEditAlbum = (album: IAlbum, onClose: () => void) => {
   const author = useInput(album.author);
   const [picture, setPicture] = useState<File>();
 
+  const isDirty =
+    name.value !== album.name ||
+    author.value !== album.author ||
+    picture !== undefined;
+
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -30,6 +35,7 @@ const useEditAlbum = (album: IAlbum, onClose: () => void) => {
     author,
     picture,
     setPicture,
+    isDirty,
     handleSubmit,
   };
 };

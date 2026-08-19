@@ -19,10 +19,15 @@
   }
 }
 
+.album_image {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 .album_name {
   font-weight: bold;
   font-size: 14px;
-  color: #000;
+  color: var(--mui-palette-text-primary);
   text-align: left;
   width: 100%;
 }
@@ -30,7 +35,7 @@
 .album_author {
   font-size: 12px;
   line-height: 1.2;
-  color: grey;
+  color: var(--mui-palette-text-secondary);
   text-align: left;
   width: 100%;
 }

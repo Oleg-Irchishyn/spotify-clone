@@ -4,6 +4,11 @@ import { FC } from 'react';
 
 import useEditTrack from '@/app/hooks/useEditTrack';
 import EditForm from '@/app/components/EditForm/EditForm';
+import {
+  TRACK_ARTIST_MAX_LENGTH,
+  TRACK_LYRICS_MAX_LENGTH,
+  TRACK_NAME_MAX_LENGTH,
+} from '@/app/constants/validation';
 import { EditFieldConfig } from '@/app/types/editForm';
 import { EditTrackFormProps } from '@/app/types/editTrackForm';
 
@@ -22,18 +27,32 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
     albumId,
     handleAlbumChange,
     albums,
+    isDirty,
     handleSubmit,
   } = useEditTrack(track, onClose);
 
   const fields: EditFieldConfig[] = [
-    { type: 'text', name: 'name', label: 'Track Name', ...name },
-    { type: 'text', name: 'artist', label: 'Track Artist', ...artist },
+    {
+      type: 'text',
+      name: 'name',
+      label: 'Track Name',
+      maxLength: TRACK_NAME_MAX_LENGTH,
+      ...name,
+    },
+    {
+      type: 'text',
+      name: 'artist',
+      label: 'Track Artist',
+      maxLength: TRACK_ARTIST_MAX_LENGTH,
+      ...artist,
+    },
     {
       type: 'text',
       name: 'text',
       label: 'Track Lyrics',
       multiline: true,
       rows: 3,
+      maxLength: TRACK_LYRICS_MAX_LENGTH,
       ...text,
     },
     {
@@ -66,7 +85,12 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
   ];
 
   return (
-    <EditForm fields={fields} onSubmit={handleSubmit} onCancel={onClose} />
+    <EditForm
+      fields={fields}
+      onSubmit={handleSubmit}
+      onCancel={onClose}
+      isSaveDisabled={!isDirty}
+    />
   );
 };
 
