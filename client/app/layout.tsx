@@ -1,4 +1,3 @@
-import { Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { ThemeProvider } from '@mui/material/styles';
@@ -6,10 +5,10 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 
+import ContentArea from './components/ContentArea/ContentArea';
 import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import Navbar from './components/Navbar/Navbar';
 import Player from './components/Player/Player';
-import styles from './styles/Layout.module.scss';
 import StoreProvider from './store/StoreProvider';
 import theme from './theme';
 import './globals.css';
@@ -40,9 +39,7 @@ export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {
             <ThemeProvider theme={theme} defaultMode="dark">
               <CssBaseline enableColorScheme />
               <Navbar />
-              <Container className={styles.content_container}>
-                {children}
-              </Container>
+              <ContentArea>{children}</ContentArea>
               <Player />
               <GlobalAlert />
             </ThemeProvider>

@@ -13,3 +13,17 @@
     }
   }
 }
+
+// Applied together with .content_container whenever the fixed Player bar is
+// showing, so its last content (e.g. pagination) never ends up hidden behind
+// it. Only overridden below `m` - from `m` up the base bottom margin (90px)
+// already clears the player's height (60px) with room to spare.
+.content_container_with_player {
+  &:global(.MuiContainer-root) {
+    margin-bottom: 68px;
+
+    @include bp.s {
+      margin-bottom: 80px;
+    }
+  }
+}

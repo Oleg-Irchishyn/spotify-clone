@@ -6,6 +6,10 @@ jest.mock('../components/Navbar/Navbar', () => ({
   __esModule: true,
   default: () => <div data-testid="navbar" />,
 }));
+jest.mock('../components/ContentArea/ContentArea', () => ({
+  __esModule: true,
+  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
 jest.mock('../components/Player/Player', () => ({
   __esModule: true,
   default: () => <div data-testid="player" />,
