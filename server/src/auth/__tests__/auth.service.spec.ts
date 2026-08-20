@@ -85,7 +85,10 @@ describe('AuthService', () => {
         name: 'A',
         isActivated: true,
       });
-      expect(result).toEqual({ token: 'signed-token' });
+      expect(result).toEqual({
+        token: 'signed-token',
+        user: { email: 'a@test.com', name: 'A', isActivated: true },
+      });
     });
   });
 
@@ -135,7 +138,21 @@ describe('AuthService', () => {
         name: 'A',
         isActivated: true,
       });
-      expect(result).toEqual({ token: 'signed-token' });
+      expect(result).toEqual({
+        token: 'signed-token',
+        user: { email: 'a@test.com', name: 'A', isActivated: true },
+      });
+    });
+  });
+
+  describe('logout()', () => {
+    it('deactivates the user by email', async () => {
+      await service.logout('a@test.com');
+
+      expect(usersService.setActivated).toHaveBeenCalledWith(
+        'a@test.com',
+        false,
+      );
     });
   });
 });

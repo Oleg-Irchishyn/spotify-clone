@@ -25,15 +25,9 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>();
-    const authHeader = req.headers.authorization;
+    const token = this.extractToken(req);
 
-    if (!authHeader) {
-      throw new UnauthorizedException({ message: 'User is not authorized' });
-    }
-
-    const [bearer, token] = authHeader.split(' ');
-
-    if (bearer !== 'Bearer' || !token) {
+    if (!token) {
       throw new UnauthorizedException({ message: 'User is not authorized' });
     }
 
@@ -49,5 +43,24 @@ export class JwtAuthGuard implements CanActivate {
       }
       throw new UnauthorizedException({ message: 'User is not authorized' });
     }
+  }
+
+  private extractToken(req: Request): string | undefined {
+    const cookieToken = (req.cookies as Record<string, string> | undefined)
+      ?.token;
+
+    if (cookieToken) {
+      return cookieToken;
+    }
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return undefined;
+    }
+
+    const [bearer, headerToken] = authHeader.split(' ');
+
+    return bearer === 'Bearer' && headerToken ? headerToken : undefined;
   }
 }

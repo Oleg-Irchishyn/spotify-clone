@@ -13,8 +13,9 @@ describe('JwtAuthGuard', () => {
 
   const buildContext = (
     headers: Record<string, string> = {},
+    cookies: Record<string, string> = {},
   ): { context: ExecutionContext; req: Record<string, unknown> } => {
-    const req: Record<string, unknown> = { headers };
+    const req: Record<string, unknown> = { headers, cookies };
     const context = {
       switchToHttp: () => ({ getRequest: () => req }),
     } as unknown as ExecutionContext;
@@ -77,6 +78,34 @@ describe('JwtAuthGuard', () => {
 
     expect(result).toBe(true);
     expect(req.user).toEqual(payload);
+  });
+
+  it('reads the token from an httpOnly cookie when no Authorization header is present', async () => {
+    const payload = {
+      id: 'id1',
+      email: 'a@test.com',
+      name: 'A',
+      isActivated: true,
+    };
+    jwtService.verify.mockReturnValue(payload);
+    const { context } = buildContext({}, { token: 'cookie-token' });
+
+    const result = await guard.canActivate(context);
+
+    expect(result).toBe(true);
+    expect(jwtService.verify).toHaveBeenCalledWith('cookie-token');
+  });
+
+  it('prefers the cookie over the Authorization header when both are present', async () => {
+    jwtService.verify.mockReturnValue({ email: 'a@test.com' });
+    const { context } = buildContext(
+      { authorization: 'Bearer header-token' },
+      { token: 'cookie-token' },
+    );
+
+    await guard.canActivate(context);
+
+    expect(jwtService.verify).toHaveBeenCalledWith('cookie-token');
   });
 
   it('throws UnauthorizedException without deactivating the user when the token is simply invalid', async () => {

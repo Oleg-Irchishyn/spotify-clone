@@ -54,7 +54,14 @@ export class AuthService {
       isActivated: true,
     };
 
-    return { token: this.jwtService.sign(payload) };
+    return {
+      token: this.jwtService.sign(payload),
+      user: { email: user.email, name: user.name, isActivated: true },
+    };
+  }
+
+  async logout(email: string): Promise<void> {
+    await this.usersService.setActivated(email, false);
   }
 
   private async validateUser(dto: LoginUserDto): Promise<UsersDocument> {

@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { ValidationPipe } from './pipes/validation.pipe';
@@ -7,6 +8,7 @@ import { ValidationPipe } from './pipes/validation.pipe';
 async function start(): Promise<void> {
   try {
     const app = await NestFactory.create(AppModule);
+    app.use(cookieParser());
     app.enableCors({
       origin: process.env.CLIENT_URL,
       credentials: true,

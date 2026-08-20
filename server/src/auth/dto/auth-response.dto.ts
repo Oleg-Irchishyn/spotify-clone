@@ -1,10 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export class AuthUserDto {
+  @ApiProperty({ example: 'test@test.com', description: 'Email' })
+  readonly email: string;
+
+  @ApiProperty({ example: 'John Doe', description: 'Name' })
+  readonly name: string;
+
+  @ApiProperty({
+    example: true,
+    description:
+      'Whether the access token (set as an httpOnly cookie) is currently valid',
+  })
+  readonly isActivated: boolean;
+}
+
 export class AuthResponseDto {
   @ApiProperty({
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlt7ImlkIjoxLCJ2YWx1ZSI6IkFETUlOIn1dfQ...',
-    description: `Generated JWT access token (Bearer), that consists if User's ID and email`,
+    type: AuthUserDto,
+    description:
+      'The logged in / registered user. The access token itself is set as an httpOnly cookie and is not exposed in the response body.',
   })
-  readonly token: string;
+  readonly user: AuthUserDto;
 }
