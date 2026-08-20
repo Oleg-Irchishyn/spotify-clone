@@ -33,6 +33,8 @@ const baseHook = {
   handleProgressChange: jest.fn(),
   volume: 80,
   handleVolumeChange: jest.fn(),
+  muted: false,
+  handleToggleMute: jest.fn(),
 };
 
 beforeAll(() => {
@@ -103,5 +105,39 @@ describe('Player', () => {
 
     expect(progressSlider).toHaveAttribute('step', 'any');
     expect(volumeSlider).toHaveAttribute('step', '1');
+  });
+
+  it('shows the volume icon and raw volume label when unmuted', () => {
+    render(<Player />);
+
+    expect(screen.getByTestId('VolumeUpIcon')).toBeInTheDocument();
+    expect(screen.getByText('80 / 100')).toBeInTheDocument();
+  });
+
+  it('shows the muted icon and a zeroed volume label when muted', () => {
+    mockedUsePlayer.mockReturnValue({ ...baseHook, muted: true });
+
+    render(<Player />);
+
+    expect(screen.getByTestId('VolumeOffIcon')).toBeInTheDocument();
+    expect(screen.getByText('0 / 100')).toBeInTheDocument();
+  });
+
+  it('calls handleToggleMute when the volume icon is clicked', async () => {
+    const handleToggleMute = jest.fn();
+    mockedUsePlayer.mockReturnValue({ ...baseHook, handleToggleMute });
+
+    render(<Player />);
+    await userEvent.click(screen.getByRole('button', { name: 'Mute' }));
+
+    expect(handleToggleMute).toHaveBeenCalled();
+  });
+
+  it('labels the volume button "Unmute" while muted', () => {
+    mockedUsePlayer.mockReturnValue({ ...baseHook, muted: true });
+
+    render(<Player />);
+
+    expect(screen.getByRole('button', { name: 'Unmute' })).toBeInTheDocument();
   });
 });

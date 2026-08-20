@@ -29,6 +29,10 @@ const toggleLoop = (): PlayerAction => ({
   type: PlayerActionTypes.TOGGLE_LOOP,
 });
 
+const toggleMute = (): PlayerAction => ({
+  type: PlayerActionTypes.TOGGLE_MUTE,
+});
+
 export {
   playTrack,
   pauseTrack,
@@ -37,4 +41,5 @@ export {
   setCurrentTime,
   setActiveTrack,
   toggleLoop,
+  toggleMute,
 };

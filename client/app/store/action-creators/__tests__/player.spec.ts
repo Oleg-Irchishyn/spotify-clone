@@ -9,6 +9,7 @@ import {
   setDuration,
   setVolume,
   toggleLoop,
+  toggleMute,
 } from '../player';
 
 describe('player action creators', () => {
@@ -61,5 +62,9 @@ describe('player action creators', () => {
 
   it('toggleLoop() returns a TOGGLE_LOOP action', () => {
     expect(toggleLoop()).toEqual({ type: PlayerActionTypes.TOGGLE_LOOP });
+  });
+
+  it('toggleMute() returns a TOGGLE_MUTE action', () => {
+    expect(toggleMute()).toEqual({ type: PlayerActionTypes.TOGGLE_MUTE });
   });
 });

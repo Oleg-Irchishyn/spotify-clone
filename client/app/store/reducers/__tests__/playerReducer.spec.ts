@@ -25,6 +25,7 @@ describe('playerReducer', () => {
       volume: 100,
       pause: false,
       loop: false,
+      muted: false,
     });
   });
 
@@ -101,5 +102,19 @@ describe('playerReducer', () => {
       type: PlayerActionTypes.TOGGLE_LOOP,
     });
     expect(toggledOff.loop).toBe(false);
+  });
+
+  it('TOGGLE_MUTE flips the muted flag', () => {
+    const initial = playerReducer(undefined, { type: '@@INIT' } as never);
+
+    const toggledOn = playerReducer(initial, {
+      type: PlayerActionTypes.TOGGLE_MUTE,
+    });
+    expect(toggledOn.muted).toBe(true);
+
+    const toggledOff = playerReducer(toggledOn, {
+      type: PlayerActionTypes.TOGGLE_MUTE,
+    });
+    expect(toggledOff.muted).toBe(false);
   });
 });

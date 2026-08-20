@@ -80,14 +80,24 @@
   }
 }
 
+.volume_toggle {
+  &:global(.MuiIconButton-root) {
+    flex-shrink: 0;
+    padding: 4px;
+    margin-right: 0;
+
+    @include bp.s {
+      margin-right: 4px;
+    }
+  }
+}
+
 .volume_icon {
   &:global(.MuiSvgIcon-root) {
-    margin-right: 4px;
     flex-shrink: 0;
     font-size: 18px;
 
     @include bp.s {
-      margin-right: 8px;
       font-size: 1.25rem;
     }
   }

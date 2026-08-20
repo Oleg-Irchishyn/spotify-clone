@@ -7,6 +7,7 @@ interface PlayerState {
   currentTime: number;
   pause: boolean;
   loop: boolean;
+  muted: boolean;
 }
 
 enum PlayerActionTypes {
@@ -17,6 +18,7 @@ enum PlayerActionTypes {
   SET_CURRENT_TIME = 'SET_CURRENT_TIME',
   SET_VOLUME = 'SET_VOLUME',
   TOGGLE_LOOP = 'TOGGLE_LOOP',
+  TOGGLE_MUTE = 'TOGGLE_MUTE',
 }
 
 interface PlayAction {
@@ -51,6 +53,10 @@ interface ToggleLoopAction {
   type: PlayerActionTypes.TOGGLE_LOOP;
 }
 
+interface ToggleMuteAction {
+  type: PlayerActionTypes.TOGGLE_MUTE;
+}
+
 type PlayerAction =
   | PlayAction
   | PauseAction
@@ -58,6 +64,7 @@ type PlayerAction =
   | SetDurationAction
   | SetVolumeAction
   | SetCurrentTimeAction
-  | ToggleLoopAction;
+  | ToggleLoopAction
+  | ToggleMuteAction;
 
 export { type PlayerState, PlayerActionTypes, type PlayerAction };

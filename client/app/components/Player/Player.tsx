@@ -1,6 +1,6 @@
 'use client';
 
-import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
+import { Pause, PlayArrow, VolumeOff, VolumeUp } from '@mui/icons-material';
 import { Grid, IconButton, Tooltip } from '@mui/material';
 import { FC } from 'react';
 
@@ -21,6 +21,8 @@ const Player: FC = () => {
     handleProgressChange,
     volume,
     handleVolumeChange,
+    muted,
+    handleToggleMute,
   } = usePlayer();
   const { ref: nameRef, isOverflowing: isNameOverflowing } =
     useTextOverflow<HTMLDivElement>(active?.name ?? '');
@@ -59,9 +61,20 @@ const Player: FC = () => {
         />
       </div>
       <div className={styles.volume_control}>
-        <VolumeUp className={styles.volume_icon} />
+        <IconButton
+          onClick={handleToggleMute}
+          className={styles.volume_toggle}
+          size="small"
+          aria-label={muted ? 'Unmute' : 'Mute'}
+        >
+          {muted ? (
+            <VolumeOff className={styles.volume_icon} />
+          ) : (
+            <VolumeUp className={styles.volume_icon} />
+          )}
+        </IconButton>
         <TrackProgress
-          left={volume}
+          left={muted ? 0 : volume}
           right={100}
           onChange={handleVolumeChange}
           step={1}

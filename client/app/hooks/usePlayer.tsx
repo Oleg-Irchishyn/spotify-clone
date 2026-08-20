@@ -12,11 +12,17 @@ import { useTypedSelector } from './useTypedSelector';
 const usePlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { pause, volume, active, duration, currentTime, loop } =
+  const { pause, volume, active, duration, currentTime, loop, muted } =
     useTypedSelector((state) => state.player);
 
-  const { pauseTrack, playTrack, setVolume, setCurrentTime, setDuration } =
-    useActions();
+  const {
+    pauseTrack,
+    playTrack,
+    setVolume,
+    setCurrentTime,
+    setDuration,
+    toggleMute,
+  } = useActions();
 
   const setAudio = useCallback(
     (src: string) => {
@@ -64,9 +70,9 @@ const usePlayer = () => {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume / 100;
+      audioRef.current.volume = muted ? 0 : volume / 100;
     }
-  }, [volume]);
+  }, [volume, muted]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -105,6 +111,13 @@ const usePlayer = () => {
 
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setVolume(Number(event.target.value));
+    if (muted) {
+      toggleMute();
+    }
+  };
+
+  const handleToggleMute = () => {
+    toggleMute();
   };
 
   return {
@@ -116,6 +129,8 @@ const usePlayer = () => {
     handleProgressChange,
     volume,
     handleVolumeChange,
+    muted,
+    handleToggleMute,
   };
 };
 

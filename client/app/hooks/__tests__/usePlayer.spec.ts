@@ -20,6 +20,7 @@ describe('usePlayer', () => {
   const setVolume = jest.fn();
   const setCurrentTime = jest.fn();
   const setDuration = jest.fn();
+  const toggleMute = jest.fn();
   let playerState: {
     pause: boolean;
     volume: number;
@@ -27,6 +28,7 @@ describe('usePlayer', () => {
     duration: number;
     currentTime: number;
     loop: boolean;
+    muted: boolean;
   };
 
   beforeEach(() => {
@@ -38,6 +40,7 @@ describe('usePlayer', () => {
       duration: 0,
       currentTime: 0,
       loop: false,
+      muted: false,
     };
     mockedUseActions.mockReturnValue({
       pauseTrack,
@@ -45,6 +48,7 @@ describe('usePlayer', () => {
       setVolume,
       setCurrentTime,
       setDuration,
+      toggleMute,
     });
     mockedUseTypedSelector.mockImplementation((selector) =>
       selector({ player: playerState }),
@@ -95,6 +99,29 @@ describe('usePlayer', () => {
     });
 
     expect(setVolume).toHaveBeenCalledWith(50);
+    expect(toggleMute).not.toHaveBeenCalled();
+  });
+
+  it('handleVolumeChange also unmutes when currently muted', () => {
+    playerState.muted = true;
+    const { result } = renderHook(() => usePlayer());
+
+    act(() => {
+      result.current.handleVolumeChange({ target: { value: '50' } } as never);
+    });
+
+    expect(setVolume).toHaveBeenCalledWith(50);
+    expect(toggleMute).toHaveBeenCalled();
+  });
+
+  it('handleToggleMute calls toggleMute', () => {
+    const { result } = renderHook(() => usePlayer());
+
+    act(() => {
+      result.current.handleToggleMute();
+    });
+
+    expect(toggleMute).toHaveBeenCalled();
   });
 
   class FakeAudio extends EventTarget {
@@ -180,6 +207,21 @@ describe('usePlayer', () => {
 
     expect(instances[0].volume).toBeCloseTo(0.4);
     expect(instances[0].loop).toBe(true);
+
+    AudioSpy.mockRestore();
+  });
+
+  it('silences the audio element while muted, regardless of the volume value', () => {
+    const { AudioSpy, instances } = spyOnAudio();
+    playerState.active = { _id: 'id1', audio: 'track.mp3' };
+    const { rerender } = renderHook(() => usePlayer());
+    rerender();
+
+    playerState.volume = 80;
+    playerState.muted = true;
+    rerender();
+
+    expect(instances[0].volume).toBe(0);
 
     AudioSpy.mockRestore();
   });
