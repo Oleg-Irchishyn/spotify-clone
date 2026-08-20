@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { UsersController } from '../users.controller';
@@ -5,7 +6,11 @@ import { UsersService } from '../users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  let usersService: { createUser: jest.Mock; getAllUsers: jest.Mock };
+  let usersService: {
+    createUser: jest.Mock;
+    getAllUsers: jest.Mock;
+    setActivated: jest.Mock;
+  };
 
   const dto = { email: 'a@test.com', name: 'A', password: '12345' };
 
@@ -13,11 +18,15 @@ describe('UsersController', () => {
     usersService = {
       createUser: jest.fn(),
       getAllUsers: jest.fn(),
+      setActivated: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [{ provide: UsersService, useValue: usersService }],
+      providers: [
+        { provide: UsersService, useValue: usersService },
+        { provide: JwtService, useValue: { verify: jest.fn() } },
+      ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
