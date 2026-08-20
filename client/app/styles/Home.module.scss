@@ -29,3 +29,11 @@
     }
   }
 }
+
+.auth_banner {
+  &:global(.MuiTypography-root) {
+    color: var(--mui-palette-text-secondary);
+    margin-top: 24px;
+    max-width: 480px;
+  }
+}

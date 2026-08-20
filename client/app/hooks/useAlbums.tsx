@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { useActions } from './useActions';
+import useAuth from './useAuth';
 import { useTypedSelector } from './useTypedSelector';
 import { PAGE_SIZE } from '../constants/pagination';
 import { ROUTES } from '../constants/routes';
@@ -9,6 +10,7 @@ import { SEARCH_DEBOUNCE_MS } from '../constants/search';
 
 const useAlbums = () => {
   const router = useRouter();
+  const { isActivated } = useAuth();
   const { albums, totalCount, loading, error } = useTypedSelector(
     (state) => state.albums,
   );
@@ -52,6 +54,7 @@ const useAlbums = () => {
     albums,
     loading,
     error,
+    isActivated,
     handleAlbumUpload,
     query,
     handleSearch,

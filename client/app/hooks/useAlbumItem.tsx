@@ -2,11 +2,13 @@ import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 
 import { useActions } from './useActions';
+import useAuth from './useAuth';
 import { ROUTES } from '../constants/routes';
 import { IAlbum } from '../types/albums';
 
 const useAlbumItem = (album: IAlbum) => {
   const router = useRouter();
+  const { isActivated } = useAuth();
   const { setActiveAlbum, deleteAlbum } = useActions();
 
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -42,6 +44,7 @@ const useAlbumItem = (album: IAlbum) => {
 
   return {
     handleAlbumOpen,
+    isActivated,
     isDeleteConfirmOpen,
     handleDeleteClick,
     handleDeleteCancel,

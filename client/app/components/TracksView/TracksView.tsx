@@ -17,6 +17,7 @@ const TracksView = () => {
     tracks,
     loading,
     error,
+    isActivated,
     handleTrackUpload,
     query,
     handleSearch,
@@ -39,7 +40,7 @@ const TracksView = () => {
               <Typography className={styles.title} variant="h3">
                 Tracklist
               </Typography>
-              {!showEmptyState && (
+              {!showEmptyState && isActivated && (
                 <Button onClick={handleTrackUpload} variant="contained">
                   Upload
                 </Button>

@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Request, Response } from 'express';
@@ -13,6 +14,7 @@ describe('AuthController', () => {
     login: jest.Mock;
     registration: jest.Mock;
     logout: jest.Mock;
+    getCurrentUser: jest.Mock;
   };
   let res: { cookie: jest.Mock; clearCookie: jest.Mock };
 
@@ -21,6 +23,7 @@ describe('AuthController', () => {
       login: jest.fn(),
       registration: jest.fn(),
       logout: jest.fn(),
+      getCurrentUser: jest.fn(),
     };
     res = { cookie: jest.fn(), clearCookie: jest.fn() };
 
@@ -114,6 +117,26 @@ describe('AuthController', () => {
 
       expect(authService.logout).not.toHaveBeenCalled();
       expect(res.clearCookie).toHaveBeenCalled();
+    });
+  });
+
+  describe('me()', () => {
+    it('returns the current user resolved from req.user.email', async () => {
+      const user = { email: 'a@test.com', name: 'A', isActivated: true };
+      authService.getCurrentUser.mockResolvedValue(user);
+      const req = { user: { email: 'a@test.com' } } as unknown as Request;
+
+      const result = await controller.me(req);
+
+      expect(authService.getCurrentUser).toHaveBeenCalledWith('a@test.com');
+      expect(result).toEqual({ user });
+    });
+
+    it('throws UnauthorizedException when req.user is missing', async () => {
+      const req = {} as unknown as Request;
+
+      await expect(controller.me(req)).rejects.toThrow(UnauthorizedException);
+      expect(authService.getCurrentUser).not.toHaveBeenCalled();
     });
   });
 });

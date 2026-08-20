@@ -15,6 +15,7 @@ import styles from '../../styles/AlbumItem.module.scss';
 const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
   const {
     handleAlbumOpen,
+    isActivated,
     isDeleteConfirmOpen,
     handleDeleteClick,
     handleDeleteCancel,
@@ -56,12 +57,16 @@ const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
         </Grid>
       </div>
       <Grid className={styles.album_actions}>
-        <IconButton aria-label="edit" onClick={handleEditOpen}>
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete" onClick={handleDeleteClick}>
-          <Delete />
-        </IconButton>
+        {isActivated && (
+          <>
+            <IconButton aria-label="edit" onClick={handleEditOpen}>
+              <Edit />
+            </IconButton>
+            <IconButton aria-label="delete" onClick={handleDeleteClick}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
       </Grid>
       <ConfirmDialog
         open={isDeleteConfirmOpen}

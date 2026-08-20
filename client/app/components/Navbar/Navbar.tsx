@@ -16,11 +16,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import useNavbar from '@/app/hooks/useNavbar';
+import LogoutButton from '@/app/components/LogoutButton/LogoutButton';
 import ThemeToggle from '@/app/components/ThemeToggle/ThemeToggle';
 
 import AppBar from './AppBar';
 import DrawerHeader from './DrawerHeader';
-import { menuItems } from '../../constants/navigation';
 import styles from '../../styles/Navbar.module.scss';
 
 export default function Navbar() {
@@ -28,6 +28,7 @@ export default function Navbar() {
     theme,
     open,
     drawerRef,
+    menuItems,
     isMenuItemActive,
     handleSelectMenuItem,
     handleDrawerOpen,
@@ -52,6 +53,7 @@ export default function Navbar() {
             Music Platform
           </Typography>
           <ThemeToggle />
+          <LogoutButton />
         </Toolbar>
       </AppBar>
       <Drawer

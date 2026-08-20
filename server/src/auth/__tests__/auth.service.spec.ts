@@ -155,4 +155,31 @@ describe('AuthService', () => {
       );
     });
   });
+
+  describe('getCurrentUser()', () => {
+    it('throws UnauthorizedException when no user exists with the given email', async () => {
+      usersService.getUserByEmail.mockResolvedValue(null);
+
+      await expect(service.getCurrentUser('missing@test.com')).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it('returns the safe user fields without the password', async () => {
+      usersService.getUserByEmail.mockResolvedValue({
+        email: 'a@test.com',
+        name: 'A',
+        password: 'hashed',
+        isActivated: true,
+      });
+
+      const result = await service.getCurrentUser('a@test.com');
+
+      expect(result).toEqual({
+        email: 'a@test.com',
+        name: 'A',
+        isActivated: true,
+      });
+    });
+  });
 });

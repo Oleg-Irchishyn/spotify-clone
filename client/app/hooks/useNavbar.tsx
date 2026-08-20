@@ -2,15 +2,23 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { menuItems } from '@/app/constants/navigation';
 import { ROUTES } from '@/app/constants/routes';
+
+import useAuth from './useAuth';
 
 const useNavbar = () => {
   const theme = useTheme();
+  const { isActivated } = useAuth();
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const pathname = usePathname();
+
+  const visibleMenuItems = menuItems.filter(
+    (item) => item.href !== ROUTES.CONTRIBUTORS || isActivated,
+  );
 
   const isMenuItemActive = (href: string) =>
     href === ROUTES.HOME
@@ -55,6 +63,7 @@ const useNavbar = () => {
     theme,
     open,
     drawerRef,
+    menuItems: visibleMenuItems,
     isMenuItemActive,
     handleDrawerOpen,
     handleDrawerClose,

@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -81,6 +90,24 @@ export class AuthController {
       await this.authService.logout(req.user.email);
     }
     this.clearTokenCookie(res);
+  }
+
+  @ApiOperation({ summary: 'Get the currently authenticated user' })
+  @ApiOkResponse({
+    description: 'The currently authenticated user',
+    type: AuthResponseDto,
+  })
+  @ApiUnauthorizedResponse({ description: 'User is not authorized' })
+  @ApiBearerAuth('bearerAuth')
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  async me(@Req() req: Request) {
+    if (!req.user) {
+      throw new UnauthorizedException({ message: 'User is not authorized' });
+    }
+
+    const user = await this.authService.getCurrentUser(req.user.email);
+    return { user };
   }
 
   private getCookieOptions(): CookieOptions {

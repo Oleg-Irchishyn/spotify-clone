@@ -16,6 +16,7 @@ const ConfirmDialog: FC<Readonly<ConfirmDialogProps>> = ({
   open,
   title,
   description,
+  confirmLabel = 'Delete',
   onConfirm,
   onCancel,
 }) => {
@@ -28,7 +29,7 @@ const ConfirmDialog: FC<Readonly<ConfirmDialogProps>> = ({
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
         <Button onClick={onConfirm} color="error">
-          Delete
+          {confirmLabel}
         </Button>
       </DialogActions>
     </Dialog>

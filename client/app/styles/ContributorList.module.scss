@@ -1,0 +1,18 @@
+@use '../styles/breakpoints' as bp;
+
+.list_container {
+  &:global(.MuiGrid-root) {
+    direction: column;
+  }
+}
+
+.list_box {
+  &:global(.MuiBox-root) {
+    padding: 8px;
+    width: 100%;
+
+    @include bp.s {
+      padding: 16px;
+    }
+  }
+}

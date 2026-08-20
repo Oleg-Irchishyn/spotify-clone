@@ -41,13 +41,15 @@ describe('UsersService', () => {
     expect(result).toEqual({ _id: 'id1', ...dto });
   });
 
-  it('getAllUsers() returns all users', async () => {
+  it('getAllUsers() returns all users without their password field', async () => {
     const exec = jest.fn().mockResolvedValue([{ email: 'a@test.com' }]);
-    usersModel.find.mockReturnValue({ exec });
+    const select = jest.fn().mockReturnValue({ exec });
+    usersModel.find.mockReturnValue({ select });
 
     const result = await service.getAllUsers();
 
     expect(usersModel.find).toHaveBeenCalledWith();
+    expect(select).toHaveBeenCalledWith('-password');
     expect(result).toEqual([{ email: 'a@test.com' }]);
   });
 

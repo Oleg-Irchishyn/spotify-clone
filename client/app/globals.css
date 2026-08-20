@@ -6,3 +6,19 @@
   text-align: center;
   min-height: calc(100vh - 200px);
 }
+
+/*
+ * Chrome/Edge force a blue (or yellow) background on autofilled inputs that
+ * `background-color` can't override. The only way to beat it is this
+ * box-shadow inset trick, tied to the MUI theme tokens so it matches
+ * light/dark mode instead of hardcoding a color.
+ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 100px var(--mui-palette-background-paper) inset !important;
+  -webkit-text-fill-color: var(--mui-palette-text-primary) !important;
+  caret-color: var(--mui-palette-text-primary);
+  transition: background-color 5000s ease-in-out 0s;
+}

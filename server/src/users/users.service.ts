@@ -17,7 +17,7 @@ export class UsersService {
   }
 
   getAllUsers() {
-    return this.usersModel.find().exec();
+    return this.usersModel.find().select('-password').exec();
   }
 
   getUserByEmail(email: string) {

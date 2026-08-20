@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { useActions } from './useActions';
+import useAuth from './useAuth';
 import { useTypedSelector } from './useTypedSelector';
 import { PAGE_SIZE } from '../constants/pagination';
 import { ROUTES } from '../constants/routes';
@@ -9,6 +10,7 @@ import { SEARCH_DEBOUNCE_MS } from '../constants/search';
 
 const useTracks = () => {
   const router = useRouter();
+  const { isActivated } = useAuth();
   const { tracks, totalCount, loading, error } = useTypedSelector(
     (state) => state.tracks,
   );
@@ -83,6 +85,7 @@ const useTracks = () => {
     tracks,
     loading,
     error,
+    isActivated,
     handleTrackUpload,
     query,
     handleSearch,

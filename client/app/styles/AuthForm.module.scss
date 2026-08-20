@@ -1,0 +1,22 @@
+.form {
+  &:global(.MuiGrid-root) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.form_actions {
+  &:global(.MuiGrid-root) {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+.switch_mode {
+  &:global(.MuiTypography-root) {
+    color: var(--mui-palette-text-secondary);
+    text-align: center;
+    width: 100%;
+  }
+}

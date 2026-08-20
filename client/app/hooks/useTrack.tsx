@@ -2,12 +2,14 @@ import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 
 import { useActions } from './useActions';
+import useAuth from './useAuth';
 import { useTypedSelector } from './useTypedSelector';
 import { ROUTES } from '../constants/routes';
 import { ITrack } from '../types/tracks';
 
 const useTrack = (track: ITrack) => {
   const router = useRouter();
+  const { isActivated } = useAuth();
 
   const { active, pause, currentTime, duration, loop } = useTypedSelector(
     (state) => state.player,
@@ -84,6 +86,7 @@ const useTrack = (track: ITrack) => {
   return {
     handleTrackDetailsRedirect,
     handlePlay,
+    isActivated,
     isActive,
     isPlaying,
     currentTime,

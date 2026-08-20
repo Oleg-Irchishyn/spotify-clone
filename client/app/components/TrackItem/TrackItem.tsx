@@ -17,6 +17,7 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
   const {
     handleTrackDetailsRedirect,
     handlePlay,
+    isActivated,
     isActive,
     isPlaying,
     currentTime,
@@ -80,12 +81,16 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
         >
           <Repeat />
         </IconButton>
-        <IconButton aria-label="edit" onClick={handleEditOpen}>
-          <Edit />
-        </IconButton>
-        <IconButton aria-label="delete" onClick={handleDeleteClick}>
-          <Delete />
-        </IconButton>
+        {isActivated && (
+          <>
+            <IconButton aria-label="edit" onClick={handleEditOpen}>
+              <Edit />
+            </IconButton>
+            <IconButton aria-label="delete" onClick={handleDeleteClick}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
       </Grid>
       <ConfirmDialog
         open={isDeleteConfirmOpen}

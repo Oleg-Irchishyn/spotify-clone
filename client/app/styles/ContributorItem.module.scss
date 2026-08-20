@@ -1,0 +1,29 @@
+@use '../styles/breakpoints' as bp;
+
+.contributor {
+  &:global(.MuiCard-root) {
+    margin: 8px 0;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    @include bp.s {
+      margin: 16px;
+      padding: 10px;
+    }
+  }
+}
+
+.contributor_avatar {
+  &:global(.MuiAvatar-root) {
+    background-color: var(--mui-palette-action-selected);
+    color: var(--mui-palette-text-primary);
+  }
+}
+
+.contributor_name {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--mui-palette-text-primary);
+}

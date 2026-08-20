@@ -17,6 +17,7 @@ const AlbumsView = () => {
     albums,
     loading,
     error,
+    isActivated,
     handleAlbumUpload,
     query,
     handleSearch,
@@ -37,7 +38,7 @@ const AlbumsView = () => {
               <Typography className={styles.title} variant="h3">
                 Album lists
               </Typography>
-              {!showEmptyState && (
+              {!showEmptyState && isActivated && (
                 <Button onClick={handleAlbumUpload} variant="contained">
                   Upload
                 </Button>

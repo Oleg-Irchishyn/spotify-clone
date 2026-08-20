@@ -64,6 +64,20 @@ export class AuthService {
     await this.usersService.setActivated(email, false);
   }
 
+  async getCurrentUser(email: string) {
+    const user = await this.usersService.getUserByEmail(email);
+
+    if (!user) {
+      throw new UnauthorizedException({ message: 'User is not authorized' });
+    }
+
+    return {
+      email: user.email,
+      name: user.name,
+      isActivated: user.isActivated,
+    };
+  }
+
   private async validateUser(dto: LoginUserDto): Promise<UsersDocument> {
     const user = await this.usersService.getUserByEmail(dto.email);
 
