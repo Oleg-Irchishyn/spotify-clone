@@ -14,12 +14,21 @@ export default function Icon() {
         justifyContent: 'center',
         background: '#1db954',
         borderRadius: '50%',
-        color: '#000000',
-        fontSize: 20,
-        fontWeight: 700,
       }}
     >
-      ♪
+      <div
+        style={{
+          display: 'flex',
+          color: '#000000',
+          fontSize: 20,
+          fontWeight: 700,
+          lineHeight: 1,
+          marginTop: -8,
+          transform: 'translate(0%, 4%)',
+        }}
+      >
+        ♪
+      </div>
     </div>,
     { ...size },
   );

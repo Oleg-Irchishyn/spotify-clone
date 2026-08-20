@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 
+import { extractErrorMessage } from '@/app/utils/extractErrorMessage';
 import $api from '@/app/lib/http';
 import { AlertAction } from '@/app/types/alert';
 import { AuthAction, AuthActionTypes, IAuthUser } from '@/app/types/auth';
@@ -48,8 +49,7 @@ export const login = (email: string, password: string) => {
         ),
       );
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
-      dispatch(showAlert(message));
+      dispatch(showAlert(extractErrorMessage(error)));
       throw error;
     }
   };
@@ -71,8 +71,7 @@ export const register = (email: string, name: string, password: string) => {
         ),
       );
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
-      dispatch(showAlert(message));
+      dispatch(showAlert(extractErrorMessage(error)));
       throw error;
     }
   };
@@ -84,8 +83,7 @@ export const logout = () => {
       await $api.post('/auth/logout');
       dispatch(showAlert('You have successfully logged out', 'success'));
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
-      dispatch(showAlert(message));
+      dispatch(showAlert(extractErrorMessage(error)));
     } finally {
       dispatch(clearUser());
     }
