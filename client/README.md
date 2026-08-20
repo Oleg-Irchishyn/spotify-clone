@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spotify Clone — Client
 
-## Getting Started
+This is the **frontend (client)** part of the Spotify Clone project. The backend (NestJS API) lives in the sibling [`server/`](../server) folder — the client needs it running to work.
 
-First, run the development server:
+## About the project
+
+Spotify Clone is a music-streaming style web app built with [Next.js](https://nextjs.org) and [Material UI](https://mui.com). It supports:
+
+- **Auth** — register/login via a modal, session persisted through an httpOnly cookie (nothing to manage on the client besides sending it), logout with a confirmation dialog.
+- **Contributors** — a page listing all activated (logged-in) users, visible once you're logged in.
+- **Tracks** — browse, search, paginate, play/pause/loop, upload, edit, delete, comment, listen counter.
+- **Albums** — browse, search, paginate, upload, edit, delete; filters the tracklist by album.
+- Upload/edit/delete controls and the Contributors tab only show once you're logged in — logged-out visitors can browse and comment.
+- Light/dark theme toggle.
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, TypeScript)
+- [Material UI](https://mui.com) for components and theming
+- [Redux](https://redux.js.org) + [redux-thunk](https://github.com/reduxjs/redux-thunk) for state management
+- [Axios](https://axios-http.com) for API calls
+- [Sass](https://sass-lang.com) (CSS Modules) for component styles
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org) (v20+ recommended)
+- The [server](../server) running locally (or reachable at whatever URL you set below)
+
+## Local setup
+
+1. **Clone the repository and enter the client folder:**
+
+   ```bash
+   git clone git@github.com:Oleg-Irchishyn/spotify-clone.git
+   cd spotify-clone/client
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables.** Create a `.env` file in `client/` with:
+
+   ```env
+   NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+   ```
+
+4. **Start the dev server:**
+
+   ```bash
+   npm run dev
+   ```
+
+   The app will be available at [http://localhost:3000](http://localhost:3000).
+
+## Other useful commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# production build
+npm run build
+npm run start
+
+# lint
+npm run lint
+
+# lint and auto-fix
+npm run format
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

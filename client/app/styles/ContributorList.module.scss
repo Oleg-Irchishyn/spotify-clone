@@ -10,9 +10,32 @@
   &:global(.MuiBox-root) {
     padding: 8px;
     width: 100%;
+    // ~4 ContributorItem rows; the rest scrolls instead of stretching the page.
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mui-palette-action-selected) transparent;
 
     @include bp.s {
       padding: 16px;
+      max-height: 380px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--mui-palette-action-selected);
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--mui-palette-primary-main);
+      }
     }
   }
 }
