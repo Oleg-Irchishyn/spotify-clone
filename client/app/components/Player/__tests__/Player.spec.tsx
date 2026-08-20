@@ -95,4 +95,13 @@ describe('Player', () => {
     expect(screen.getByText('0:30 / 3:00')).toBeInTheDocument();
     expect(screen.getByText('80 / 100')).toBeInTheDocument();
   });
+
+  it('restricts the volume slider to whole-number steps', () => {
+    render(<Player />);
+
+    const [progressSlider, volumeSlider] = screen.getAllByRole('slider');
+
+    expect(progressSlider).toHaveAttribute('step', 'any');
+    expect(volumeSlider).toHaveAttribute('step', '1');
+  });
 });

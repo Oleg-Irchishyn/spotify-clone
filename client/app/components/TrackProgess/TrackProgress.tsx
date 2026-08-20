@@ -13,6 +13,7 @@ const TrackProgress: FC<Readonly<TrackProgressProps>> = ({
   right,
   onChange,
   formatAsTime = false,
+  step = 'any',
 }) => {
   const leftLabel = formatAsTime ? formatTime(left) : left;
   const rightLabel = formatAsTime ? formatTime(right) : right;
@@ -24,7 +25,7 @@ const TrackProgress: FC<Readonly<TrackProgressProps>> = ({
         className={styles.track_progress_input}
         value={left}
         onChange={onChange}
-        slotProps={{ htmlInput: { min: 0, max: right, step: 'any' } }}
+        slotProps={{ htmlInput: { min: 0, max: right, step } }}
       />
       <Typography className={styles.track_progress_numbers} variant="body2">
         {leftLabel} / {rightLabel}

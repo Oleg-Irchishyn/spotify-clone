@@ -64,6 +64,7 @@ const Player: FC = () => {
           left={volume}
           right={100}
           onChange={handleVolumeChange}
+          step={1}
         />
       </div>
     </div>

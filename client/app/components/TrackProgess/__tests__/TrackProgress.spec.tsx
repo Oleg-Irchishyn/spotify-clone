@@ -26,4 +26,18 @@ describe('TrackProgress', () => {
 
     expect(onChange).toHaveBeenCalled();
   });
+
+  it('defaults the range input step to "any"', () => {
+    render(<TrackProgress left={0} right={100} onChange={jest.fn()} />);
+
+    expect(screen.getByRole('slider')).toHaveAttribute('step', 'any');
+  });
+
+  it('uses the given step for the range input, so dragging snaps to whole numbers', () => {
+    render(
+      <TrackProgress left={0} right={100} onChange={jest.fn()} step={1} />,
+    );
+
+    expect(screen.getByRole('slider')).toHaveAttribute('step', '1');
+  });
 });

@@ -5,6 +5,7 @@ interface TrackProgressProps {
   right: number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   formatAsTime?: boolean;
+  step?: number | 'any';
 }
 
 export { type TrackProgressProps };
