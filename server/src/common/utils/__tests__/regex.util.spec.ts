@@ -1,4 +1,4 @@
-import { escapeRegExp } from './regex.util';
+import { escapeRegExp } from '../regex.util';
 
 describe('escapeRegExp', () => {
   it('escapes special regex characters', () => {

@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { ValidationException } from './validation.exception';
+import { ValidationException } from '../validation.exception';
 
 describe('ValidationException', () => {
   it('sets the HTTP status to 400 Bad Request', () => {

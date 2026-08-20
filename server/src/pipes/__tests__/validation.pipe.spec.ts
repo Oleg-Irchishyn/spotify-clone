@@ -3,7 +3,7 @@ import { ArgumentMetadata } from '@nestjs/common';
 import { ValidationException } from 'src/exceptions/validation.exception';
 import { CreateTrackDto } from 'src/track/dto/create-track.dto';
 
-import { ValidationPipe } from './validation.pipe';
+import { ValidationPipe } from '../validation.pipe';
 
 describe('ValidationPipe', () => {
   let pipe: ValidationPipe;

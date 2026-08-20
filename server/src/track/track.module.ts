@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { AuthModule } from 'src/auth/auth.module';
 import { FileModule } from 'src/file/file.module';
+import { UsersModule } from 'src/users/users.module';
 
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Track, TrackSchema } from './schemas/track.schema';
@@ -15,6 +17,8 @@ import { TrackService } from './track.service';
       { name: Comment.name, schema: CommentSchema },
     ]),
     FileModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [TrackController],
   providers: [TrackService],

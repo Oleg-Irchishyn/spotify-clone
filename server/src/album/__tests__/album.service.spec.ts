@@ -6,8 +6,8 @@ import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
 import { Track } from 'src/track/schemas/track.schema';
 
-import { AlbumService } from './album.service';
-import { Album } from './schemas/album.schema';
+import { AlbumService } from '../album.service';
+import { Album } from '../schemas/album.schema';
 
 describe('AlbumService', () => {
   let service: AlbumService;

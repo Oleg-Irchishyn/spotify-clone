@@ -4,7 +4,7 @@ import * as uuid from 'uuid';
 
 import { FileType } from 'src/common/enums/file-type.enum';
 
-import { FileService } from './file.service';
+import { FileService } from '../file.service';
 
 jest.mock('node:fs');
 jest.mock('uuid', () => ({ v4: jest.fn() }));

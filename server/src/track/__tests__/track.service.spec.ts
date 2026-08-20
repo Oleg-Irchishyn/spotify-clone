@@ -5,9 +5,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
 
-import { Comment } from './schemas/comment.schema';
-import { Track } from './schemas/track.schema';
-import { TrackService } from './track.service';
+import { Comment } from '../schemas/comment.schema';
+import { Track } from '../schemas/track.schema';
+import { TrackService } from '../track.service';
 
 const createQueryMock = (resolvedValue: unknown) => ({
   skip: jest.fn().mockReturnThis(),

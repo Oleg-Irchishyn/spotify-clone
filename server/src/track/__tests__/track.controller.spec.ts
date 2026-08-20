@@ -1,8 +1,11 @@
 import { BadRequestException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { TrackController } from './track.controller';
-import { TrackService } from './track.service';
+import { UsersService } from 'src/users/users.service';
+
+import { TrackController } from '../track.controller';
+import { TrackService } from '../track.service';
 
 describe('TrackController', () => {
   let controller: TrackController;
@@ -37,7 +40,11 @@ describe('TrackController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TrackController],
-      providers: [{ provide: TrackService, useValue: trackService }],
+      providers: [
+        { provide: TrackService, useValue: trackService },
+        { provide: JwtService, useValue: { verify: jest.fn() } },
+        { provide: UsersService, useValue: { setActivated: jest.fn() } },
+      ],
     }).compile();
 
     controller = module.get<TrackController>(TrackController);

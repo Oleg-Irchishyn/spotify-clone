@@ -7,6 +7,8 @@ import * as path from 'node:path';
 import { AlbumModule } from './album/album.module';
 import { FileModule } from './file/file.module';
 import { TrackModule } from './track/track.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { TrackModule } from './track/track.module';
     TrackModule,
     FileModule,
     AlbumModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],

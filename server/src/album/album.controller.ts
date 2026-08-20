@@ -11,11 +11,13 @@ import {
   Put,
   Query,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
@@ -25,6 +27,7 @@ import {
 } from '@nestjs/swagger';
 
 import { ValidationErrorDto } from 'src/exceptions/dto/validation-error.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/CreateAlbumDto';
@@ -74,6 +77,8 @@ export class AlbumController {
     description: 'Validation error, or picture file is missing',
     type: ValidationErrorDto,
   })
+  @ApiBearerAuth('bearerAuth')
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([{ name: 'picture', maxCount: 1 }]))
   create(
@@ -106,6 +111,8 @@ export class AlbumController {
     status: 404,
     description: 'Album with the given id was not found',
   })
+  @ApiBearerAuth('bearerAuth')
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'picture', maxCount: 1 }]))
   update(
@@ -124,6 +131,8 @@ export class AlbumController {
     status: 404,
     description: 'Album with the given id was not found',
   })
+  @ApiBearerAuth('bearerAuth')
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.albumService.delete(id);

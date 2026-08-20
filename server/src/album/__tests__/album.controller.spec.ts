@@ -1,8 +1,11 @@
 import { BadRequestException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AlbumController } from './album.controller';
-import { AlbumService } from './album.service';
+import { UsersService } from 'src/users/users.service';
+
+import { AlbumController } from '../album.controller';
+import { AlbumService } from '../album.service';
 
 describe('AlbumController', () => {
   let controller: AlbumController;
@@ -31,7 +34,11 @@ describe('AlbumController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AlbumController],
-      providers: [{ provide: AlbumService, useValue: albumService }],
+      providers: [
+        { provide: AlbumService, useValue: albumService },
+        { provide: JwtService, useValue: { verify: jest.fn() } },
+        { provide: UsersService, useValue: { setActivated: jest.fn() } },
+      ],
     }).compile();
 
     controller = module.get<AlbumController>(AlbumController);

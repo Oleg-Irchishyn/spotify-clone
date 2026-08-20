@@ -15,8 +15,19 @@ async function start(): Promise<void> {
     const config = new DocumentBuilder()
       .setTitle('Music Platform Application')
       .setDescription('REST API documentation')
-      .setVersion('1.0.0')
+      .setVersion('1.2.0')
       .addTag('Music Platform microservice')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter fresh JWT access token',
+          in: 'header',
+        },
+        'bearerAuth', // Назва схеми безпеки, її запам'ятовуємо
+      )
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
