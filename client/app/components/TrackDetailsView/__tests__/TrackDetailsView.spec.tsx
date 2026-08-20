@@ -31,6 +31,7 @@ const track = {
 const baseHook = {
   track,
   loading: false,
+  isActivated: false,
   username: { value: '', onChange: jest.fn(), reset: jest.fn() },
   commentText: { value: '', onChange: jest.fn(), reset: jest.fn() },
   handleAddComment: jest.fn(),
@@ -83,6 +84,20 @@ describe('TrackDetailsView', () => {
     expect(screen.getByText('Nice track!')).toBeInTheDocument();
   });
 
+  it('shows the "Your name" field for a logged-out visitor', () => {
+    render(<TrackDetailsView id="id1" />);
+
+    expect(screen.getByLabelText('Your name')).toBeInTheDocument();
+  });
+
+  it('hides the "Your name" field for an activated user', () => {
+    mockedUseTrackDetails.mockReturnValue({ ...baseHook, isActivated: true });
+
+    render(<TrackDetailsView id="id1" />);
+
+    expect(screen.queryByLabelText('Your name')).not.toBeInTheDocument();
+  });
+
   it('disables Send until both username and comment are filled', () => {
     render(<TrackDetailsView id="id1" />);
 
@@ -111,6 +126,36 @@ describe('TrackDetailsView', () => {
     mockedUseTrackDetails.mockReturnValue({
       ...baseHook,
       username: { value: '   ', onChange: jest.fn(), reset: jest.fn() },
+      commentText: { value: '   ', onChange: jest.fn(), reset: jest.fn() },
+    });
+
+    render(<TrackDetailsView id="id1" />);
+
+    expect(screen.getByRole('button', { name: /Send/ })).toBeDisabled();
+  });
+
+  it('for an activated user, only requires the comment text (no username)', async () => {
+    const handleAddComment = jest.fn();
+    mockedUseTrackDetails.mockReturnValue({
+      ...baseHook,
+      isActivated: true,
+      commentText: { value: 'Great!', onChange: jest.fn(), reset: jest.fn() },
+      handleAddComment,
+    });
+
+    render(<TrackDetailsView id="id1" />);
+    const sendButton = screen.getByRole('button', { name: /Send/ });
+    expect(sendButton).toBeEnabled();
+
+    await userEvent.click(sendButton);
+
+    expect(handleAddComment).toHaveBeenCalled();
+  });
+
+  it('keeps Send disabled for an activated user with only whitespace comment text', () => {
+    mockedUseTrackDetails.mockReturnValue({
+      ...baseHook,
+      isActivated: true,
       commentText: { value: '   ', onChange: jest.fn(), reset: jest.fn() },
     });
 

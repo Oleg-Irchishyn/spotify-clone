@@ -1,6 +1,10 @@
 jest.mock('../useActions', () => ({
   useActions: jest.fn(),
 }));
+jest.mock('../useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 jest.mock('@/app/lib/http', () => ({
   __esModule: true,
   default: { get: jest.fn(), post: jest.fn() },
@@ -13,9 +17,11 @@ import { ChangeEvent } from 'react';
 import $api from '@/app/lib/http';
 
 import { useActions } from '../useActions';
+import useAuth from '../useAuth';
 import useTrackDetails from '../useTrackDetails';
 
 const mockedUseActions = useActions as jest.Mock;
+const mockedUseAuth = useAuth as jest.Mock;
 const mockedApi = $api as jest.Mocked<typeof $api>;
 
 const trackResponse = {
@@ -35,6 +41,11 @@ describe('useTrackDetails', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockedUseActions.mockReturnValue({ showAlert });
+    mockedUseAuth.mockReturnValue({
+      user: null,
+      isActivated: false,
+      loading: false,
+    });
   });
 
   it('starts in a loading state with no track', () => {
@@ -151,6 +162,38 @@ describe('useTrackDetails', () => {
     expect(result.current.track?.comments).toEqual([newComment]);
     expect(result.current.username.value).toBe('');
     expect(result.current.commentText.value).toBe('');
+  });
+
+  it('handleAddComment uses the logged-in user name instead of the username field', async () => {
+    mockedUseAuth.mockReturnValue({
+      user: { name: 'Alice' },
+      isActivated: true,
+      loading: false,
+    });
+    mockedApi.get.mockResolvedValue({ data: trackResponse });
+    const newComment = { _id: 'c1', username: 'Alice', text: 't' };
+    mockedApi.post.mockResolvedValue({ data: newComment });
+
+    const { result } = renderHook(() => useTrackDetails('id1'));
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(result.current.isActivated).toBe(true);
+
+    act(() => {
+      result.current.commentText.onChange({
+        target: { value: 't' },
+      } as ChangeEvent<HTMLInputElement>);
+    });
+
+    await act(async () => {
+      await result.current.handleAddComment();
+    });
+
+    expect(mockedApi.post).toHaveBeenCalledWith('/tracks/comment', {
+      username: 'Alice',
+      text: 't',
+      trackId: 'id1',
+    });
   });
 
   it('handleAddComment shows an alert on failure', async () => {

@@ -16,8 +16,14 @@ import { TrackDetailsViewProps } from '@/app/types/trackDetailsView';
 import styles from '../../styles/TrackDetailsView.module.scss';
 
 const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
-  const { track, loading, username, commentText, handleAddComment } =
-    useTrackDetails(id);
+  const {
+    track,
+    loading,
+    isActivated,
+    username,
+    commentText,
+    handleAddComment,
+  } = useTrackDetails(id);
 
   if (loading) {
     return <Loader fullScreen />;
@@ -27,8 +33,9 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
     return null;
   }
 
-  const isCommentValid =
-    username.value.trim().length > 0 && commentText.value.trim().length > 0;
+  const isCommentValid = isActivated
+    ? commentText.value.trim().length > 0
+    : username.value.trim().length > 0 && commentText.value.trim().length > 0;
 
   return (
     <div className={styles.page}>
@@ -73,14 +80,16 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
         </Typography>
 
         <Grid container className={styles.comment_form}>
-          <TextField
-            value={username.value}
-            onChange={username.onChange}
-            label="Your name"
-            helperText={`${username.value.length}/${USERNAME_MAX_LENGTH}`}
-            slotProps={{ htmlInput: { maxLength: USERNAME_MAX_LENGTH } }}
-            fullWidth
-          />
+          {!isActivated && (
+            <TextField
+              value={username.value}
+              onChange={username.onChange}
+              label="Your name"
+              helperText={`${username.value.length}/${USERNAME_MAX_LENGTH}`}
+              slotProps={{ htmlInput: { maxLength: USERNAME_MAX_LENGTH } }}
+              fullWidth
+            />
+          )}
           <TextField
             value={commentText.value}
             onChange={commentText.onChange}
