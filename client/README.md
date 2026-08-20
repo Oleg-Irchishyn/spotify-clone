@@ -20,6 +20,7 @@ Spotify Clone is a music-streaming style web app built with [Next.js](https://ne
 - [Redux](https://redux.js.org) + [redux-thunk](https://github.com/reduxjs/redux-thunk) for state management
 - [Axios](https://axios-http.com) for API calls
 - [Sass](https://sass-lang.com) (CSS Modules) for component styles
+- [Jest](https://jestjs.io) + [React Testing Library](https://testing-library.com/react) for unit tests
 
 ## Prerequisites
 
@@ -67,4 +68,13 @@ npm run lint
 
 # lint and auto-fix
 npm run format
+
+# unit tests
+npm run test
+
+# unit tests in watch mode
+npm run test:watch
+
+# unit tests with coverage
+npm run test:cov
 ```
