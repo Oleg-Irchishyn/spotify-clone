@@ -9,6 +9,7 @@ import ContentArea from './components/ContentArea/ContentArea';
 import GlobalAlert from './components/GlobalAlert/GlobalAlert';
 import Navbar from './components/Navbar/Navbar';
 import Player from './components/Player/Player';
+import { BASE_PATH } from './constants/basePath';
 import StoreProvider from './store/StoreProvider';
 import theme from './theme';
 import './globals.css';
@@ -22,6 +23,9 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'Spotify Clone Application',
   description: 'A Spotify clone built with Next.js and Material UI',
+  icons: {
+    icon: `${BASE_PATH}/favicon.png`,
+  },
 };
 
 export const viewport: Viewport = {

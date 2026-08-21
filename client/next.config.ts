@@ -1,11 +1,13 @@
 import type { NextConfig } from 'next';
 
+import { BASE_PATH } from './app/constants/basePath';
+
 const isGithubPages = process.env.GITHUB_PAGES === 'true';
 
 const nextConfig: NextConfig = {
   ...(isGithubPages && {
     output: 'export',
-    basePath: '/spotify-clone',
+    basePath: BASE_PATH,
   }),
   images: isGithubPages
     ? { unoptimized: true }
