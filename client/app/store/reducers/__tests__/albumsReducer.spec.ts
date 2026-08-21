@@ -75,6 +75,41 @@ describe('albumsReducer', () => {
     expect(state.totalCount).toBe(0);
   });
 
+  it('DELETE_ALBUM clears the active album filter when the active album is deleted', () => {
+    const populated = {
+      ...albumsReducer(undefined, { type: '@@INIT' } as never),
+      albums: [album],
+      totalCount: 1,
+      activeAlbum: album,
+      activeAlbumResolved: true,
+    };
+
+    const state = albumsReducer(populated, {
+      type: AlbumActionTypes.DELETE_ALBUM,
+      payload: album._id,
+    });
+
+    expect(state.activeAlbum).toBeNull();
+  });
+
+  it('DELETE_ALBUM leaves an unrelated active album filter untouched', () => {
+    const otherAlbum: IAlbum = { ...album, _id: 'id2', name: 'Other' };
+    const populated = {
+      ...albumsReducer(undefined, { type: '@@INIT' } as never),
+      albums: [album, otherAlbum],
+      totalCount: 2,
+      activeAlbum: otherAlbum,
+      activeAlbumResolved: true,
+    };
+
+    const state = albumsReducer(populated, {
+      type: AlbumActionTypes.DELETE_ALBUM,
+      payload: album._id,
+    });
+
+    expect(state.activeAlbum).toEqual(otherAlbum);
+  });
+
   it('DELETE_ALBUM does not let totalCount go below zero', () => {
     const populated = albumsReducer(undefined, { type: '@@INIT' } as never);
 

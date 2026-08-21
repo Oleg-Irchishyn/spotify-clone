@@ -31,6 +31,8 @@ export const albumsReducer = (
         ...state,
         albums: state.albums.filter((album) => album._id !== action.payload),
         totalCount: Math.max(0, state.totalCount - 1),
+        activeAlbum:
+          state.activeAlbum?._id === action.payload ? null : state.activeAlbum,
       };
     case AlbumActionTypes.UPDATE_ALBUM:
       return {
