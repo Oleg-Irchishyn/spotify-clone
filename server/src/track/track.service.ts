@@ -25,8 +25,11 @@ export class TrackService {
     picture: Express.Multer.File,
     audio: Express.Multer.File,
   ): Promise<Track> {
-    const audioPath = this.fileService.createFile(FileType.AUDIO, audio);
-    const picturePath = this.fileService.createFile(FileType.IMAGE, picture);
+    const audioPath = await this.fileService.createFile(FileType.AUDIO, audio);
+    const picturePath = await this.fileService.createFile(
+      FileType.IMAGE,
+      picture,
+    );
     const track = await this.trackModel.create({
       ...dto,
       listens: 0,
@@ -52,10 +55,13 @@ export class TrackService {
       album: dto.album as unknown as Types.ObjectId | undefined,
     };
     if (picture) {
-      update.picture = this.fileService.createFile(FileType.IMAGE, picture);
+      update.picture = await this.fileService.createFile(
+        FileType.IMAGE,
+        picture,
+      );
     }
     if (audio) {
-      update.audio = this.fileService.createFile(FileType.AUDIO, audio);
+      update.audio = await this.fileService.createFile(FileType.AUDIO, audio);
     }
 
     const updatedTrack = await this.trackModel.findByIdAndUpdate(id, update, {
@@ -66,10 +72,10 @@ export class TrackService {
     }
 
     if (picture && existingTrack.picture) {
-      this.fileService.removeFile(existingTrack.picture);
+      await this.fileService.removeFile(existingTrack.picture);
     }
     if (audio && existingTrack.audio) {
-      this.fileService.removeFile(existingTrack.audio);
+      await this.fileService.removeFile(existingTrack.audio);
     }
 
     return updatedTrack;
@@ -99,10 +105,10 @@ export class TrackService {
       return null;
     }
     if (track.picture) {
-      this.fileService.removeFile(track.picture);
+      await this.fileService.removeFile(track.picture);
     }
     if (track.audio) {
-      this.fileService.removeFile(track.audio);
+      await this.fileService.removeFile(track.audio);
     }
     return track._id;
   }

@@ -15,4 +15,14 @@ describe('resolveAssetUrl', () => {
       'http://localhost:5000/image/1.jpg',
     );
   });
+
+  it('returns an already-absolute URL unchanged', async () => {
+    process.env.NEXT_PUBLIC_SERVER_URL = 'http://localhost:5000';
+    jest.resetModules();
+    const { resolveAssetUrl } = await import('../resolveAssetUrl');
+
+    expect(resolveAssetUrl('https://pub-xxxx.r2.dev/image/1.jpg')).toBe(
+      'https://pub-xxxx.r2.dev/image/1.jpg',
+    );
+  });
 });

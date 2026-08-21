@@ -5,9 +5,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'node:path';
 
 import { AlbumModule } from './album/album.module';
+import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
 import { TrackModule } from './track/track.module';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
 @Module({

@@ -24,7 +24,10 @@ export class AlbumService {
     dto: CreateAlbumDto,
     picture: Express.Multer.File,
   ): Promise<Album> {
-    const picturePath = this.fileService.createFile(FileType.IMAGE, picture);
+    const picturePath = await this.fileService.createFile(
+      FileType.IMAGE,
+      picture,
+    );
     const album = await this.albumModel.create({
       ...dto,
       picture: picturePath,
@@ -44,7 +47,10 @@ export class AlbumService {
 
     const update: Partial<Album> = { ...dto };
     if (picture) {
-      update.picture = this.fileService.createFile(FileType.IMAGE, picture);
+      update.picture = await this.fileService.createFile(
+        FileType.IMAGE,
+        picture,
+      );
     }
 
     const updatedAlbum = await this.albumModel.findByIdAndUpdate(id, update, {
@@ -55,7 +61,7 @@ export class AlbumService {
     }
 
     if (picture && existingAlbum.picture) {
-      this.fileService.removeFile(existingAlbum.picture);
+      await this.fileService.removeFile(existingAlbum.picture);
     }
 
     return updatedAlbum;
@@ -90,7 +96,7 @@ export class AlbumService {
       { $unset: { album: 1 } },
     );
     if (album.picture) {
-      this.fileService.removeFile(album.picture);
+      await this.fileService.removeFile(album.picture);
     }
     return album._id;
   }

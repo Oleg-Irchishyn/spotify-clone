@@ -11,7 +11,7 @@ Spotify Clone is a REST API for a music-streaming style app, built with [NestJS]
 - **Tracks** — upload (audio + picture), update, delete, list with pagination, full-text search, listen counter, comments.
 - **Albums** — upload (picture), update, delete, list with pagination and search.
 - **Comments** — attached to tracks, open to everyone (no login required).
-- File storage for uploaded audio/picture files, served statically.
+- File storage for uploaded audio/picture files — local disk in development, [Cloudflare R2](https://developers.cloudflare.com/r2/) in production (see [Deployment](#deployment)).
 - Input validation (`class-validator`) with a consistent error response shape.
 - Interactive API docs via Swagger.
 
@@ -98,6 +98,7 @@ Set the same keys as in `.production.env`, with production values:
 | `MONGO_URI` | production MongoDB connection string |
 | `PRIVATE_KEY` | JWT signing secret |
 | `CLIENT_URL` | the client's origin, e.g. `https://oleg-irchishyn.github.io` — **origin only**, no path, no trailing slash (must match the browser's `Origin` header exactly for CORS to allow it) |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL` | Cloudflare R2 (see below) |
 
 `PORT` should **not** be set manually — Render injects its own and `main.ts` already reads `process.env.PORT`. `SERVER_URL` isn't read anywhere in the server code, so it can be skipped too.
 
@@ -105,9 +106,22 @@ Set the same keys as in `.production.env`, with production values:
 
 Add `0.0.0.0/0` to Network Access → IP Access List. Render's standard plans don't have static outbound IPs, so the connection will otherwise time out.
 
-### ⚠️ Uploaded files don't persist on the free plan
+### File storage: local disk in dev, Cloudflare R2 in production
 
-`FileService` writes uploaded audio/pictures to `server/static` on local disk, served via `ServeStaticModule`. Render's free instance type has **no persistent disk** — every spin-down/restart or redeploy boots a fresh filesystem, so uploaded tracks and pictures get wiped. This is fine for demoing, but real persistence requires either a paid Render Disk or moving uploads to external object storage (e.g. Cloudflare R2, S3-compatible).
+Render's free instance type has **no persistent disk** — every spin-down/restart or redeploy boots a fresh filesystem, so anything `FileService` wrote to `server/static` would otherwise get wiped. `FileService` branches on `NODE_ENV`:
+
+- **Development** — unchanged: writes to `server/static`, served by `ServeStaticModule`.
+- **Production** — uploads go straight to a Cloudflare R2 bucket via the S3-compatible API (`@aws-sdk/client-s3`), and `createFile()` returns the object's public R2 URL instead of a local path. The client's `resolveAssetUrl` passes already-absolute URLs through unchanged, so no further client-side handling is needed.
+
+To set up R2 for a new deployment:
+
+1. [Cloudflare dashboard](https://dash.cloudflare.com) → **Storage & databases → R2 Object Storage** → create a bucket.
+2. Bucket → **Settings → Public Development URL → Enable** — copy the `https://pub-xxxx.r2.dev` URL for `R2_PUBLIC_URL`.
+3. R2 Object Storage (bucket list page) → **Manage API Tokens → Create API Token** — permissions **Object Read & Write**, scoped to that bucket only. Save the Access Key ID / Secret Access Key shown (once).
+4. The Account ID is the first path segment in the Cloudflare dashboard URL (`dash.cloudflare.com/<ACCOUNT_ID>/...`).
+5. Set all five `R2_*` variables (Render dashboard for production; `.development.env` too only if you want to exercise the R2 path locally — it's not required for normal local dev).
+
+Uploads made before this migration (stored as local `type/filename` paths) can't be deleted through R2 — `removeFile()` just no-ops for those instead of erroring.
 
 ### Free plan cold starts
 
