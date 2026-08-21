@@ -44,17 +44,13 @@ Spotify Clone is a REST API for a music-streaming style app, built with [NestJS]
    npm install
    ```
 
-3. **Configure environment variables.** Create a `.development.env` file in `server/` with:
+3. **Configure environment variables.** Copy the example file to `.development.env` and fill in real values:
 
-   ```env
-   PORT=5000
-   SERVER_URL=http://localhost:5000
-   CLIENT_URL=http://localhost:3000
-   MONGO_URI=your-mongodb-connection-string
-   PRIVATE_KEY=your-jwt-signing-secret
+   ```bash
+   cp .env.example .development.env
    ```
 
-   (For a production run, the same variables are read from `.production.env` instead.)
+   (For a production run, the same variables are read from `.production.env` instead — copy [`.env.example`](.env.example) there too, with production values.)
 
 4. **Start the server in watch mode:**
 

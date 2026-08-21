@@ -42,11 +42,13 @@ Spotify Clone is a music-streaming style web app built with [Next.js](https://ne
    npm install
    ```
 
-3. **Configure environment variables.** Create a `.env` file in `client/` with:
+3. **Configure environment variables.** Copy the example file and adjust if needed:
 
-   ```env
-   NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+   ```bash
+   cp .env.example .env
    ```
+
+   ([`.env.example`](.env.example) currently just points at the server running locally: `NEXT_PUBLIC_SERVER_URL=http://localhost:5000`.)
 
 4. **Start the dev server:**
 
