@@ -5,11 +5,18 @@ import { Link, Typography } from '@mui/material';
 import useHome from '@/app/hooks/useHome';
 import AuthForm from '@/app/components/AuthForm/AuthForm';
 import EditModal from '@/app/components/EditModal/EditModal';
+import Loader from '@/app/components/Loader/Loader';
 
 import styles from '../../styles/Home.module.scss';
 
 const HomeView = () => {
-  const { showAuthBanner, authMode, openAuthModal, closeAuthModal } = useHome();
+  const {
+    showAuthBanner,
+    authLoading,
+    authMode,
+    openAuthModal,
+    closeAuthModal,
+  } = useHome();
 
   return (
     <main>
@@ -20,27 +27,31 @@ const HomeView = () => {
         <Typography className={styles.subtitle} variant="h5" component="h2">
           Best tracks are gathered here!
         </Typography>
-        {showAuthBanner && (
-          <Typography className={styles.auth_banner} variant="body1">
-            Please{' '}
-            <Link
-              component="button"
-              type="button"
-              onClick={() => openAuthModal('registration')}
-            >
-              register
-            </Link>
-            /
-            <Link
-              component="button"
-              type="button"
-              onClick={() => openAuthModal('login')}
-            >
-              login
-            </Link>{' '}
-            if you want to see list of other users, upload and edit albums and
-            tracks.
-          </Typography>
+        {authLoading ? (
+          <Loader />
+        ) : (
+          showAuthBanner && (
+            <Typography className={styles.auth_banner} variant="body1">
+              Please{' '}
+              <Link
+                component="button"
+                type="button"
+                onClick={() => openAuthModal('registration')}
+              >
+                register
+              </Link>
+              /
+              <Link
+                component="button"
+                type="button"
+                onClick={() => openAuthModal('login')}
+              >
+                login
+              </Link>{' '}
+              if you want to see list of other users, upload and edit albums and
+              tracks.
+            </Typography>
+          )
         )}
       </div>
       {authMode && (

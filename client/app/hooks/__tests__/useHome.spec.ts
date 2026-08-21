@@ -27,6 +27,14 @@ describe('useHome', () => {
     expect(result.current.showAuthBanner).toBe(false);
   });
 
+  it('exposes authLoading so the view can render a loading state', () => {
+    mockedUseAuth.mockReturnValue({ isActivated: false, loading: true });
+
+    const { result } = renderHook(() => useHome());
+
+    expect(result.current.authLoading).toBe(true);
+  });
+
   it('hides the auth banner when the user is activated', () => {
     mockedUseAuth.mockReturnValue({ isActivated: true, loading: false });
 

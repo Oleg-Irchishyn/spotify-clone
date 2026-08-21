@@ -17,7 +17,13 @@ const useHome = () => {
     setAuthMode(null);
   };
 
-  return { showAuthBanner, authMode, openAuthModal, closeAuthModal };
+  return {
+    showAuthBanner,
+    authLoading: loading,
+    authMode,
+    openAuthModal,
+    closeAuthModal,
+  };
 };
 
 export default useHome;

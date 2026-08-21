@@ -26,6 +26,7 @@ describe('HomeView', () => {
   it('shows the auth banner with register/login links when showAuthBanner is true', () => {
     mockedUseHome.mockReturnValue({
       showAuthBanner: true,
+      authLoading: false,
       authMode: null,
       openAuthModal: jest.fn(),
       closeAuthModal: jest.fn(),
@@ -43,6 +44,7 @@ describe('HomeView', () => {
   it('hides the banner when showAuthBanner is false', () => {
     mockedUseHome.mockReturnValue({
       showAuthBanner: false,
+      authLoading: false,
       authMode: null,
       openAuthModal: jest.fn(),
       closeAuthModal: jest.fn(),
@@ -55,10 +57,28 @@ describe('HomeView', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('shows a loader instead of the banner while the auth check is loading', () => {
+    mockedUseHome.mockReturnValue({
+      showAuthBanner: false,
+      authLoading: true,
+      authMode: null,
+      openAuthModal: jest.fn(),
+      closeAuthModal: jest.fn(),
+    });
+
+    render(<HomeView />);
+
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    expect(
+      screen.queryByText(/if you want to see list of other users/),
+    ).not.toBeInTheDocument();
+  });
+
   it('opens the registration modal when "register" is clicked', async () => {
     const openAuthModal = jest.fn();
     mockedUseHome.mockReturnValue({
       showAuthBanner: true,
+      authLoading: false,
       authMode: null,
       openAuthModal,
       closeAuthModal: jest.fn(),
@@ -74,6 +94,7 @@ describe('HomeView', () => {
     const openAuthModal = jest.fn();
     mockedUseHome.mockReturnValue({
       showAuthBanner: true,
+      authLoading: false,
       authMode: null,
       openAuthModal,
       closeAuthModal: jest.fn(),
@@ -88,6 +109,7 @@ describe('HomeView', () => {
   it('does not render the modal when authMode is null', () => {
     mockedUseHome.mockReturnValue({
       showAuthBanner: false,
+      authLoading: false,
       authMode: null,
       openAuthModal: jest.fn(),
       closeAuthModal: jest.fn(),
@@ -101,6 +123,7 @@ describe('HomeView', () => {
   it('renders the Login modal when authMode is "login"', () => {
     mockedUseHome.mockReturnValue({
       showAuthBanner: false,
+      authLoading: false,
       authMode: 'login',
       openAuthModal: jest.fn(),
       closeAuthModal: jest.fn(),
@@ -115,6 +138,7 @@ describe('HomeView', () => {
   it('renders the Registration modal when authMode is "registration"', () => {
     mockedUseHome.mockReturnValue({
       showAuthBanner: false,
+      authLoading: false,
       authMode: 'registration',
       openAuthModal: jest.fn(),
       closeAuthModal: jest.fn(),
