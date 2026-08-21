@@ -111,10 +111,16 @@ export class AuthController {
   }
 
   private getCookieOptions(): CookieOptions {
+    const isProduction = process.env.NODE_ENV === 'production';
+
     return {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProduction,
+      // Client and server are on different sites in production
+      // (github.io vs. onrender.com), so the cookie must be sent
+      // cross-site. SameSite=None requires Secure, which only
+      // holds in production (both origins are HTTPS there).
+      sameSite: isProduction ? 'none' : 'lax',
     };
   }
 
