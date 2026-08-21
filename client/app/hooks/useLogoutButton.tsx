@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 
 import { useActions } from './useActions';
@@ -7,6 +7,7 @@ import { ROUTES } from '../constants/routes';
 
 const useLogoutButton = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { isActivated } = useAuth();
   const { logout } = useActions();
 
@@ -24,7 +25,9 @@ const useLogoutButton = () => {
   const handleConfirm = () => {
     logout();
     setIsConfirmOpen(false);
-    router.push(ROUTES.HOME);
+    if (pathname !== ROUTES.HOME) {
+      router.push(ROUTES.HOME);
+    }
   };
 
   return {
