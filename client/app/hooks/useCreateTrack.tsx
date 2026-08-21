@@ -7,6 +7,7 @@ import useInput from './useInput';
 import { useTypedSelector } from './useTypedSelector';
 import FileUpload from '../components/FileUpload/FileUpload';
 import TrackCreationForm from '../components/TrackCreationForm/TrackCreationForm';
+import { extractErrorMessage } from '../utils/extractErrorMessage';
 import $api from '../lib/http';
 import { ROUTES } from '../constants/routes';
 
@@ -52,7 +53,7 @@ const useCreateTrack = () => {
       await $api.post('/tracks', formData);
       router.push(ROUTES.TRACKS);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       showAlert(message);
     }
   };

@@ -8,7 +8,7 @@ interface ITrack {
   _id: string;
   name: string;
   artist: string;
-  text: string;
+  text?: string;
   listens: number;
   audio: string;
   picture: string;

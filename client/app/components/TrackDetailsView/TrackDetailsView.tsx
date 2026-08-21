@@ -65,14 +65,16 @@ const TrackDetailsView = ({ id }: Readonly<TrackDetailsViewProps>) => {
         </div>
       </div>
 
-      <section className={styles.section}>
-        <Typography variant="h6" className={styles.section_title}>
-          Lyrics
-        </Typography>
-        <Typography variant="body1" className={styles.lyrics}>
-          {track.text}
-        </Typography>
-      </section>
+      {track.text && (
+        <section className={styles.section}>
+          <Typography variant="h6" className={styles.section_title}>
+            Lyrics
+          </Typography>
+          <Typography variant="body1" className={styles.lyrics}>
+            {track.text}
+          </Typography>
+        </section>
+      )}
 
       <section className={styles.section}>
         <Typography variant="h6" className={styles.section_title}>

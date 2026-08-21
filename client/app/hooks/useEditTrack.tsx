@@ -11,7 +11,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
 
   const name = useInput(track.name);
   const artist = useInput(track.artist);
-  const text = useInput(track.text);
+  const text = useInput(track.text ?? '');
   const [picture, setPicture] = useState<File>();
   const [audio, setAudio] = useState<File>();
   const [albumId, setAlbumId] = useState(track.album ?? '');
@@ -27,7 +27,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
   const isDirty =
     name.value !== track.name ||
     artist.value !== track.artist ||
-    text.value !== track.text ||
+    text.value !== (track.text ?? '') ||
     albumId !== (track.album ?? '') ||
     picture !== undefined ||
     audio !== undefined;

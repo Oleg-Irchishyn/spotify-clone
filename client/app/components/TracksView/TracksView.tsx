@@ -40,7 +40,7 @@ const TracksView = () => {
               <Typography className={styles.title} variant="h3">
                 Tracklist
               </Typography>
-              {!showEmptyState && isActivated && (
+              {isActivated && (
                 <Button onClick={handleTrackUpload} variant="contained">
                   Upload
                 </Button>
@@ -54,11 +54,11 @@ const TracksView = () => {
               />
             )}
           </Box>
+          <Search query={query} onChange={handleSearch} />
           {showEmptyState ? (
             <EmptyState message="No tracks found." />
           ) : (
             <>
-              <Search query={query} onChange={handleSearch} />
               <TrackList tracks={tracks} loading={loading} />
               <TracksPagination
                 page={page}

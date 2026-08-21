@@ -20,11 +20,12 @@ export class Track {
   artist: string;
 
   @ApiProperty({
+    required: false,
     example: 'Is this the real life...',
     description: 'Track lyrics/text',
   })
   @Prop()
-  text: string;
+  text?: string;
 
   @ApiProperty({
     example: 0,

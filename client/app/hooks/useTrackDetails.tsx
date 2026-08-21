@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useActions } from './useActions';
 import useAuth from './useAuth';
 import useInput from './useInput';
+import { extractErrorMessage } from '../utils/extractErrorMessage';
 import { resolveAssetUrl } from '../utils/resolveAssetUrl';
 import $api from '../lib/http';
 import { IComment, ITrack } from '../types/tracks';
@@ -35,7 +36,7 @@ const useTrackDetails = (trackId: string) => {
         if (axios.isCancel(error)) {
           return;
         }
-        const message = error instanceof Error ? error.message : 'Server error';
+        const message = extractErrorMessage(error);
         showAlert(message);
       } finally {
         if (!controller.signal.aborted) {
@@ -69,7 +70,7 @@ const useTrackDetails = (trackId: string) => {
       username.reset();
       commentText.reset();
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       showAlert(message);
     }
   };

@@ -5,8 +5,12 @@ jest.mock('../useAuth', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}));
 
 import { act, renderHook } from '@testing-library/react';
+import { useRouter } from 'next/navigation';
 
 import { useActions } from '../useActions';
 import useAuth from '../useAuth';
@@ -14,15 +18,18 @@ import useLogoutButton from '../useLogoutButton';
 
 const mockedUseActions = useActions as jest.Mock;
 const mockedUseAuth = useAuth as unknown as jest.Mock;
+const mockedUseRouter = useRouter as jest.Mock;
 
 describe('useLogoutButton', () => {
   const logout = jest.fn();
   const stopPropagation = jest.fn();
+  const push = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockedUseActions.mockReturnValue({ logout });
     mockedUseAuth.mockReturnValue({ isActivated: true });
+    mockedUseRouter.mockReturnValue({ push });
   });
 
   it('exposes isActivated from useAuth', () => {
@@ -54,7 +61,7 @@ describe('useLogoutButton', () => {
     expect(logout).not.toHaveBeenCalled();
   });
 
-  it('handleConfirm logs out and closes the confirmation', () => {
+  it('handleConfirm logs out, closes the confirmation, and redirects home', () => {
     const { result } = renderHook(() => useLogoutButton());
 
     act(() => {
@@ -64,5 +71,6 @@ describe('useLogoutButton', () => {
 
     expect(logout).toHaveBeenCalled();
     expect(result.current.isConfirmOpen).toBe(false);
+    expect(push).toHaveBeenCalledWith('/');
   });
 });

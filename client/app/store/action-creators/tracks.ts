@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 
+import { extractErrorMessage } from '@/app/utils/extractErrorMessage';
 import { resolveAssetUrl } from '@/app/utils/resolveAssetUrl';
 import $api from '@/app/lib/http';
 import { AlertAction } from '@/app/types/alert';
@@ -31,7 +32,7 @@ const fetchAndDispatchTracks = (
       });
     })
     .catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       dispatch({ type: TrackActionTypes.FETCH_TRACKS_ERROR, payload: message });
       dispatch(showAlert(message));
     });
@@ -71,7 +72,7 @@ export const deleteTrack = (id: string) => {
       await $api.delete(`/tracks/${id}`);
       dispatch({ type: TrackActionTypes.DELETE_TRACK, payload: id });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       dispatch(showAlert(message));
     }
   };
@@ -99,7 +100,7 @@ export const updateTrack = (id: string, formData: FormData) => {
 
       dispatch({ type: TrackActionTypes.UPDATE_TRACK, payload: track });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       dispatch(showAlert(message));
     }
   };

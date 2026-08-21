@@ -88,7 +88,7 @@ describe('AlbumsView', () => {
     expect(handleAlbumUpload).toHaveBeenCalled();
   });
 
-  it('hides the Upload button even when activated if showing the empty state', () => {
+  it('still shows the Upload button when activated and showing the empty state', () => {
     mockedUseAlbums.mockReturnValue({
       ...baseHook,
       isActivated: true,
@@ -98,7 +98,7 @@ describe('AlbumsView', () => {
     render(<AlbumsView />);
 
     expect(
-      screen.queryByRole('button', { name: 'Upload' }),
-    ).not.toBeInTheDocument();
+      screen.getByRole('button', { name: 'Upload' }),
+    ).toBeInTheDocument();
   });
 });

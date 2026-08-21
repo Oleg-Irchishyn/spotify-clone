@@ -27,10 +27,16 @@ describe('AlbumList', () => {
     expect(screen.getAllByTestId('album-item')).toHaveLength(2);
   });
 
-  it('renders skeleton placeholders while loading', () => {
+  it('renders a single skeleton placeholder while loading with no known albums yet', () => {
     render(<AlbumList albums={[]} loading />);
 
-    expect(screen.getAllByTestId('album-skeleton').length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('album-skeleton')).toHaveLength(1);
     expect(screen.queryByTestId('album-item')).not.toBeInTheDocument();
+  });
+
+  it('renders as many skeletons as the previously known albums while loading', () => {
+    render(<AlbumList albums={albums} loading />);
+
+    expect(screen.getAllByTestId('album-skeleton')).toHaveLength(2);
   });
 });

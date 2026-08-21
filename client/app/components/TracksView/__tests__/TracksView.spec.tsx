@@ -82,6 +82,18 @@ describe('TracksView', () => {
     expect(handleTrackUpload).toHaveBeenCalled();
   });
 
+  it('still shows the Upload button when activated and showing the empty state', () => {
+    mockedUseTracks.mockReturnValue({
+      ...baseHook,
+      isActivated: true,
+      tracks: [],
+    });
+
+    render(<TracksView />);
+
+    expect(screen.getByRole('button', { name: 'Upload' })).toBeInTheDocument();
+  });
+
   it('does not show the active album chip when there is no active album', () => {
     render(<TracksView />);
 

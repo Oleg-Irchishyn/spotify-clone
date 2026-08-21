@@ -6,6 +6,7 @@ import { useActions } from './useActions';
 import useInput from './useInput';
 import AlbumCreationForm from '../components/AlbumCreationForm/AlbumCreationForm';
 import FileUpload from '../components/FileUpload/FileUpload';
+import { extractErrorMessage } from '../utils/extractErrorMessage';
 import $api from '../lib/http';
 import { ROUTES } from '../constants/routes';
 
@@ -34,7 +35,7 @@ const useCreateAlbum = () => {
       await $api.post('/album', formData);
       router.push(ROUTES.ALBUMS);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       showAlert(message);
     }
   };

@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 
+import { extractErrorMessage } from '@/app/utils/extractErrorMessage';
 import { resolveAssetUrl } from '@/app/utils/resolveAssetUrl';
 import $api from '@/app/lib/http';
 import { AlbumAction, AlbumActionTypes, IAlbum } from '@/app/types/albums';
@@ -35,7 +36,7 @@ export const fetchAlbums = (
         });
       })
       .catch((error: unknown) => {
-        const message = error instanceof Error ? error.message : 'Server error';
+        const message = extractErrorMessage(error);
         dispatch({
           type: AlbumActionTypes.FETCH_ALBUMS_ERROR,
           payload: message,
@@ -76,7 +77,7 @@ export const deleteAlbum = (id: string) => {
       await $api.delete(`/album/${id}`);
       dispatch({ type: AlbumActionTypes.DELETE_ALBUM, payload: id });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       dispatch(showAlert(message));
     }
   };
@@ -91,7 +92,7 @@ export const updateAlbum = (id: string, formData: FormData) => {
         payload: resolveAlbumAssetUrl(response.data),
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Server error';
+      const message = extractErrorMessage(error);
       dispatch(showAlert(message));
     }
   };

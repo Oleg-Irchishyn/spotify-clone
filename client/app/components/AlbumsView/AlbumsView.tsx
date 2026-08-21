@@ -38,22 +38,22 @@ const AlbumsView = () => {
               <Typography className={styles.title} variant="h3">
                 Album lists
               </Typography>
-              {!showEmptyState && isActivated && (
+              {isActivated && (
                 <Button onClick={handleAlbumUpload} variant="contained">
                   Upload
                 </Button>
               )}
             </Grid>
           </Box>
+          <Search
+            query={query}
+            onChange={handleSearch}
+            placeholder="Search Albums..."
+          />
           {showEmptyState ? (
             <EmptyState message="No albums found." />
           ) : (
             <>
-              <Search
-                query={query}
-                onChange={handleSearch}
-                placeholder="Search Albums..."
-              />
               <AlbumList albums={albums} loading={loading} />
               <AlbumsPagination
                 page={page}

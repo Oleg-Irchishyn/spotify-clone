@@ -35,10 +35,16 @@ describe('TrackList', () => {
     expect(screen.getAllByTestId('track-item')).toHaveLength(1);
   });
 
-  it('renders skeleton placeholders while loading', () => {
+  it('renders a single skeleton placeholder while loading with no known tracks yet', () => {
     render(<TrackList tracks={[]} loading />);
 
-    expect(screen.getAllByTestId('track-skeleton').length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('track-skeleton')).toHaveLength(1);
     expect(screen.queryByTestId('track-item')).not.toBeInTheDocument();
+  });
+
+  it('renders as many skeletons as the previously known tracks while loading', () => {
+    render(<TrackList tracks={[...tracks, ...tracks, ...tracks]} loading />);
+
+    expect(screen.getAllByTestId('track-skeleton')).toHaveLength(3);
   });
 });

@@ -15,13 +15,13 @@ export class CreateTrackDto {
   @IsNotEmpty({ message: 'Artist cannot be empty' })
   readonly artist: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'Is this the real life...',
     description: 'Track lyrics/text',
   })
   @IsString({ message: 'Should be in string format' })
-  @IsNotEmpty({ message: 'Text cannot be empty' })
-  readonly text: string;
+  @IsOptional()
+  readonly text?: string;
 
   @ApiPropertyOptional({
     example: '6a7590b7d7df3f35611c8e7a',
