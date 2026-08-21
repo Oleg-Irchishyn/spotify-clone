@@ -83,3 +83,36 @@ npm run test:e2e
 # lint
 npm run lint
 ```
+
+## Deployment
+
+The server is deployed as a [Render](https://render.com) Web Service. Root Directory is `server` (this is a monorepo).
+
+- **Build Command:** `npm ci && npm run build`
+- **Start Command:** `npm run start:prod`
+
+`start:prod` already sets `NODE_ENV=production` (via `cross-env`) for the running process, so there's no need to set `NODE_ENV` as a Render environment variable — in fact, **don't** set it there: Render passes dashboard env vars into the build step too, and `NODE_ENV=production` during `npm ci` makes npm skip `devDependencies`, which breaks the build (`nest: not found`, since `@nestjs/cli` is a dev dependency).
+
+### Environment variables (Render dashboard → Environment)
+
+Set the same keys as in `.production.env`, with production values:
+
+| Key | Notes |
+|---|---|
+| `MONGO_URI` | production MongoDB connection string |
+| `PRIVATE_KEY` | JWT signing secret |
+| `CLIENT_URL` | the client's origin, e.g. `https://oleg-irchishyn.github.io` — **origin only**, no path, no trailing slash (must match the browser's `Origin` header exactly for CORS to allow it) |
+
+`PORT` should **not** be set manually — Render injects its own and `main.ts` already reads `process.env.PORT`. `SERVER_URL` isn't read anywhere in the server code, so it can be skipped too.
+
+### MongoDB Atlas
+
+Add `0.0.0.0/0` to Network Access → IP Access List. Render's standard plans don't have static outbound IPs, so the connection will otherwise time out.
+
+### ⚠️ Uploaded files don't persist on the free plan
+
+`FileService` writes uploaded audio/pictures to `server/static` on local disk, served via `ServeStaticModule`. Render's free instance type has **no persistent disk** — every spin-down/restart or redeploy boots a fresh filesystem, so uploaded tracks and pictures get wiped. This is fine for demoing, but real persistence requires either a paid Render Disk or moving uploads to external object storage (e.g. Cloudflare R2, S3-compatible).
+
+### Free plan cold starts
+
+Free instances spin down after ~15 minutes of inactivity; the next request can take 30–50s while it wakes back up.

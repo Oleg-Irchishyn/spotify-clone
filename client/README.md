@@ -78,3 +78,19 @@ npm run test:watch
 # unit tests with coverage
 npm run test:cov
 ```
+
+## Deployment
+
+The client is deployed as a static export to [GitHub Pages](https://pages.github.com), live at **https://oleg-irchishyn.github.io/spotify-clone/**. Deploys run automatically via [`.github/workflows/deploy-client.yml`](../.github/workflows/deploy-client.yml) on every push to `main` that touches `client/**`, or manually via **Actions → Deploy client to GitHub Pages → Run workflow**.
+
+How it works:
+
+- `next.config.ts` enables `output: 'export'` and `basePath: '/spotify-clone'` only when the `GITHUB_PAGES=true` env var is set (set by the workflow) — local dev and `npm run build` outside CI are unaffected.
+- Because GitHub Pages is fully static, `/tracks/[id]` (server-rendered, per-ID `generateMetadata`) isn't compatible with static export — track IDs are created dynamically by users and can't be pre-rendered at build time. The track details page instead lives at `/tracks/details?id=...` and reads the ID client-side via `useSearchParams`.
+- The workflow builds with `NEXT_PUBLIC_SERVER_URL` set from the `NEXT_PUBLIC_SERVER_URL` **repository variable** (Settings → Secrets and variables → Actions → Variables) — point it at the deployed server's URL (see [server deployment](../server/README.md#deployment)). Since this is a build-time env var, changing it requires re-running the workflow, not just a redeploy.
+
+### One-time setup for a fork/new repo
+
+1. Repo **Settings → Pages → Build and deployment → Source** → select **GitHub Actions**.
+2. Repo **Settings → Secrets and variables → Actions → Variables** → add `NEXT_PUBLIC_SERVER_URL` pointing at the deployed server.
+3. Push to `main` (or run the workflow manually).
