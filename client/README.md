@@ -21,6 +21,7 @@ Spotify Clone is a music-streaming style web app built with [Next.js](https://ne
 - [Axios](https://axios-http.com) for API calls
 - [Sass](https://sass-lang.com) (CSS Modules) for component styles
 - [Jest](https://jestjs.io) + [React Testing Library](https://testing-library.com/react) for unit tests
+- [Playwright](https://playwright.dev) for e2e tests
 
 ## Prerequisites
 
@@ -80,6 +81,27 @@ npm run test:watch
 # unit tests with coverage
 npm run test:cov
 ```
+
+## E2E tests (Playwright)
+
+```bash
+# run all e2e tests headless (auto-starts `npm run dev` if nothing is
+# already listening on :3000)
+npm run test:e2e
+
+# smoke subset only (tests tagged @smoke) — the fast pass for CI
+npm run test:e2e:smoke
+
+# interactive UI mode — step through tests, inspect the DOM/network
+npm run test:e2e:ui
+
+# headed (visible browser window)
+npm run test:e2e:headed
+```
+
+Specs live in [`e2e/`](e2e). `playwright.config.ts` starts the Next dev server for you (`reuseExistingServer` when not in CI, so it'll reuse a server you already have running), so no separate setup is needed to run them. The current specs (homepage, navigation) only exercise the client shell and don't require the [server](../server) to be running — pages fetch data client-side and degrade to an empty/error state without crashing. Specs that need real data (auth, uploading a track, etc.) will need the server + MongoDB running too.
+
+Only Chromium is installed locally (`npx playwright install chromium`); run `npx playwright install` for the full browser matrix if you add cross-browser projects.
 
 ## Deployment
 
