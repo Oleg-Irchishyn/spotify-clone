@@ -34,7 +34,9 @@ const useNavbar = () => {
   };
 
   const handleSelectMenuItem = (path: string) => {
-    router.push(path);
+    if (path !== pathname) {
+      router.push(path);
+    }
     handleDrawerClose();
   };
 

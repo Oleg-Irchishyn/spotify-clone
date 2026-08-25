@@ -97,8 +97,6 @@ describe('AlbumsView', () => {
 
     render(<AlbumsView />);
 
-    expect(
-      screen.getByRole('button', { name: 'Upload' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Upload' })).toBeInTheDocument();
   });
 });

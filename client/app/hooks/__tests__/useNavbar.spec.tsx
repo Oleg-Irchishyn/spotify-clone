@@ -94,6 +94,17 @@ describe('useNavbar', () => {
     expect(result.current.open).toBe(false);
   });
 
+  it('handleSelectMenuItem closes the drawer without navigating when already on that route', () => {
+    mockedUsePathname.mockReturnValue(ROUTES.HOME);
+    const { result } = renderHook(() => useNavbar());
+
+    act(() => result.current.handleDrawerOpen());
+    act(() => result.current.handleSelectMenuItem(ROUTES.HOME));
+
+    expect(push).not.toHaveBeenCalled();
+    expect(result.current.open).toBe(false);
+  });
+
   it('closes the drawer on an outside click while open', () => {
     const { result } = renderHook(() => useNavbar());
 

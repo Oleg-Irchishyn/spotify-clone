@@ -55,15 +55,15 @@ describe('useEditAlbum', () => {
     expect(result.current.isDirty).toBe(true);
   });
 
-  it('handleSubmit updates the album with a FormData payload and closes', () => {
+  it('handleSubmit updates the album with a FormData payload and closes', async () => {
     const { result } = renderHook(() => useEditAlbum(album, onClose));
 
     act(() => result.current.name.onChange(change('New name')));
 
     const preventDefault = jest.fn();
-    act(() => {
-      result.current.handleSubmit({ preventDefault } as unknown as FormEvent);
-    });
+    await act(() =>
+      result.current.handleSubmit({ preventDefault } as unknown as FormEvent),
+    );
 
     expect(preventDefault).toHaveBeenCalled();
     expect(updateAlbum).toHaveBeenCalledWith('id1', expect.any(FormData));
@@ -71,6 +71,7 @@ describe('useEditAlbum', () => {
     expect(formData.get('name')).toBe('New name');
     expect(formData.get('author')).toBe('B');
     expect(onClose).toHaveBeenCalled();
+    expect(result.current.isSaving).toBe(false);
   });
 
   it('includes the picture in the FormData when one was selected', () => {

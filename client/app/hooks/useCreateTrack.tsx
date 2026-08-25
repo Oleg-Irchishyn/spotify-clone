@@ -20,6 +20,7 @@ const useCreateTrack = () => {
   const [picture, setPicture] = useState<File>();
   const [audio, setAudio] = useState<File>();
   const [albumId, setAlbumId] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const name = useInput('');
   const artist = useInput('');
@@ -49,16 +50,23 @@ const useCreateTrack = () => {
       formData.append('album', albumId);
     }
 
+    setSubmitting(true);
     try {
       await $api.post('/tracks', formData);
       router.push(ROUTES.TRACKS);
     } catch (error) {
       const message = extractErrorMessage(error);
       showAlert(message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleNextStep = () => {
+    if (submitting) {
+      return;
+    }
+
     if (activeStep !== 2) {
       setActiveStep((prev) => prev + 1);
       return;
@@ -106,6 +114,7 @@ const useCreateTrack = () => {
 
   return {
     activeStep,
+    submitting,
     handleNextStep,
     handlePrevStep,
     renderStepContent,

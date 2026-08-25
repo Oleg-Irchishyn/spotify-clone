@@ -28,6 +28,7 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
     handleAlbumChange,
     albums,
     isDirty,
+    isSaving,
     handleSubmit,
   } = useEditTrack(track, onClose);
 
@@ -90,6 +91,7 @@ const EditTrackForm: FC<Readonly<EditTrackFormProps>> = ({
       onSubmit={handleSubmit}
       onCancel={onClose}
       isSaveDisabled={!isDirty}
+      loading={isSaving}
     />
   );
 };

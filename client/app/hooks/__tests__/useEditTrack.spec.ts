@@ -74,22 +74,23 @@ describe('useEditTrack', () => {
     expect(result.current.isDirty).toBe(true);
   });
 
-  it('handleSubmit updates the track with a FormData payload and closes', () => {
+  it('handleSubmit updates the track with a FormData payload and closes', async () => {
     const { result } = renderHook(() => useEditTrack(track, onClose));
 
     act(() => result.current.name.onChange(change('New name')));
 
-    act(() => {
+    await act(() =>
       result.current.handleSubmit({
         preventDefault: jest.fn(),
-      } as unknown as FormEvent);
-    });
+      } as unknown as FormEvent),
+    );
 
     expect(updateTrack).toHaveBeenCalledWith('id1', expect.any(FormData));
     const formData = updateTrack.mock.calls[0][1] as FormData;
     expect(formData.get('name')).toBe('New name');
     expect(formData.get('album')).toBe('album1');
     expect(onClose).toHaveBeenCalled();
+    expect(result.current.isSaving).toBe(false);
   });
 
   it('omits the album field when cleared', () => {

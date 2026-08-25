@@ -16,6 +16,7 @@ const useCreateAlbum = () => {
 
   const [activeStep, setActiveStep] = useState(0);
   const [picture, setPicture] = useState<File>();
+  const [submitting, setSubmitting] = useState(false);
 
   const name = useInput('');
   const author = useInput('');
@@ -31,16 +32,23 @@ const useCreateAlbum = () => {
     formData.append('author', author.value);
     formData.append('picture', picture);
 
+    setSubmitting(true);
     try {
       await $api.post('/album', formData);
       router.push(ROUTES.ALBUMS);
     } catch (error) {
       const message = extractErrorMessage(error);
       showAlert(message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleNextStep = () => {
+    if (submitting) {
+      return;
+    }
+
     if (activeStep !== 1) {
       setActiveStep((prev) => prev + 1);
       return;
@@ -72,6 +80,7 @@ const useCreateAlbum = () => {
 
   return {
     activeStep,
+    submitting,
     handleNextStep,
     handlePrevStep,
     renderStepContent,

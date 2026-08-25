@@ -3,6 +3,7 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   confirmLabel?: string;
+  loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }

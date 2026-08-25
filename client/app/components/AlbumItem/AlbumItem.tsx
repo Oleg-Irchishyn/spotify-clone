@@ -17,6 +17,7 @@ const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
     handleAlbumOpen,
     isActivated,
     isDeleteConfirmOpen,
+    isDeleting,
     handleDeleteClick,
     handleDeleteCancel,
     handleDeleteConfirm,
@@ -72,6 +73,7 @@ const AlbumItem: FC<Readonly<AlbumItemProps>> = ({ album }) => {
         open={isDeleteConfirmOpen}
         title="Delete album"
         description={`Are you sure you want to delete "${album.name}"? This action cannot be undone.`}
+        loading={isDeleting}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

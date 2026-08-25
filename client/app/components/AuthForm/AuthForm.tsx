@@ -39,11 +39,14 @@ const AuthForm: FC<Readonly<AuthFormProps>> = ({
         onChange={password.onChange}
       />
       <Grid container className={styles.form_actions}>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose} disabled={submitting}>
+          Cancel
+        </Button>
         <Button
           type="submit"
           variant="contained"
-          disabled={!isValid || submitting}
+          disabled={!isValid}
+          loading={submitting}
         >
           {mode === 'login' ? 'Login' : 'Register'}
         </Button>

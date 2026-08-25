@@ -12,6 +12,7 @@ const useAlbumItem = (album: IAlbum) => {
   const { setActiveAlbum, deleteAlbum } = useActions();
 
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleAlbumOpen = () => {
@@ -28,8 +29,10 @@ const useAlbumItem = (album: IAlbum) => {
     setIsDeleteConfirmOpen(false);
   };
 
-  const handleDeleteConfirm = () => {
-    deleteAlbum(album._id);
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    await deleteAlbum(album._id);
+    setIsDeleting(false);
     setIsDeleteConfirmOpen(false);
   };
 
@@ -46,6 +49,7 @@ const useAlbumItem = (album: IAlbum) => {
     handleAlbumOpen,
     isActivated,
     isDeleteConfirmOpen,
+    isDeleting,
     handleDeleteClick,
     handleDeleteCancel,
     handleDeleteConfirm,

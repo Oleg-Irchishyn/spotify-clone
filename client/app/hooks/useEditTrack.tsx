@@ -15,6 +15,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
   const [picture, setPicture] = useState<File>();
   const [audio, setAudio] = useState<File>();
   const [albumId, setAlbumId] = useState(track.album ?? '');
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     fetchAlbums('', 100, 0);
@@ -32,7 +33,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
     picture !== undefined ||
     audio !== undefined;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -49,7 +50,9 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
       formData.append('album', albumId);
     }
 
-    updateTrack(track._id, formData);
+    setIsSaving(true);
+    await updateTrack(track._id, formData);
+    setIsSaving(false);
     onClose();
   };
 
@@ -65,6 +68,7 @@ const useEditTrack = (track: ITrack, onClose: () => void) => {
     handleAlbumChange,
     albums,
     isDirty,
+    isSaving,
     handleSubmit,
   };
 };

@@ -24,6 +24,7 @@ const useTrack = (track: ITrack) => {
   } = useActions();
 
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const isActive = active?._id === track._id;
@@ -69,8 +70,10 @@ const useTrack = (track: ITrack) => {
     setIsDeleteConfirmOpen(false);
   };
 
-  const handleDeleteConfirm = () => {
-    deleteTrack(track._id);
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    await deleteTrack(track._id);
+    setIsDeleting(false);
     setIsDeleteConfirmOpen(false);
   };
 
@@ -94,6 +97,7 @@ const useTrack = (track: ITrack) => {
     loop,
     handleToggleLoop,
     isDeleteConfirmOpen,
+    isDeleting,
     handleDeleteClick,
     handleDeleteCancel,
     handleDeleteConfirm,

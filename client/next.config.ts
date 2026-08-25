@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   ...(isGithubPages && {
     output: 'export',
     basePath: BASE_PATH,
+    trailingSlash: true,
   }),
   images: isGithubPages
     ? { unoptimized: true }
@@ -19,6 +20,13 @@ const nextConfig: NextConfig = {
             protocol: 'http',
             hostname: 'localhost',
             port: '5000',
+            pathname: '/**',
+          },
+          // Dev typically points at the same database as production, whose
+          // tracks/albums may carry Cloudflare R2 URLs from prod uploads.
+          {
+            protocol: 'https',
+            hostname: '**.r2.dev',
             pathname: '/**',
           },
         ],

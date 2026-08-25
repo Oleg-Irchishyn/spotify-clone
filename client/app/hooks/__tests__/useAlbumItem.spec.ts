@@ -80,16 +80,17 @@ describe('useAlbumItem', () => {
     expect(deleteAlbum).not.toHaveBeenCalled();
   });
 
-  it('handleDeleteConfirm deletes the album and closes the confirmation', () => {
+  it('handleDeleteConfirm deletes the album and closes the confirmation', async () => {
     const { result } = renderHook(() => useAlbumItem(album));
 
     act(() => {
       result.current.handleDeleteClick({ stopPropagation } as never);
     });
-    act(() => result.current.handleDeleteConfirm());
+    await act(() => result.current.handleDeleteConfirm());
 
     expect(deleteAlbum).toHaveBeenCalledWith('id1');
     expect(result.current.isDeleteConfirmOpen).toBe(false);
+    expect(result.current.isDeleting).toBe(false);
   });
 
   it('opens and closes the edit modal', () => {

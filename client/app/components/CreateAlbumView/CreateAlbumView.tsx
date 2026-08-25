@@ -10,8 +10,13 @@ import { ALBUM_STEPS } from '@/app/constants/stepper';
 import styles from '../../styles/CreateAlbumView.module.scss';
 
 const CreateAlbumView = () => {
-  const { activeStep, handleNextStep, handlePrevStep, renderStepContent } =
-    useCreateAlbum();
+  const {
+    activeStep,
+    submitting,
+    handleNextStep,
+    handlePrevStep,
+    renderStepContent,
+  } = useCreateAlbum();
   return (
     <div>
       <BackButton />
@@ -19,10 +24,15 @@ const CreateAlbumView = () => {
         {renderStepContent()}
       </StepWrapper>
       <Grid container className={styles.actions_row}>
-        <Button disabled={activeStep === 0} onClick={handlePrevStep}>
+        <Button
+          disabled={activeStep === 0 || submitting}
+          onClick={handlePrevStep}
+        >
           Back
         </Button>
-        <Button onClick={handleNextStep}>Continue</Button>
+        <Button onClick={handleNextStep} loading={submitting}>
+          Continue
+        </Button>
       </Grid>
     </div>
   );

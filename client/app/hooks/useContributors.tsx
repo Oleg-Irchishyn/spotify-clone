@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { extractErrorMessage } from '../utils/extractErrorMessage';
 import $api from '../lib/http';
 import { IContributor } from '../types/contributor';
 
@@ -12,11 +13,10 @@ const useContributors = () => {
     $api
       .get<IContributor[]>('/users')
       .then((response) => {
-        setContributors(response.data.filter((user) => user.isActivated));
+        setContributors(response.data);
       })
       .catch((err: unknown) => {
-        const message = err instanceof Error ? err.message : 'Server error';
-        setError(message);
+        setError(extractErrorMessage(err));
       })
       .finally(() => setLoading(false));
   }, []);

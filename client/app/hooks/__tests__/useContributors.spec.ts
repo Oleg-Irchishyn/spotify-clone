@@ -25,7 +25,7 @@ describe('useContributors', () => {
     expect(result.current.contributors).toEqual([]);
   });
 
-  it('filters the response to only activated users on success', async () => {
+  it('shows every registered user, regardless of current login status', async () => {
     mockedApi.get.mockResolvedValue({
       data: [
         { _id: '1', email: 'a@test.com', name: 'A', isActivated: true },
@@ -39,6 +39,7 @@ describe('useContributors', () => {
 
     expect(result.current.contributors).toEqual([
       { _id: '1', email: 'a@test.com', name: 'A', isActivated: true },
+      { _id: '2', email: 'b@test.com', name: 'B', isActivated: false },
     ]);
     expect(result.current.error).toBe('');
   });

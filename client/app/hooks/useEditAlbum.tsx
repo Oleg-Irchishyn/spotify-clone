@@ -10,13 +10,14 @@ const useEditAlbum = (album: IAlbum, onClose: () => void) => {
   const name = useInput(album.name);
   const author = useInput(album.author);
   const [picture, setPicture] = useState<File>();
+  const [isSaving, setIsSaving] = useState(false);
 
   const isDirty =
     name.value !== album.name ||
     author.value !== album.author ||
     picture !== undefined;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -26,7 +27,9 @@ const useEditAlbum = (album: IAlbum, onClose: () => void) => {
       formData.append('picture', picture);
     }
 
-    updateAlbum(album._id, formData);
+    setIsSaving(true);
+    await updateAlbum(album._id, formData);
+    setIsSaving(false);
     onClose();
   };
 
@@ -36,6 +39,7 @@ const useEditAlbum = (album: IAlbum, onClose: () => void) => {
     picture,
     setPicture,
     isDirty,
+    isSaving,
     handleSubmit,
   };
 };

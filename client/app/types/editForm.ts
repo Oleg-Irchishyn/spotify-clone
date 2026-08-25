@@ -42,6 +42,7 @@ interface EditFormProps {
   onSubmit: FormEventHandler;
   onCancel: () => void;
   isSaveDisabled?: boolean;
+  loading?: boolean;
 }
 
 export {

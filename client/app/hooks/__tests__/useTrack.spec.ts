@@ -157,7 +157,7 @@ describe('useTrack', () => {
     expect(toggleLoop).toHaveBeenCalled();
   });
 
-  it('delete confirmation flow: open, cancel, and confirm', () => {
+  it('delete confirmation flow: open, cancel, and confirm', async () => {
     const { result } = renderHook(() => useTrack(track));
 
     act(() => {
@@ -172,9 +172,10 @@ describe('useTrack', () => {
     act(() => {
       result.current.handleDeleteClick({ stopPropagation } as never);
     });
-    act(() => result.current.handleDeleteConfirm());
+    await act(() => result.current.handleDeleteConfirm());
     expect(deleteTrack).toHaveBeenCalledWith('id1');
     expect(result.current.isDeleteConfirmOpen).toBe(false);
+    expect(result.current.isDeleting).toBe(false);
   });
 
   it('opens and closes the edit modal', () => {

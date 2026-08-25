@@ -15,7 +15,7 @@ const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
   album,
   onClose,
 }) => {
-  const { name, author, picture, setPicture, isDirty, handleSubmit } =
+  const { name, author, picture, setPicture, isDirty, isSaving, handleSubmit } =
     useEditAlbum(album, onClose);
 
   const fields: EditFieldConfig[] = [
@@ -49,6 +49,7 @@ const EditAlbumForm: FC<Readonly<EditAlbumFormProps>> = ({
       onSubmit={handleSubmit}
       onCancel={onClose}
       isSaveDisabled={!isDirty}
+      loading={isSaving}
     />
   );
 };

@@ -13,6 +13,7 @@ const EditForm: FC<Readonly<EditFormProps>> = ({
   onSubmit,
   onCancel,
   isSaveDisabled,
+  loading = false,
 }) => {
   return (
     <Grid
@@ -75,8 +76,15 @@ const EditForm: FC<Readonly<EditFormProps>> = ({
         );
       })}
       <Grid container className={styles.form_actions}>
-        <Button onClick={onCancel}>Cancel</Button>
-        <Button type="submit" variant="contained" disabled={isSaveDisabled}>
+        <Button onClick={onCancel} disabled={loading}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={isSaveDisabled}
+          loading={loading}
+        >
           Save
         </Button>
       </Grid>

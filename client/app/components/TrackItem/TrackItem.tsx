@@ -25,6 +25,7 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
     loop,
     handleToggleLoop,
     isDeleteConfirmOpen,
+    isDeleting,
     handleDeleteClick,
     handleDeleteCancel,
     handleDeleteConfirm,
@@ -96,6 +97,7 @@ const TrackItem: FC<Readonly<TrackItemProps>> = ({ track }) => {
         open={isDeleteConfirmOpen}
         title="Delete track"
         description={`Are you sure you want to delete "${track.name}"? This action cannot be undone.`}
+        loading={isDeleting}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
