@@ -4,9 +4,12 @@ import { extractErrorMessage } from '@/app/utils/extractErrorMessage';
 import { resolveAssetUrl } from '@/app/utils/resolveAssetUrl';
 import $api from '@/app/lib/http';
 import { AlertAction } from '@/app/types/alert';
+import { PlayerAction } from '@/app/types/player';
 import { ITrack, TrackAction, TrackActionTypes } from '@/app/types/tracks';
+import type { RootState } from '@/app/store';
 
 import { showAlert } from './alert';
+import { setActiveTrack } from './player';
 
 type PaginatedTracksResponse = { tracks: ITrack[]; totalCount: number };
 
@@ -67,10 +70,16 @@ export const searchTracks = (
 };
 
 export const deleteTrack = (id: string) => {
-  return async (dispatch: Dispatch<TrackAction | AlertAction>) => {
+  return async (
+    dispatch: Dispatch<TrackAction | AlertAction | PlayerAction>,
+    getState: () => RootState,
+  ) => {
     try {
       await $api.delete(`/tracks/${id}`);
       dispatch({ type: TrackActionTypes.DELETE_TRACK, payload: id });
+      if (getState().player.active?._id === id) {
+        dispatch(setActiveTrack(null));
+      }
     } catch (error) {
       const message = extractErrorMessage(error);
       dispatch(showAlert(message));

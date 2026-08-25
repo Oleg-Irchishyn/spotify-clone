@@ -10,6 +10,7 @@ jest.mock('@/app/lib/http', () => ({
 
 import $api from '@/app/lib/http';
 import { AlertActionTypes } from '@/app/types/alert';
+import { PlayerActionTypes } from '@/app/types/player';
 import { ITrack, TrackActionTypes } from '@/app/types/tracks';
 
 import {
@@ -103,11 +104,16 @@ describe('searchTracks', () => {
 });
 
 describe('deleteTrack', () => {
+  const getStateWithActive = (activeId: string | null) => () =>
+    ({
+      player: { active: activeId ? { ...track, _id: activeId } : null },
+    }) as never;
+
   it('deletes the track and dispatches DELETE_TRACK on success', async () => {
     mockedApi.delete.mockResolvedValue({});
     const dispatch = jest.fn();
 
-    await deleteTrack('id1')(dispatch);
+    await deleteTrack('id1')(dispatch, getStateWithActive(null));
 
     expect(mockedApi.delete).toHaveBeenCalledWith('/tracks/id1');
     expect(dispatch).toHaveBeenCalledWith({
@@ -116,11 +122,34 @@ describe('deleteTrack', () => {
     });
   });
 
+  it('clears the active player track when the deleted track is playing', async () => {
+    mockedApi.delete.mockResolvedValue({});
+    const dispatch = jest.fn();
+
+    await deleteTrack('id1')(dispatch, getStateWithActive('id1'));
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: PlayerActionTypes.SET_ACTIVE,
+      payload: null,
+    });
+  });
+
+  it('leaves the active player track alone when a different track is deleted', async () => {
+    mockedApi.delete.mockResolvedValue({});
+    const dispatch = jest.fn();
+
+    await deleteTrack('id1')(dispatch, getStateWithActive('id2'));
+
+    expect(dispatch).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: PlayerActionTypes.SET_ACTIVE }),
+    );
+  });
+
   it('dispatches an alert on failure', async () => {
     mockedApi.delete.mockRejectedValue(new Error('Cannot delete'));
     const dispatch = jest.fn();
 
-    await deleteTrack('id1')(dispatch);
+    await deleteTrack('id1')(dispatch, getStateWithActive(null));
 
     expect(dispatch).toHaveBeenCalledWith({
       type: AlertActionTypes.SHOW_ALERT,

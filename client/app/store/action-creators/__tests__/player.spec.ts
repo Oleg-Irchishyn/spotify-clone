@@ -60,6 +60,13 @@ describe('player action creators', () => {
     });
   });
 
+  it('setActiveTrack(null) returns a SET_ACTIVE action clearing the track', () => {
+    expect(setActiveTrack(null)).toEqual({
+      type: PlayerActionTypes.SET_ACTIVE,
+      payload: null,
+    });
+  });
+
   it('toggleLoop() returns a TOGGLE_LOOP action', () => {
     expect(toggleLoop()).toEqual({ type: PlayerActionTypes.TOGGLE_LOOP });
   });

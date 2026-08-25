@@ -165,4 +165,24 @@ describe('useTracks', () => {
 
     expect(result.current.page).toBe(2);
   });
+
+  it('steps back to the last valid page when the current page is emptied out', () => {
+    state.albums.activeAlbumResolved = true;
+    state.tracks.totalCount = 9;
+    const { result, rerender } = renderHook(() => useTracks());
+
+    act(() => {
+      result.current.handlePageChange({} as never, 3);
+    });
+    expect(result.current.page).toBe(3);
+    fetchTracks.mockClear();
+
+    // Deleting the last tracks on page 3 drops totalCount below what page 3
+    // needs, mirroring what the DELETE_TRACK reducer does synchronously.
+    state.tracks.totalCount = 8;
+    rerender();
+
+    expect(result.current.page).toBe(2);
+    expect(fetchTracks).toHaveBeenCalledWith(PAGE_SIZE, PAGE_SIZE, undefined);
+  });
 });

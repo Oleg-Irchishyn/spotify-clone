@@ -247,4 +247,19 @@ describe('usePlayer', () => {
     expect(instances[0].pause).toHaveBeenCalled();
     AudioSpy.mockRestore();
   });
+
+  it('pauses the audio element when the active track is cleared (e.g. deleted)', () => {
+    const { AudioSpy, instances } = spyOnAudio();
+    playerState.active = { _id: 'id1', audio: 'track.mp3' };
+    playerState.pause = false;
+    const { rerender } = renderHook(() => usePlayer());
+    rerender();
+
+    instances[0].pause.mockClear();
+    playerState.active = null;
+    rerender();
+
+    expect(instances[0].pause).toHaveBeenCalled();
+    AudioSpy.mockRestore();
+  });
 });

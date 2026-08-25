@@ -31,7 +31,7 @@ interface PauseAction {
 
 interface SetActiveAction {
   type: PlayerActionTypes.SET_ACTIVE;
-  payload: ITrack;
+  payload: ITrack | null;
 }
 
 interface SetDurationAction {

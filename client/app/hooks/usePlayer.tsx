@@ -62,6 +62,7 @@ const usePlayer = () => {
 
   useEffect(() => {
     if (!active) {
+      audioRef.current?.pause();
       return;
     }
 

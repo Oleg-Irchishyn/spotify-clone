@@ -20,7 +20,7 @@ const setCurrentTime = (payload: number): PlayerAction => ({
   payload,
 });
 
-const setActiveTrack = (payload: ITrack): PlayerAction => ({
+const setActiveTrack = (payload: ITrack | null): PlayerAction => ({
   type: PlayerActionTypes.SET_ACTIVE,
   payload,
 });

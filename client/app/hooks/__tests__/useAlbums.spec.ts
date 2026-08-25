@@ -31,17 +31,24 @@ const mockedUseRouter = useRouter as jest.Mock;
 describe('useAlbums', () => {
   const fetchAlbums = jest.fn();
   const push = jest.fn();
+  let state: {
+    albums: {
+      albums: unknown[];
+      totalCount: number;
+      loading: boolean;
+      error: string;
+    };
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    state = {
+      albums: { albums: [], totalCount: 9, loading: false, error: '' },
+    };
     mockedUseActions.mockReturnValue({ fetchAlbums });
     mockedUseAuth.mockReturnValue({ isActivated: true });
-    mockedUseTypedSelector.mockImplementation((selector) =>
-      selector({
-        albums: { albums: [], totalCount: 9, loading: false, error: '' },
-      }),
-    );
+    mockedUseTypedSelector.mockImplementation((selector) => selector(state));
     mockedUseRouter.mockReturnValue({ push });
   });
 
@@ -68,11 +75,7 @@ describe('useAlbums', () => {
   });
 
   it('pageCount floors at 1 when there are no results', () => {
-    mockedUseTypedSelector.mockImplementation((selector) =>
-      selector({
-        albums: { albums: [], totalCount: 0, loading: false, error: '' },
-      }),
-    );
+    state.albums.totalCount = 0;
 
     const { result } = renderHook(() => useAlbums());
 
@@ -121,6 +124,24 @@ describe('useAlbums', () => {
 
     expect(result.current.page).toBe(1);
     expect(fetchAlbums).toHaveBeenCalledWith('query', PAGE_SIZE, 0);
+  });
+
+  it('steps back to the last valid page when the current page is emptied out', () => {
+    const { result, rerender } = renderHook(() => useAlbums());
+
+    act(() => {
+      result.current.handlePageChange({} as never, 3);
+    });
+    expect(result.current.page).toBe(3);
+    fetchAlbums.mockClear();
+
+    // Deleting the last albums on page 3 drops totalCount below what page 3
+    // needs, mirroring what the DELETE_ALBUM reducer does synchronously.
+    state.albums.totalCount = 8;
+    rerender();
+
+    expect(result.current.page).toBe(2);
+    expect(fetchAlbums).toHaveBeenCalledWith('', PAGE_SIZE, PAGE_SIZE);
   });
 
   it('clears a pending debounce timer when searching again quickly', () => {
