@@ -6,6 +6,10 @@ jest.mock('@/app/components/ThemeToggle/ThemeToggle', () => ({
   __esModule: true,
   default: () => <div data-testid="theme-toggle" />,
 }));
+jest.mock('@/app/components/ApiDocsLink/ApiDocsLink', () => ({
+  __esModule: true,
+  default: () => <div data-testid="api-docs-link" />,
+}));
 jest.mock('@/app/components/LogoutButton/LogoutButton', () => ({
   __esModule: true,
   default: () => <div data-testid="logout-button" />,
@@ -42,10 +46,11 @@ beforeEach(() => {
 });
 
 describe('Navbar', () => {
-  it('renders the theme toggle and logout button', () => {
+  it('renders the theme toggle, API docs link, and logout button', () => {
     render(<Navbar />);
 
     expect(screen.getByTestId('theme-toggle')).toBeInTheDocument();
+    expect(screen.getByTestId('api-docs-link')).toBeInTheDocument();
     expect(screen.getByTestId('logout-button')).toBeInTheDocument();
   });
 

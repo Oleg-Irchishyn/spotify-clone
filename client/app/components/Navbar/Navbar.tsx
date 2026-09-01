@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import useNavbar from '@/app/hooks/useNavbar';
+import ApiDocsLink from '@/app/components/ApiDocsLink/ApiDocsLink';
 import LogoutButton from '@/app/components/LogoutButton/LogoutButton';
 import ThemeToggle from '@/app/components/ThemeToggle/ThemeToggle';
 
@@ -53,6 +54,7 @@ export default function Navbar() {
             Music Platform
           </Typography>
           <ThemeToggle />
+          <ApiDocsLink />
           <LogoutButton />
         </Toolbar>
       </AppBar>
