@@ -1,0 +1,5 @@
+export interface CreateCommentDto {
+  readonly username: string;
+  readonly text: string;
+  readonly trackId: string;
+}
