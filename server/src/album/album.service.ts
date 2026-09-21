@@ -1,5 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import type { Cache } from 'cache-manager';
 import { Model, Types } from 'mongoose';
 
 import { FileType } from 'src/common/enums/file-type.enum';
@@ -18,6 +20,8 @@ export class AlbumService {
     @InjectModel(Track.name)
     private readonly trackModel: Model<TrackDocument>,
     private readonly fileService: FileService,
+    @Inject(CACHE_MANAGER)
+    private readonly cache: Cache,
   ) {}
 
   async create(
@@ -32,6 +36,7 @@ export class AlbumService {
       ...dto,
       picture: picturePath,
     });
+    await this.cache.clear();
     return album;
   }
 
@@ -64,6 +69,7 @@ export class AlbumService {
       await this.fileService.removeFile(existingAlbum.picture);
     }
 
+    await this.cache.clear();
     return updatedAlbum;
   }
 
@@ -72,13 +78,24 @@ export class AlbumService {
     count: number = 10,
     offset: number = 0,
   ): Promise<{ albums: Album[]; totalCount: number }> {
+    const cacheKey = `albums:all:${query}:${count}:${offset}`;
+    const cached = await this.cache.get<{
+      albums: Album[];
+      totalCount: number;
+    }>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const regex = new RegExp(escapeRegExp(query), 'i');
     const filter = { $or: [{ name: regex }, { author: regex }] };
     const [albums, totalCount] = await Promise.all([
       this.albumModel.find(filter).skip(offset).limit(count),
       this.albumModel.countDocuments(filter),
     ]);
-    return { albums, totalCount };
+    const result = { albums, totalCount };
+    await this.cache.set(cacheKey, result);
+    return result;
   }
 
   async getOne(id: string): Promise<Album | null> {
@@ -98,6 +115,7 @@ export class AlbumService {
     if (album.picture) {
       await this.fileService.removeFile(album.picture);
     }
+    await this.cache.clear();
     return album._id;
   }
 }

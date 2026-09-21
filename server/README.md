@@ -12,7 +12,22 @@ cp .env.example .development.env   # fill in MONGO_URI, PRIVATE_KEY, etc.
 npm run start:dev                  # http://localhost:5000, docs at /docs
 ```
 
-Requires Node.js 20+ and a MongoDB instance (local, Docker, or a hosted cluster like MongoDB Atlas). A production run reads the same keys from `.production.env` instead.
+Requires Node.js 20+, a MongoDB instance (local, Docker, or a hosted cluster like MongoDB Atlas), and a Redis instance (see below).
+
+## Redis
+
+Redis backs two independent things here:
+
+- **BullMQ** — `POST /tracks/listen/:id` queues a job instead of writing to Mongo synchronously; a worker in the same process applies the increment atomically (`$inc`), so the HTTP response is instant and concurrent listens can't race each other.
+- **cache-manager** — `GET /tracks`, `GET /tracks/search`, and `GET /album` are cached for 30s (`@nestjs/cache-manager` + `@keyv/redis`, namespaced `spotify-clone` so it's safe on a shared Redis instance). Any track/album create/update/delete clears the cache immediately, so mutations are always reflected right away.
+
+Both are wired from a single `REDIS_URL` env var (default `redis://localhost:6379` if unset). For local dev:
+
+```bash
+docker compose up -d   # starts redis:8-alpine on localhost:6379
+```
+
+In production, point `REDIS_URL` at your own Redis instance (Render/Upstash/etc.) — this isn't provisioned for you.
 
 ## Commands
 
@@ -34,6 +49,7 @@ Don't set `NODE_ENV` on Render — `start:prod` already sets it, and setting it 
 |---|---|
 | `MONGO_URI`, `PRIVATE_KEY` | Mongo connection string, JWT signing secret |
 | `CLIENT_URL` | client's **origin only**, e.g. `https://oleg-irchishyn.github.io` — no path/trailing slash, must match the browser's `Origin` header exactly for CORS |
+| `REDIS_URL` | your own Redis instance (Render/Upstash/etc.) — backs the track-listens queue and the response cache, see [Redis](#redis) |
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL` | Cloudflare R2 (see below) |
 
 Skip `PORT` (Render injects its own) and `SERVER_URL` (unused in the server code).

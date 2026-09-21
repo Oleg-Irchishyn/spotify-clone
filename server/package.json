@@ -20,6 +20,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1115.0",
+    "@keyv/redis": "^5.1.6",
+    "@nestjs/bullmq": "^12.0.0",
+    "@nestjs/cache-manager": "^12.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
@@ -29,10 +32,14 @@
     "@nestjs/serve-static": "^5.0.5",
     "@nestjs/swagger": "^11.4.6",
     "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.8",
+    "cache-manager": "^7.2.9",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
+    "ioredis": "^6.0.0",
+    "keyv": "^5.6.0",
     "mongoose": "^9.9.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
@@ -79,6 +86,9 @@
       "<rootDir>/.."
     ],
     "testRegex": ".*\\.spec\\.ts$",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(@nestjs/bullmq|@nestjs/bull-shared|@nestjs/cache-manager)/)"
+    ],
     "moduleNameMapper": {
       "^uuid$": "<rootDir>/../test/__mocks__/uuid.ts"
     },

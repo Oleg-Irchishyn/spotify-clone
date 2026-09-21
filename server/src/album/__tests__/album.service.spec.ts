@@ -1,3 +1,4 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -21,6 +22,7 @@ describe('AlbumService', () => {
   };
   let trackModel: { updateMany: jest.Mock };
   let fileService: { createFile: jest.Mock; removeFile: jest.Mock };
+  let cache: { get: jest.Mock; set: jest.Mock; clear: jest.Mock };
 
   const mockPicture = {
     originalname: 'a.jpg',
@@ -38,6 +40,11 @@ describe('AlbumService', () => {
     };
     trackModel = { updateMany: jest.fn().mockResolvedValue(undefined) };
     fileService = { createFile: jest.fn(), removeFile: jest.fn() };
+    cache = {
+      get: jest.fn().mockResolvedValue(undefined),
+      set: jest.fn(),
+      clear: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -45,6 +52,7 @@ describe('AlbumService', () => {
         { provide: getModelToken(Album.name), useValue: albumModel },
         { provide: getModelToken(Track.name), useValue: trackModel },
         { provide: FileService, useValue: fileService },
+        { provide: CACHE_MANAGER, useValue: cache },
       ],
     }).compile();
 
@@ -64,6 +72,7 @@ describe('AlbumService', () => {
     expect(albumModel.create).toHaveBeenCalledWith(
       expect.objectContaining({ picture: 'image/1.jpg' }),
     );
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('update() throws NotFoundException when the album does not exist', async () => {
@@ -101,6 +110,7 @@ describe('AlbumService', () => {
       expect.objectContaining({ picture: 'image/new.jpg' }),
       { returnDocument: 'after' },
     );
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('delete() throws NotFoundException when the album does not exist', async () => {
@@ -121,6 +131,7 @@ describe('AlbumService', () => {
 
     expect(fileService.removeFile).toHaveBeenCalledWith('image/1.jpg');
     expect(result).toBe('id1');
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('delete() unlinks tracks that referenced the deleted album', async () => {
@@ -166,6 +177,17 @@ describe('AlbumService', () => {
     expect(queryMock.skip).toHaveBeenCalledWith(10);
     expect(queryMock.limit).toHaveBeenCalledWith(5);
     expect(result).toEqual({ albums: [{ name: 'A' }], totalCount: 1 });
+    expect(cache.set).toHaveBeenCalledWith(expect.any(String), result);
+  });
+
+  it('getAll() returns the cached value without querying Mongo on a cache hit', async () => {
+    const cached = { albums: [{ name: 'Cached' }], totalCount: 1 };
+    cache.get.mockResolvedValue(cached);
+
+    const result = await service.getAll('a.b', 5, 10);
+
+    expect(result).toEqual(cached);
+    expect(albumModel.find).not.toHaveBeenCalled();
   });
 
   it('getOne() finds the album by id', async () => {

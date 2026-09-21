@@ -1,5 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bullmq';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Queue } from 'bullmq';
+import type { Cache } from 'cache-manager';
 import { Model, Types } from 'mongoose';
 
 import { FileType } from 'src/common/enums/file-type.enum';
@@ -19,6 +23,10 @@ export class TrackService {
     @InjectModel(Comment.name)
     private readonly commentModel: Model<CommentDocument>,
     private readonly fileService: FileService,
+    @InjectQueue('track-listens')
+    private readonly listensQueue: Queue,
+    @Inject(CACHE_MANAGER)
+    private readonly cache: Cache,
   ) {}
   async create(
     dto: CreateTrackDto,
@@ -36,6 +44,7 @@ export class TrackService {
       picture: picturePath,
       audio: audioPath,
     });
+    await this.cache.clear();
     return track;
   }
 
@@ -78,6 +87,7 @@ export class TrackService {
       await this.fileService.removeFile(existingTrack.audio);
     }
 
+    await this.cache.clear();
     return updatedTrack;
   }
 
@@ -86,12 +96,23 @@ export class TrackService {
     offset: number = 0,
     albumId?: string,
   ): Promise<{ tracks: Track[]; totalCount: number }> {
+    const cacheKey = `tracks:all:${count}:${offset}:${albumId ?? ''}`;
+    const cached = await this.cache.get<{
+      tracks: Track[];
+      totalCount: number;
+    }>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const filter = albumId ? { album: albumId } : {};
     const [tracks, totalCount] = await Promise.all([
       this.trackModel.find(filter).skip(offset).limit(count),
       this.trackModel.countDocuments(filter),
     ]);
-    return { tracks, totalCount };
+    const result = { tracks, totalCount };
+    await this.cache.set(cacheKey, result);
+    return result;
   }
 
   async getOne(id: string): Promise<Track | null> {
@@ -110,6 +131,7 @@ export class TrackService {
     if (track.audio) {
       await this.fileService.removeFile(track.audio);
     }
+    await this.cache.clear();
     return track._id;
   }
 
@@ -122,11 +144,7 @@ export class TrackService {
   }
 
   async listen(id: string): Promise<void> {
-    const track = await this.trackModel.findById(id);
-    if (track) {
-      track.listens += 1;
-      await track.save();
-    }
+    await this.listensQueue.add('increment', { id });
   }
 
   async search(
@@ -135,6 +153,15 @@ export class TrackService {
     offset: number = 0,
     albumId?: string,
   ): Promise<{ tracks: Track[]; totalCount: number }> {
+    const cacheKey = `tracks:search:${query}:${count}:${offset}:${albumId ?? ''}`;
+    const cached = await this.cache.get<{
+      tracks: Track[];
+      totalCount: number;
+    }>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const regex = new RegExp(escapeRegExp(query), 'i');
     const filter = {
       $or: [{ name: regex }, { artist: regex }, { text: regex }],
@@ -144,6 +171,8 @@ export class TrackService {
       this.trackModel.find(filter).skip(offset).limit(count),
       this.trackModel.countDocuments(filter),
     ]);
-    return { tracks, totalCount };
+    const result = { tracks, totalCount };
+    await this.cache.set(cacheKey, result);
+    return result;
   }
 }

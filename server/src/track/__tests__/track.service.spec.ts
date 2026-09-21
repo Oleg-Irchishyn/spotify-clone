@@ -1,3 +1,5 @@
+import { getQueueToken } from '@nestjs/bullmq';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -28,6 +30,8 @@ describe('TrackService', () => {
   };
   let commentModel: { create: jest.Mock };
   let fileService: { createFile: jest.Mock; removeFile: jest.Mock };
+  let listensQueue: { add: jest.Mock };
+  let cache: { get: jest.Mock; set: jest.Mock; clear: jest.Mock };
 
   const mockFile = {
     originalname: 'a.jpg',
@@ -45,6 +49,12 @@ describe('TrackService', () => {
     };
     commentModel = { create: jest.fn() };
     fileService = { createFile: jest.fn(), removeFile: jest.fn() };
+    listensQueue = { add: jest.fn() };
+    cache = {
+      get: jest.fn().mockResolvedValue(undefined),
+      set: jest.fn(),
+      clear: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -52,6 +62,8 @@ describe('TrackService', () => {
         { provide: getModelToken(Track.name), useValue: trackModel },
         { provide: getModelToken(Comment.name), useValue: commentModel },
         { provide: FileService, useValue: fileService },
+        { provide: getQueueToken('track-listens'), useValue: listensQueue },
+        { provide: CACHE_MANAGER, useValue: cache },
       ],
     }).compile();
 
@@ -85,6 +97,7 @@ describe('TrackService', () => {
         picture: 'image/1.jpg',
       }),
     );
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('delete() returns null and does not touch files when track is not found', async () => {
@@ -108,6 +121,7 @@ describe('TrackService', () => {
     expect(fileService.removeFile).toHaveBeenCalledWith('image/1.jpg');
     expect(fileService.removeFile).toHaveBeenCalledWith('audio/1.mp3');
     expect(result).toBe('id1');
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('delete() does not call removeFile when the track has no picture/audio', async () => {
@@ -158,6 +172,7 @@ describe('TrackService', () => {
       { returnDocument: 'after' },
     );
     expect(result).toEqual({ name: 'Updated' });
+    expect(cache.clear).toHaveBeenCalled();
   });
 
   it('update() does not touch any files when no new picture/audio is provided', async () => {
@@ -214,6 +229,25 @@ describe('TrackService', () => {
     });
   });
 
+  it('getAll() returns the cached value without querying Mongo on a cache hit', async () => {
+    const cached = { tracks: [{ name: 'Cached' }], totalCount: 1 };
+    cache.get.mockResolvedValue(cached);
+
+    const result = await service.getAll(5, 10);
+
+    expect(result).toEqual(cached);
+    expect(trackModel.find).not.toHaveBeenCalled();
+  });
+
+  it('getAll() caches the result on a cache miss', async () => {
+    trackModel.find.mockReturnValue(createQueryMock([{ name: 'A' }]));
+    trackModel.countDocuments.mockResolvedValue(1);
+
+    const result = await service.getAll(5, 10);
+
+    expect(cache.set).toHaveBeenCalledWith(expect.any(String), result);
+  });
+
   it('getOne() finds the track by id and populates its comments', async () => {
     trackModel.findById.mockReturnValue(createQueryMock({ name: 'A' }));
 
@@ -236,20 +270,11 @@ describe('TrackService', () => {
     expect(result).toEqual({ _id: 'comment1' });
   });
 
-  it('listen() increments the listens counter and saves the track when found', async () => {
-    const track = { listens: 4, save: jest.fn() };
-    trackModel.findById.mockResolvedValue(track);
-
+  it('listen() queues a listens increment job instead of writing directly', async () => {
     await service.listen('id1');
 
-    expect(track.listens).toBe(5);
-    expect(track.save).toHaveBeenCalled();
-  });
-
-  it('listen() does nothing when the track is not found', async () => {
-    trackModel.findById.mockResolvedValue(null);
-
-    await expect(service.listen('missing-id')).resolves.toBeUndefined();
+    expect(listensQueue.add).toHaveBeenCalledWith('increment', { id: 'id1' });
+    expect(trackModel.findById).not.toHaveBeenCalled();
   });
 
   it('search() escapes regex special characters, searches name/artist/text, and paginates results', async () => {
@@ -288,5 +313,15 @@ describe('TrackService', () => {
     expect(capturedFilter).toEqual(
       expect.objectContaining({ album: 'album1' }),
     );
+  });
+
+  it('search() returns the cached value without querying Mongo on a cache hit', async () => {
+    const cached = { tracks: [{ name: 'Cached' }], totalCount: 1 };
+    cache.get.mockResolvedValue(cached);
+
+    const result = await service.search('a', 5, 10);
+
+    expect(result).toEqual(cached);
+    expect(trackModel.find).not.toHaveBeenCalled();
   });
 });
