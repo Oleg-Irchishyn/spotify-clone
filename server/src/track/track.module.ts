@@ -18,7 +18,13 @@ import { TrackService } from './track.service';
       { name: Track.name, schema: TrackSchema },
       { name: Comment.name, schema: CommentSchema },
     ]),
-    BullModule.registerQueue({ name: 'track-listens' }),
+    BullModule.registerQueue({
+      name: 'track-listens',
+      defaultJobOptions: {
+        removeOnComplete: true,
+        removeOnFail: 1000,
+      },
+    }),
     FileModule,
     AuthModule,
     UsersModule,
