@@ -8,6 +8,7 @@ import { Model, Types } from 'mongoose';
 
 import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
+import type { PaginatedTracks } from 'src/types/paginated-result';
 
 import { escapeRegExp } from 'src/common/utils/regex.util';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -95,12 +96,9 @@ export class TrackService {
     count: number = 10,
     offset: number = 0,
     albumId?: string,
-  ): Promise<{ tracks: Track[]; totalCount: number }> {
+  ): Promise<PaginatedTracks> {
     const cacheKey = `tracks:all:${count}:${offset}:${albumId ?? ''}`;
-    const cached = await this.cache.get<{
-      tracks: Track[];
-      totalCount: number;
-    }>(cacheKey);
+    const cached = await this.cache.get<PaginatedTracks>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -152,12 +150,9 @@ export class TrackService {
     count: number = 10,
     offset: number = 0,
     albumId?: string,
-  ): Promise<{ tracks: Track[]; totalCount: number }> {
+  ): Promise<PaginatedTracks> {
     const cacheKey = `tracks:search:${query}:${count}:${offset}:${albumId ?? ''}`;
-    const cached = await this.cache.get<{
-      tracks: Track[];
-      totalCount: number;
-    }>(cacheKey);
+    const cached = await this.cache.get<PaginatedTracks>(cacheKey);
     if (cached) {
       return cached;
     }

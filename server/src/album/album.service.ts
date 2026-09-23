@@ -7,6 +7,7 @@ import { Model, Types } from 'mongoose';
 import { FileType } from 'src/common/enums/file-type.enum';
 import { FileService } from 'src/file/file.service';
 import { Track, TrackDocument } from 'src/track/schemas/track.schema';
+import type { PaginatedAlbums } from 'src/types/paginated-result';
 
 import { escapeRegExp } from 'src/common/utils/regex.util';
 import { CreateAlbumDto } from './dto/CreateAlbumDto';
@@ -77,12 +78,9 @@ export class AlbumService {
     query: string,
     count: number = 10,
     offset: number = 0,
-  ): Promise<{ albums: Album[]; totalCount: number }> {
+  ): Promise<PaginatedAlbums> {
     const cacheKey = `albums:all:${query}:${count}:${offset}`;
-    const cached = await this.cache.get<{
-      albums: Album[];
-      totalCount: number;
-    }>(cacheKey);
+    const cached = await this.cache.get<PaginatedAlbums>(cacheKey);
     if (cached) {
       return cached;
     }
